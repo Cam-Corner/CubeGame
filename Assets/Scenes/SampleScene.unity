@@ -2857,9 +2857,9 @@ MonoBehaviour:
   m_InvertMouseY: 0
   m_RotationMinClamp: -45
   m_RotationMaxClamp: 45
-  m_Proportional: 0.85
+  m_Proportional: 0.5
   m_Integral: 0
-  m_Derivative: 0.025
+  m_Derivative: 0.05
 --- !u!1 &1992757672
 GameObject:
   m_ObjectHideFlags: 0
