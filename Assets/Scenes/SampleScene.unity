@@ -265,7 +265,7 @@ Transform:
   - {fileID: 705507995}
   - {fileID: 671424359}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &341361667
 GameObject:
@@ -831,7 +831,7 @@ Transform:
   m_Children:
   - {fileID: 1646267232}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -1676,7 +1676,7 @@ Transform:
   m_Children:
   - {fileID: 1820736352}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1195551694
 GameObject:
@@ -2039,7 +2039,7 @@ Transform:
   m_Children:
   - {fileID: 7414312}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1530259410
 PrefabInstance:
@@ -2831,12 +2831,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1901543968}
   m_LocalRotation: {x: -0, y: -0.11839845, z: -0, w: 0.9929662}
-  m_LocalPosition: {x: -1, y: 1, z: -15}
+  m_LocalPosition: {x: -1, y: 0, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: -13.599, z: 0}
 --- !u!114 &1901543970
 MonoBehaviour:
@@ -2852,9 +2852,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CameraDistanceFromCube: 20
   m_CameraSpeed: 5
+  m_CameraRotationMaxSpeed: 300
+  m_CameraRotationSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_CameraSensitivity: 1
-  m_InvertMouseX: 1
-  m_InvertMouseY: 0
+  m_InvertRotX: 0
+  m_InvertRotY: 0
   m_RotationMinClamp: -45
   m_RotationMaxClamp: 45
   m_Proportional: 0.5
@@ -3237,7 +3262,7 @@ RectTransform:
   m_Children:
   - {fileID: 1739765185}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
