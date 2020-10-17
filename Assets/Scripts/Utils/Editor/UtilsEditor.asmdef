@@ -1,0 +1,17 @@
+{
+    "name": "UtilsEditor",
+    "references": [
+        "GUID:6b64bde33b5773445ac0cf39f6a63ca1"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -2850,29 +2850,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 381e1f1398863cf4c87c1209106154b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joystickMapping: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
   m_CameraDistanceFromCube: 20
   m_CameraSpeed: 5
-  m_CameraRotationMaxSpeed: 300
+  m_CameraRotationMaxSpeed: 200
   m_CameraRotationSpeedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.5
+      value: 1
+      inSlope: 1.4603953
+      outSlope: 1.4603953
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.052631456
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -2880,8 +2881,8 @@ MonoBehaviour:
   m_CameraSensitivity: 1
   m_InvertRotX: 0
   m_InvertRotY: 0
-  m_RotationMinClamp: -45
-  m_RotationMaxClamp: 45
+  m_RotationMinClamp: -30
+  m_RotationMaxClamp: 60
   m_Proportional: 0.5
   m_Integral: 0
   m_Derivative: 0.05

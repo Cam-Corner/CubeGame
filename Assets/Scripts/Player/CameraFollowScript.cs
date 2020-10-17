@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AmoaebaUtils;
 
 public class CameraFollowScript : MonoBehaviour
 {
+    [SerializeField]
+    private JoystickMapping joystickMapping;
+
     ///////////////////
     //public variables
     [Header("Default Camera Settings"), SerializeField]
@@ -57,6 +61,7 @@ public class CameraFollowScript : MonoBehaviour
     private Vector3 m_IntegralPrior = new Vector3(0, 0, 0);
 
     private Camera m_Camera;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -127,8 +132,8 @@ public class CameraFollowScript : MonoBehaviour
         } 
         else
         {
-            Vector2 joystickRot = new Vector2(Input.GetAxis("Horizontal Camera"),
-                                             Input.GetAxis("Vertical Camera"));
+            Vector2 joystickRot = new Vector2(Input.GetAxis(joystickMapping.HorizontalCameraAxis),
+                                              Input.GetAxis(joystickMapping.VerticalCameraAxis));
             ApplyCameraRotation(joystickRot);       
         }
     }
@@ -153,15 +158,19 @@ public class CameraFollowScript : MonoBehaviour
             else
                 VOldRotation.x += MouseMovementThisFrame.y;
             VOldRotation.z = 0;
-           // VOldRotation.x = Mathf.Clamp(VOldRotation.x, m_RotationMinClamp, m_RotationMaxClamp);
+            VOldRotation.x = ClampRotation(VOldRotation.x);
             QOldRotation = Quaternion.Euler(VOldRotation);
-
+       
             transform.rotation = QOldRotation;
     }
     
     private void SetCameraRotation()
     {
-       // transform.LookAt( m_PlayerTransform, transform.up);
+
+        float minRot = Mathf.Min(m_RotationMinClamp, m_RotationMaxClamp);
+        float maxRot = Mathf.Max(m_RotationMinClamp, m_RotationMaxClamp);
+        m_RotationMinClamp = minRot;
+        m_RotationMaxClamp = maxRot;
 
         int len = m_CameraRotationSpeedCurve.keys.Length;
         if(len == 0)
@@ -172,22 +181,44 @@ public class CameraFollowScript : MonoBehaviour
         else
         {
             m_firstRotationInst = m_CameraRotationSpeedCurve.keys[0].time;
-            m_firstRotationInst = m_CameraRotationSpeedCurve.keys[len-1].time;
+            m_lastRotationInst = m_CameraRotationSpeedCurve.keys[len-1].time;
         }
         m_timeInRotation = m_firstRotationInst;
+    }
+
+    private float ClampRotation(float angle)
+    {
+        if(Mathf.Sign(m_RotationMinClamp) == Mathf.Sign(m_RotationMaxClamp))
+        {
+            return Mathf.Clamp(angle, m_RotationMinClamp, m_RotationMaxClamp);
+        } 
+        else if(m_RotationMinClamp < 0 && m_RotationMaxClamp >= 0)
+        {
+            if(angle > 180)
+            {
+                angle -= 360;
+            }
+
+            return Mathf.Clamp(angle, m_RotationMinClamp, m_RotationMaxClamp);
+        }
+        else
+        {
+            Debug.LogError("Should not clamp rotation with max smaller than min");
+        }
+        return angle;
     }
 
     private void ApplyCameraRotation(Vector2 axisInput)
     {
         if(axisInput.magnitude <= 0)
         {
+            
             m_timeInRotation = m_firstRotationInst;
             return;
         }
 
-        Debug.Log("Rot input" + axisInput);
+        m_timeInRotation = Mathf.Clamp(m_timeInRotation + Time.deltaTime, m_firstRotationInst, m_lastRotationInst);
 
-        m_timeInRotation = Mathf.Clamp(m_timeInRotation + Time.deltaTime, m_firstRotationInst, m_lastRotationInst); 
         float rotSpeed = m_CameraRotationSpeedCurve.Evaluate(m_timeInRotation) * m_CameraRotationMaxSpeed;
 
         Vector2 rotDir = (Vector2.right * axisInput.x + Vector2.up * axisInput.y).normalized;
@@ -196,7 +227,8 @@ public class CameraFollowScript : MonoBehaviour
 
         Vector3 eulerRotation = transform.rotation.eulerAngles 
                                 + (Vector3)rotDir * rotSpeed * Time.deltaTime;
-   //     eulerRotation.x = Mathf.Clamp(eulerRotation.x, m_RotationMinClamp, m_RotationMaxClamp);
+
+        eulerRotation.x = ClampRotation (eulerRotation.x);
         transform.rotation = Quaternion.Euler(eulerRotation);
     } 
 }
