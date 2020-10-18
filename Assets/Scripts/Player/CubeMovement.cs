@@ -8,59 +8,54 @@ using UnityEngine.UI;
 
 public class CubeMovement : MonoBehaviour
 {
-    public enum ECubeForceDirection
+    public enum ForceInput
     {
         Mouse,
-        Camera
+        Joystick
     }
 
     ////////////////////
     //Public Variables
     [Header("Force Settings")]
     [Tooltip("What Determends the direction the cube will go")]
-    public ECubeForceDirection m_ForceDirectionStyle = ECubeForceDirection.Mouse;
+    public ForceInput m_ForceInput = ForceInput.Mouse;
 
     [Tooltip("Max force that can be applied to the cube")]
     public float m_MaxForce = 20;
 
-    [Tooltip("How fast should the force increase when holding down the button")]
-    public float m_ForceIncreaseSpeed = 1;
+    [Range(0,1), Tooltip("How much displacement needs to happen for the force to be considered")]
+    public float m_ForceDeadZonePercent = 0.1f;
 
 
     //////////////////////////////
     //Private Variables
     [Tooltip("Unit Vector for the direction the force will be applied")]
-    private Vector3 m_ForceDirection = new Vector3(0, 0, 0);
+    private Vector3 m_ForceToApply = new Vector3(0, 0, 0);
 
-    [Tooltip("Amount of force that will be applied to the cube")]
-    private float m_AmountOfForce = 0;
-
-    [Tooltip("Should the amount of force increase or decrease")]
-    private bool m_bIncreaseForce = true;
+    private Vector3 m_DisplayForce = new Vector3(0, 0, 0);
 
     [Tooltip("should the force be applied this frame")]
     private bool m_bApplyForce = false;
+
+    
+    [SerializeField]
+    private float m_MaxForceMouseDistance = 10.0f; 
 
     //////////////////////////////
     //Private components
     [Tooltip("The RigidBody component attached to this object")]
     private Rigidbody m_RB;
 
-    [Tooltip("The UI Image that shows the current force amount")]
-    private Image Image_ForceApplied;
+    [Tooltip("The UI Image that shows the current force amount"), SerializeField]
+    private ForceArrow ForceArrow;
 
-    [Tooltip("The UI Image that shows the current force amount")]
-    private GameObject GO_ForceArrow;
+    [SerializeField]
+    private Camera gameCamera;
 
     // Start is called before the first frame update
     void Start()
     {
         m_RB = GetComponent<Rigidbody>();
-
-        Image_ForceApplied = GameObject.Find("CurrentForce_Amount").GetComponent<Image>();
-        GO_ForceArrow = GameObject.Find("ForceDirectionArrow");
-
-        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     //called when the game object is spawned
@@ -73,8 +68,7 @@ public class CubeMovement : MonoBehaviour
     void Update()
     {
         CalculateForceToBeApplied();
-        WorkOutDirection();
-        DirectionVectorToQuaternion();
+        UpdateForceArrow();
 
         
         if(transform.position.y <= -20.0f)
@@ -98,116 +92,80 @@ public class CubeMovement : MonoBehaviour
     void AddForceToObject()
     {
         //Y Is the up vector in unity so we will use the Y as the Z Force
-        Vector3 ForceDirection = new Vector3(m_ForceDirection.x, 0, m_ForceDirection.y);
-        m_RB.AddForce(ForceDirection * (m_MaxForce * m_AmountOfForce));
+        Vector3 ForceDirection = new Vector3(m_ForceToApply.x, 0, m_ForceToApply.y);
+        m_RB.AddForce(m_ForceToApply * m_MaxForce);
 
-        m_AmountOfForce = 0;
-        m_bIncreaseForce = true;
         m_bApplyForce = false;
-
-        if(Image_ForceApplied != null)
-            Image_ForceApplied.fillAmount = m_AmountOfForce / 100;
     }
 
     //Calculates how much force should be applied to the object when the button is being held    
-    void CalculateForceToBeApplied()
+    private void CalculateForceToBeApplied()
     {
-        if(Input.GetMouseButton(0) && (m_RB.velocity == new Vector3(0, 0, 0)))
+        switch(m_ForceInput)
         {
-            if(m_bIncreaseForce)
-            {
-                m_AmountOfForce += m_ForceIncreaseSpeed * Time.deltaTime;
+            case ForceInput.Mouse:
+                CalculateMouseForce();
+                break;
+            case ForceInput.Joystick:
+                CalculateJoystickForce();
+                break;
+        }
+    }
 
-                if(m_AmountOfForce >= 100)
-                {
-                    m_AmountOfForce = 100;
-                    m_bIncreaseForce = false;
-                }
+    private void CalculateMouseForce()
+    {
+        Vector2 mousPos = new Vector2(Input.GetAxis("Mouse X"), 
+                                        Input.GetAxis("Mouse Y"));
+        Vector2 currentScreenPos = gameCamera.WorldToScreenPoint(transform.position);
+     
+        Plane playerPlane = new Plane(Vector3.up, transform.position);
+        
+        Ray mouseRay = gameCamera.ScreenPointToRay(Input.mousePosition);
+        float dist = 0;
+        if(playerPlane.Raycast(mouseRay, out dist))
+        {
+            Vector3 mouseWorldProjection =  (mouseRay.origin + mouseRay.direction * dist);
+            Debug.Log((mouseWorldProjection - transform.position).magnitude);
+            float magnitude = Mathf.Clamp01((mouseWorldProjection - transform.position).magnitude / m_MaxForceMouseDistance);
+
+            m_DisplayForce = (mouseWorldProjection - transform.position).normalized * magnitude;
+        } 
+        else
+        {
+            m_DisplayForce = Vector3.zero;
+        }
+
+
+        if(Input.GetMouseButton(0) 
+           && (m_RB.velocity == new Vector3(0, 0, 0))
+           && m_DisplayForce.magnitude > m_ForceDeadZonePercent)
+        {
+            m_ForceToApply = m_DisplayForce;
+            m_bApplyForce = true;
+            return;
+        }
+    }
+
+    private void CalculateJoystickForce()
+    {
+
+    }
+
+
+    //convert the direction vector to a quaternion
+    void UpdateForceArrow()
+    {
+        if (ForceArrow != null)
+        {
+            if(m_DisplayForce.magnitude < m_ForceDeadZonePercent)
+            {
+                ForceArrow.gameObject.SetActive(false);
             }
             else
             {
-                m_AmountOfForce -= m_ForceIncreaseSpeed * Time.deltaTime;
-
-                if (m_AmountOfForce <= 1)
-                {
-                    m_AmountOfForce = 1;
-                    m_bIncreaseForce = true;
-                }
+                ForceArrow.gameObject.SetActive(true);
+                ForceArrow.UpdateArrow(transform.position, m_DisplayForce, m_DisplayForce.magnitude);
             }
-
-            if (Image_ForceApplied != null)
-                Image_ForceApplied.fillAmount = m_AmountOfForce / 100;
-        }
-        else if(m_AmountOfForce > 0)
-        {
-            m_bApplyForce = true;
-        }
-    }
-
-    //works out the direction the cube will go
-    void WorkOutDirection()
-    {
-        if(m_ForceDirectionStyle == ECubeForceDirection.Mouse)
-        {
-            //convert cube position to screen position
-            Vector3 CubeScreenPos = Camera.allCameras[0].WorldToScreenPoint(transform.position);
-
-            //work out direction
-            float Distance = Vector3.Distance(Input.mousePosition, CubeScreenPos);
-
-            Vector3 UnitV = Input.mousePosition;
-            UnitV.x -= CubeScreenPos.x;
-            UnitV.y -= CubeScreenPos.y;
-            UnitV.z -= CubeScreenPos.z;
-
-            UnitV = UnitV / Distance;
-            m_ForceDirection = UnitV;    
-        }
-        else if(m_ForceDirectionStyle == ECubeForceDirection.Camera)
-        {
-            
-        }
-    }
-
-    //convert the direction vector to a quaternion
-    void DirectionVectorToQuaternion()
-    {
-        if (GO_ForceArrow != null)
-        {
-            //set arrow location to the cube
-            GO_ForceArrow.transform.position = transform.position;
-            float ArrowDistance = 1.5f;//distance the arrow will come away from the cube
-            
-            //rotate the arrow so it faces the forward direction
-            //Y Is the up vector in unity so we will use the Y as the Z Force
-            Vector3 ForceDirection = new Vector3(m_ForceDirection.x, 0, m_ForceDirection.y);
-            Quaternion DirectionRotation = Quaternion.LookRotation(ForceDirection, new Vector3(0, 1, 0));
-
-            //apply rotatation
-            GO_ForceArrow.transform.rotation = DirectionRotation;
-
-            //move arrow out of cube
-            GO_ForceArrow.transform.position += ForceDirection * ArrowDistance;
-
-            //transform.rotation = DirectionRotation;
-
-
-            /*
-            //test code          
-            GameObject UIObject = GameObject.Find("UI_CurrentForce");
-            Vector3 CubeScreenPos = Camera.allCameras[0].WorldToScreenPoint(transform.position);
-            UIObject.transform.position = CubeScreenPos;
-            Vector2 ForceDirection2D = new Vector2(m_ForceDirection.x, m_ForceDirection.y);
-
-            float Angle = Vector2.Angle(ForceDirection2D, new Vector2(0, 1));
-            Vector3 CrossAngle = Vector3.Cross(ForceDirection2D, new Vector2(0, 1));
-
-            if(CrossAngle.z > 0)
-                Angle = 360 - Angle;
-
-            Quaternion NewRotatation = Quaternion.Euler(0, 0, Angle);
-            UIObject.transform.rotation = NewRotatation;
-            */
         }
     }
 }
