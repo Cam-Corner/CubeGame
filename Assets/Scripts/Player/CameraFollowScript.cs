@@ -6,7 +6,7 @@ using AmoaebaUtils;
 public class CameraFollowScript : MonoBehaviour
 {
     [SerializeField]
-    private JoystickMapping joystickMapping;
+    private InputMapping inputMapping;
 
     ///////////////////
     //public variables
@@ -61,6 +61,7 @@ public class CameraFollowScript : MonoBehaviour
     private Vector3 m_IntegralPrior = new Vector3(0, 0, 0);
 
     private Camera m_Camera;
+    public Camera GameCamera => m_Camera;
     
 
     // Start is called before the first frame update
@@ -124,16 +125,19 @@ public class CameraFollowScript : MonoBehaviour
 
     private void CameraRotation()
     {
-        if(Input.GetButton("Look Around"))
+        if(inputMapping.m_ControllerType == InputMapping.ControllerType.Mouse)
         {
-            Vector2 mousPos = new Vector2(Input.GetAxis("Mouse X"), 
-                                          Input.GetAxis("Mouse Y"));
-            ApplyMouseRotation(mousPos);
-        } 
+            if(Input.GetButton("Look Around"))
+            {
+                Vector2 mousPos = new Vector2(Input.GetAxis("Mouse X"), 
+                                            Input.GetAxis("Mouse Y"));
+                ApplyMouseRotation(mousPos);
+            } 
+        }
         else
         {
-            Vector2 joystickRot = new Vector2(Input.GetAxis(joystickMapping.HorizontalCameraAxis),
-                                              Input.GetAxis(joystickMapping.VerticalCameraAxis));
+            Vector2 joystickRot = new Vector2(Input.GetAxis(inputMapping.HorizontalCameraAxis),
+                                              Input.GetAxis(inputMapping.VerticalCameraAxis));
             ApplyCameraRotation(joystickRot);       
         }
     }

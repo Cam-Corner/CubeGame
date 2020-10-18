@@ -265,7 +265,7 @@ Transform:
   - {fileID: 705507995}
   - {fileID: 671424359}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &341361667
 GameObject:
@@ -1892,12 +1892,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f439cc148eeb22c42ae19bd551ce3bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ForceInput: 0
-  m_MaxForce: 200
+  m_MaxForce: 1000
   m_ForceDeadZonePercent: 0.1
   m_MaxForceMouseDistance: 10
   ForceArrow: {fileID: 1046593139}
-  gameCamera: {fileID: 963194227}
+  gameCameraParent: {fileID: 1901543970}
+  inputMap: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
 --- !u!54 &1195551700
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2944,7 +2944,7 @@ Transform:
   m_Children:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: -13.599, z: 0}
 --- !u!114 &1901543970
 MonoBehaviour:
@@ -2958,9 +2958,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 381e1f1398863cf4c87c1209106154b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystickMapping: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
+  inputMapping: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
   m_CameraDistanceFromCube: 20
-  m_CameraSpeed: 5
+  m_CameraSpeed: 3
   m_CameraRotationMaxSpeed: 200
   m_CameraRotationSpeedCurve:
     serializedVersion: 2
@@ -3371,7 +3371,7 @@ RectTransform:
   m_Children:
   - {fileID: 1739765185}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

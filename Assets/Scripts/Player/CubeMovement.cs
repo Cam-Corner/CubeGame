@@ -8,17 +8,9 @@ using UnityEngine.UI;
 
 public class CubeMovement : MonoBehaviour
 {
-    public enum ForceInput
-    {
-        Mouse,
-        Joystick
-    }
 
     ////////////////////
     //Public Variables
-    [Header("Force Settings")]
-    [Tooltip("What Determends the direction the cube will go")]
-    public ForceInput m_ForceInput = ForceInput.Mouse;
 
     [Tooltip("Max force that can be applied to the cube")]
     public float m_MaxForce = 20;
@@ -50,8 +42,13 @@ public class CubeMovement : MonoBehaviour
     private ForceArrow ForceArrow;
 
     [SerializeField]
-    private Camera gameCamera;
+    private CameraFollowScript gameCameraParent;
 
+    [SerializeField]
+    private InputMapping  inputMap;
+
+    private bool IsAiming => (m_RB.velocity == Vector3.zero);
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -101,43 +98,18 @@ public class CubeMovement : MonoBehaviour
     //Calculates how much force should be applied to the object when the button is being held    
     private void CalculateForceToBeApplied()
     {
-        switch(m_ForceInput)
+        switch(inputMap.m_ControllerType)
         {
-            case ForceInput.Mouse:
+            case InputMapping.ControllerType.Mouse:
                 CalculateMouseForce();
                 break;
-            case ForceInput.Joystick:
+            default:
                 CalculateJoystickForce();
                 break;
         }
-    }
-
-    private void CalculateMouseForce()
-    {
-        Vector2 mousPos = new Vector2(Input.GetAxis("Mouse X"), 
-                                        Input.GetAxis("Mouse Y"));
-        Vector2 currentScreenPos = gameCamera.WorldToScreenPoint(transform.position);
-     
-        Plane playerPlane = new Plane(Vector3.up, transform.position);
         
-        Ray mouseRay = gameCamera.ScreenPointToRay(Input.mousePosition);
-        float dist = 0;
-        if(playerPlane.Raycast(mouseRay, out dist))
-        {
-            Vector3 mouseWorldProjection =  (mouseRay.origin + mouseRay.direction * dist);
-            Debug.Log((mouseWorldProjection - transform.position).magnitude);
-            float magnitude = Mathf.Clamp01((mouseWorldProjection - transform.position).magnitude / m_MaxForceMouseDistance);
-
-            m_DisplayForce = (mouseWorldProjection - transform.position).normalized * magnitude;
-        } 
-        else
-        {
-            m_DisplayForce = Vector3.zero;
-        }
-
-
-        if(Input.GetMouseButton(0) 
-           && (m_RB.velocity == new Vector3(0, 0, 0))
+        if(inputMap.GetRunningButton() 
+           && IsAiming
            && m_DisplayForce.magnitude > m_ForceDeadZonePercent)
         {
             m_ForceToApply = m_DisplayForce;
@@ -146,9 +118,34 @@ public class CubeMovement : MonoBehaviour
         }
     }
 
+    private void CalculateMouseForce()
+    {
+        Vector2 mousPos = new Vector2(Input.GetAxis("Mouse X"), 
+                                        Input.GetAxis("Mouse Y"));
+        Vector2 currentScreenPos = gameCameraParent.GameCamera.WorldToScreenPoint(transform.position);
+     
+        Plane playerPlane = new Plane(Vector3.up, transform.position);
+        
+        Ray mouseRay = gameCameraParent.GameCamera.ScreenPointToRay(Input.mousePosition);
+        float dist = 0;
+        if(playerPlane.Raycast(mouseRay, out dist))
+        {
+            Vector3 mouseWorldProjection =  (mouseRay.origin + mouseRay.direction * dist);
+            float magnitude = Mathf.Clamp01((mouseWorldProjection - transform.position).magnitude / m_MaxForceMouseDistance);
+
+            m_DisplayForce = (mouseWorldProjection - transform.position).normalized * magnitude;
+        } 
+        else
+        {
+            m_DisplayForce = Vector3.zero;
+        }
+    }
+
     private void CalculateJoystickForce()
     {
-
+        Vector3 camRotation = gameCameraParent.transform.rotation.eulerAngles;
+        camRotation = Vector3.Scale(camRotation, Vector3.up);
+        m_DisplayForce = Quaternion.Euler(camRotation) * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
     }
 
 
