@@ -47,11 +47,12 @@ public class CubeMovement : MonoBehaviour
     [SerializeField]
     private InputMapping  inputMap;
 
-    private bool IsAiming => (m_RB.velocity == Vector3.zero);
+    private bool isMoving = false;
  
     // Start is called before the first frame update
     void Start()
     {
+        isMoving = false;
         m_RB = GetComponent<Rigidbody>();
     }
 
@@ -64,8 +65,15 @@ public class CubeMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CalculateForceToBeApplied();
-        UpdateForceArrow();
+        if(!isMoving)
+        {
+            CalculateForceToBeApplied();
+            UpdateForceArrow();
+        }
+        else
+        {
+            isMoving = !Mathf.Approximately(m_RB.velocity.magnitude,0);
+        }
 
         
         if(transform.position.y <= -20.0f)
@@ -81,6 +89,8 @@ public class CubeMovement : MonoBehaviour
         if(m_bApplyForce)
         {
             AddForceToObject();
+            ForceArrow.gameObject.SetActive(false);
+            isMoving = true;
         }
     }
 
@@ -109,7 +119,7 @@ public class CubeMovement : MonoBehaviour
         }
         
         if(inputMap.GetRunningButton() 
-           && IsAiming
+           && !isMoving
            && m_DisplayForce.magnitude > m_ForceDeadZonePercent)
         {
             m_ForceToApply = m_DisplayForce;
