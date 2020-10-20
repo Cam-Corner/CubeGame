@@ -47,13 +47,9 @@ public class CubeMovement : MonoBehaviour
     [SerializeField]
     private InputMapping  inputMap;
 
-<<<<<<< HEAD
     private Transform m_PlayerStart;
 
-    private bool IsAiming => (m_RB.velocity == Vector3.zero);
-=======
     private bool isMoving = false;
->>>>>>> f14d8d6b836862c902e005e43ec9cfcf8f38f5a1
  
     // Start is called before the first frame update
     void Start()
