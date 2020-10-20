@@ -62,6 +62,8 @@ public class CameraFollowScript : MonoBehaviour
 
     private Camera m_Camera;
     public Camera GameCamera => m_Camera;
+
+    public CameraRotationDefinition[] preDefinedRotations;
     
 
     // Start is called before the first frame update
@@ -127,11 +129,25 @@ public class CameraFollowScript : MonoBehaviour
     {
         if(inputMapping.m_ControllerType == InputMapping.ControllerType.Mouse)
         {
-            if(Input.GetButton("Look Around"))
+            bool hasAdjusted = false;
+            foreach(CameraRotationDefinition def in preDefinedRotations)
             {
-                Vector2 mousPos = new Vector2(Input.GetAxis("Mouse X"), 
-                                            Input.GetAxis("Mouse Y"));
-                ApplyMouseRotation(mousPos);
+                if(Input.GetKeyDown(def.key))
+                {
+                    SetPredefinedRotation(def);
+                    hasAdjusted = true;
+                    break;
+                }
+            }
+
+            if(!hasAdjusted && Input.GetButton("Look Around"))
+            {
+                if(!hasAdjusted)
+                {
+                    Vector2 mousPos = new Vector2(Input.GetAxis("Mouse X"), 
+                                                Input.GetAxis("Mouse Y"));
+                    ApplyMouseRotation(mousPos);                    
+                }
             } 
         }
         else
@@ -140,6 +156,18 @@ public class CameraFollowScript : MonoBehaviour
                                               Input.GetAxis(inputMapping.VerticalCameraAxis));
             ApplyCameraRotation(joystickRot);       
         }
+
+        
+    }
+
+    private void SetPredefinedRotation(CameraRotationDefinition rotationDefinition)
+    {
+        Quaternion QOldRotation = transform.rotation;
+        Vector3 rotation = rotationDefinition.isAbsolute ? 
+                            rotationDefinition.rotationEuler 
+                            : QOldRotation.eulerAngles + rotationDefinition.rotationEuler;
+        rotation.x = ClampRotation(rotation.x);
+        transform.rotation = Quaternion.Euler(rotation);
     }
 
     private void ApplyMouseRotation(Vector2 mousPos)
@@ -147,10 +175,10 @@ public class CameraFollowScript : MonoBehaviour
         Quaternion QOldRotation = transform.rotation;
         Vector3 VOldRotation = QOldRotation.eulerAngles;
 
-            Vector2 MouseMovementThisFrame = mousPos 
-                                             * m_CameraSensitivity 
-                                             * 1000 
-                                             * Time.deltaTime;
+        Vector2 MouseMovementThisFrame = mousPos 
+                                            * m_CameraSensitivity 
+                                            * 1000 
+                                            * Time.deltaTime;
 
             if(m_InvertRotX)
                 VOldRotation.y += MouseMovementThisFrame.x;

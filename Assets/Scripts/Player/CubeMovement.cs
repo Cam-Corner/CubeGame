@@ -47,30 +47,46 @@ public class CubeMovement : MonoBehaviour
     [SerializeField]
     private InputMapping  inputMap;
 
+<<<<<<< HEAD
+    private Transform m_PlayerStart;
+
     private bool IsAiming => (m_RB.velocity == Vector3.zero);
+=======
+    private bool isMoving = false;
+>>>>>>> f14d8d6b836862c902e005e43ec9cfcf8f38f5a1
  
     // Start is called before the first frame update
     void Start()
     {
+        isMoving = false;
         m_RB = GetComponent<Rigidbody>();
     }
 
     //called when the game object is spawned
     void Awake()
     {
-         transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+        m_PlayerStart = GameObject.FindGameObjectWithTag("Start").transform;
+        transform.position = m_PlayerStart.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        CalculateForceToBeApplied();
-        UpdateForceArrow();
+        if(!isMoving)
+        {
+            CalculateForceToBeApplied();
+            UpdateForceArrow();
+        }
+        else
+        {
+            isMoving = !Mathf.Approximately(m_RB.velocity.magnitude,0);
+        }
 
         
         if(transform.position.y <= -20.0f)
         {
-            transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+            transform.position = m_PlayerStart.position;
+            m_RB.velocity = new Vector3(0, 0, 0);
             Debug.Log("Cube Died: Fell of the map!");
         }
     }
@@ -81,6 +97,8 @@ public class CubeMovement : MonoBehaviour
         if(m_bApplyForce)
         {
             AddForceToObject();
+            ForceArrow.gameObject.SetActive(false);
+            isMoving = true;
         }
     }
 
@@ -109,7 +127,7 @@ public class CubeMovement : MonoBehaviour
         }
         
         if(inputMap.GetRunningButton() 
-           && IsAiming
+           && !isMoving
            && m_DisplayForce.magnitude > m_ForceDeadZonePercent)
         {
             m_ForceToApply = m_DisplayForce;
@@ -164,5 +182,11 @@ public class CubeMovement : MonoBehaviour
                 ForceArrow.UpdateArrow(transform.position, m_DisplayForce, m_DisplayForce.magnitude);
             }
         }
+    }
+
+    public void PlayerFound()
+    {
+        transform.position = m_PlayerStart.position;
+        m_RB.velocity = new Vector3(0, 0, 0);
     }
 }
