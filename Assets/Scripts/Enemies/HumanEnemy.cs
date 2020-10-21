@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class HumanEnemy : MonoBehaviour
 {
     //=========================================
     //Inspector Properties
     [SerializeField] protected EnemySettings m_EnemySettings;
+    [Space(3)]
+    [SerializeField] protected EnemyPath m_MyPath;
+    [Space(5)]
     [SerializeField] private GameObject m_Player;
-
     [Header("Line of Sight (Only takes affect when overriding the default settings)")]
     [SerializeField] protected bool m_OverrideDefaultLineOfSightSettings = false;
     [SerializeField] protected uint m_FieldOfView = 45;
@@ -28,7 +31,8 @@ public class HumanEnemy : MonoBehaviour
     //=========================================
     //private
     private bool m_InRadiusOfPlayer = false;
-
+    private Vector3 m_CurrentGotoPatrolPoint = new Vector3(0, 0, 0);
+    private NavMeshAgent m_NMA;
     //=========================================
 
     private void Start()
@@ -36,11 +40,25 @@ public class HumanEnemy : MonoBehaviour
         //Line Of Sight
         m_LineOfSight = GetComponentInChildren<LineOfSight>();
         //m_PRC = GetComponentInChildren<PlayerRadiusChecker>();
+
+        m_NMA = GetComponent<NavMeshAgent>();
+
+        if (m_MyPath != null)
+        {
+            transform.position = m_MyPath.GetStartPoint();
+            m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
+            m_NMA.SetDestination(m_CurrentGotoPatrolPoint);
+        }
     }
 
     private void Update()
     {
-        
+        float Distance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(m_CurrentGotoPatrolPoint.x, m_CurrentGotoPatrolPoint.z));
+        if(Distance < 0.5f)
+        {
+            m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
+            m_NMA.SetDestination(m_CurrentGotoPatrolPoint);
+        }
     }
 
     private void FixedUpdate()
@@ -64,7 +82,7 @@ public class HumanEnemy : MonoBehaviour
         {
             m_LineOfSight.SightCheckNoReturn(!m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FieldOfView : m_FieldOfView,
                                      !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FOVDistance : m_FOVDistance,
-                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_AmountOfRays / 4 : m_AmountOfRays / 4);
+                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_AmountOfRays / 2 : m_AmountOfRays / 2);
         }
         else
         {
