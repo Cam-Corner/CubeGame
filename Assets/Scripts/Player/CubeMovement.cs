@@ -49,12 +49,33 @@ public class CubeMovement : MonoBehaviour
 
     private Transform m_PlayerStart;
 
+    private Animator moveAnimator;
+    private ParticleSystem sweatParticles;
+
     private bool isMoving = false;
+    public bool IsMoving
+    {
+        get { return isMoving; }
+        set 
+        { 
+            isMoving = value;
+            moveAnimator.SetBool("IsMoving", value);
+
+            if(isMoving)
+            {
+                sweatParticles.Play();
+            }
+            else
+            {
+                sweatParticles.Stop();
+            }
+        }
+    }
  
     // Start is called before the first frame update
     void Start()
     {
-        isMoving = false;
+        IsMoving = false;
         m_RB = GetComponent<Rigidbody>();
     }
 
@@ -63,6 +84,8 @@ public class CubeMovement : MonoBehaviour
     {
         m_PlayerStart = GameObject.FindGameObjectWithTag("Start").transform;
         transform.position = m_PlayerStart.position;
+        moveAnimator = GetComponentInChildren<Animator>();
+        sweatParticles = GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -75,7 +98,7 @@ public class CubeMovement : MonoBehaviour
         }
         else
         {
-            isMoving = !Mathf.Approximately(m_RB.velocity.magnitude,0);
+            IsMoving = !Mathf.Approximately(m_RB.velocity.magnitude,0);
         }
 
         
@@ -94,7 +117,7 @@ public class CubeMovement : MonoBehaviour
         {
             AddForceToObject();
             ForceArrow.gameObject.SetActive(false);
-            isMoving = true;
+            IsMoving = true;
         }
     }
 
@@ -104,6 +127,8 @@ public class CubeMovement : MonoBehaviour
     {
         //Y Is the up vector in unity so we will use the Y as the Z Force
         Vector3 ForceDirection = new Vector3(m_ForceToApply.x, 0, m_ForceToApply.y);
+
+        transform.forward = -m_ForceToApply;
         m_RB.AddForce(m_ForceToApply * m_MaxForce);
 
         m_bApplyForce = false;
