@@ -20,34 +20,52 @@ public class EnemyPath : MonoBehaviour
 
     private int m_CurrentGoToPoint = 0;
     private bool m_ReversePath = false;
-    public Vector3 GetNextPoint()
+    public sPathPoint GetNextPoint()
     {
+        sPathPoint PP = new sPathPoint();
+
         if (m_Path.Count > 0)
         {
             m_CurrentGoToPoint = m_ReversePath ? m_CurrentGoToPoint - 1 : m_CurrentGoToPoint + 1;
 
-            if (m_CurrentGoToPoint > m_Path.Count)
+            if (m_CurrentGoToPoint > m_Path.Count - 1)
             {
                 if (m_PathLoops)
                     m_CurrentGoToPoint = 0;
                 else
+                {
                     m_ReversePath = !m_ReversePath;
+                    m_CurrentGoToPoint -= 2;
+                }
             }
             else if(m_CurrentGoToPoint < 0)
             {
                 if (m_PathLoops)
                     m_CurrentGoToPoint = m_Path.Count - 1;
                 else
+                {
                     m_ReversePath = !m_ReversePath;
+                    m_CurrentGoToPoint += 2;
+                }
             }
 
-            return m_Path[m_CurrentGoToPoint].transform.position;
+            Debug.Log("Path Point Counter: " + m_Path.Count + " | CurrentGoToPoint: " + m_CurrentGoToPoint);
+
+            PP.m_GotoPosition = m_Path[m_CurrentGoToPoint].transform.position;
+            PP.m_Rotation = m_Path[m_CurrentGoToPoint].transform.rotation.eulerAngles;
+            PP.m_WaitTime = m_Path[m_CurrentGoToPoint].GetWaitTime();
+
+            return PP;//m_Path[m_CurrentGoToPoint].transform.position;
 
         }
 
-        return new Vector3(0, 0, 0);
-    }
+        PP.m_GotoPosition = new Vector3(0, 0, 0);
+        PP.m_WaitTime = 0;
+        return PP;
 
+        //return new Vector3(0, 0, 0);
+    }
+     
     public Vector3 GetStartPoint()
     {
         if (m_Path.Count > 0)

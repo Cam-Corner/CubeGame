@@ -3,8 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[System.Serializable]
+public struct sPathPoint
+{
+    public Vector3 m_GotoPosition;
+    public Vector3 m_Rotation;
+    public float m_WaitTime;
+}
+
 public class HumanEnemy : MonoBehaviour
 {
+
     //=========================================
     //Inspector Properties
     [SerializeField] protected EnemySettings m_EnemySettings;
@@ -31,7 +40,7 @@ public class HumanEnemy : MonoBehaviour
     //=========================================
     //private
     private bool m_InRadiusOfPlayer = false;
-    private Vector3 m_CurrentGotoPatrolPoint = new Vector3(0, 0, 0);
+    private sPathPoint m_CurrentPP;
     private NavMeshAgent m_NMA;
     //=========================================
 
@@ -46,18 +55,32 @@ public class HumanEnemy : MonoBehaviour
         if (m_MyPath != null)
         {
             transform.position = m_MyPath.GetStartPoint();
-            m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
-            m_NMA.SetDestination(m_CurrentGotoPatrolPoint);
+            m_CurrentPP = m_MyPath.GetNextPoint();
+            //m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
+            m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
         }
     }
 
     private void Update()
     {
-        float Distance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(m_CurrentGotoPatrolPoint.x, m_CurrentGotoPatrolPoint.z));
+        float Distance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), 
+                                         new Vector2(m_CurrentPP.m_GotoPosition.x, m_CurrentPP.m_GotoPosition.z));
         if(Distance < 0.5f)
         {
-            m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
-            m_NMA.SetDestination(m_CurrentGotoPatrolPoint);
+            if (m_CurrentPP.m_WaitTime > 0)
+            {
+                m_CurrentPP.m_WaitTime -= Time.deltaTime;
+
+                Vector3 LerpRotation = Vector3.Lerp(transform.rotation.eulerAngles, m_CurrentPP.m_Rotation, 5.0f * Time.deltaTime);
+                transform.rotation = Quaternion.Euler(LerpRotation);
+            }
+            else
+            {
+                m_CurrentPP = m_MyPath.GetNextPoint();
+
+                //m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
+                m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
+            }           
         }
     }
 
@@ -89,7 +112,7 @@ public class HumanEnemy : MonoBehaviour
             m_LineOfSight.ClearMesh();
         }
 
-        Debug.Log(Camera.main.fieldOfView);
+        //Debug.Log(Camera.main.fieldOfView);
     }
 
     public void SetInRadius(bool InRadius)

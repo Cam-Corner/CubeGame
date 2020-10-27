@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: HumanEnemy
   m_EditorClassIdentifier: 
   m_FieldOfView: 90
-  m_FOVDistance: 12
+  m_FOVDistance: 50
   m_AmountOfRays: 25

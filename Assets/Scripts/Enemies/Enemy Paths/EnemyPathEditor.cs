@@ -24,4 +24,26 @@ public class EnemyPathEditor : Editor
         }
 
     }
+
+
+    [MenuItem("Component/AI/AddEnemyPath")]
+    private static void AddEnemyPathToScene()
+    {
+        GameObject GO = new GameObject();
+
+        GO.transform.name = "EnemyPath";
+        GO.transform.position = new Vector3(0, 0, 0);
+        GO.AddComponent<EnemyPath>();
+    }
+
+
+    [MenuItem("GameObject/AI/AddEnemyPath", false , 0)]
+    private static void AddEnemyPathToScene1()
+    {
+        GameObject GO = new GameObject();
+
+        GO.transform.name = "EnemyPath";
+        GO.transform.position = new Vector3(0, 0, 0);
+        GO.AddComponent<EnemyPath>();
+    }
 }
