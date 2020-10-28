@@ -52,7 +52,20 @@ public class CubeMovement : MonoBehaviour
     private Animator moveAnimator;
     private ParticleSystem sweatParticles;
 
+    private IEnumerator moveStartRoutine = null;
+
     private bool isMoving = false;
+    private bool isUp = false;
+    public bool IsUp 
+    {
+        get{ return isUp; }
+        set
+        {
+            isUp = value;
+            moveAnimator.SetBool("IsUp", value);  
+        }
+    }
+
     public bool IsMoving
     {
         get { return isMoving; }
@@ -91,16 +104,15 @@ public class CubeMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!isMoving)
+        if(!IsUp)
         {
             CalculateForceToBeApplied();
             UpdateForceArrow();
         }
-        else
+        else if(IsMoving && IsUp)
         {
-            IsMoving = !Mathf.Approximately(m_RB.velocity.magnitude,0);
+            IsUp = IsMoving = !Mathf.Approximately(m_RB.velocity.magnitude,0);
         }
-
         
         if(transform.position.y <= -20.0f)
         {
@@ -113,22 +125,38 @@ public class CubeMovement : MonoBehaviour
     //Fixed update is called the same time as the physics engine update
     void FixedUpdate()
     {
-        if(m_bApplyForce)
+        if(m_bApplyForce && !IsUp)
         {
-            AddForceToObject();
+            Vector3 forceDirection = new Vector3(m_ForceToApply.x, 0, m_ForceToApply.y);
             ForceArrow.gameObject.SetActive(false);
-            IsMoving = true;
+            
+            if(moveStartRoutine != null)
+            {
+                StopCoroutine(moveStartRoutine);
+            }
+            IsUp = true;
+            moveStartRoutine = MoveStartRoutine(forceDirection);
+            StartCoroutine(moveStartRoutine);
         }
+    }
+
+    private IEnumerator MoveStartRoutine(Vector3 forceDirection)
+    {
+        float startRunDelay = 0.3f;
+        float runMinimumTime = 0.1f;
+        yield return new WaitForSeconds(startRunDelay);
+        AddForceToObject(forceDirection); 
+
+        yield return new WaitForSeconds(runMinimumTime);      
+        IsMoving = true;
+        moveStartRoutine = null;
     }
 
 
     //add the force thats been calculated
-    void AddForceToObject()
+    void AddForceToObject(Vector3 forceDirection)
     {
-        //Y Is the up vector in unity so we will use the Y as the Z Force
-        Vector3 ForceDirection = new Vector3(m_ForceToApply.x, 0, m_ForceToApply.y);
-
-        transform.forward = -m_ForceToApply;
+        transform.forward = m_ForceToApply;
         m_RB.AddForce(m_ForceToApply * m_MaxForce);
 
         m_bApplyForce = false;
@@ -148,7 +176,7 @@ public class CubeMovement : MonoBehaviour
         }
         
         if(inputMap.GetRunningButton() 
-           && !isMoving
+           && !IsMoving
            && m_DisplayForce.magnitude > m_ForceDeadZonePercent)
         {
             m_ForceToApply = m_DisplayForce;
