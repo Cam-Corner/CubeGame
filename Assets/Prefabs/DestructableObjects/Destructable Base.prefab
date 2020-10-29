@@ -58,9 +58,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be52ffebfa0d7a24599df75ede1089e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destructionMagnitude: 10
+  destructionMagnitude: 20
   playerScriptable: {fileID: 11400000, guid: abc688f2662b70242bde2c69482e51ac, type: 2}
   destructionMeshes: {fileID: 8060289473781614057, guid: 2392b6f2d5caf354d99db80410ead13a, type: 3}
+  destructionValue: 300
+  destructionScore: {fileID: 11400000, guid: be1555332fc466343b0458f12b1c4c40, type: 2}
 --- !u!54 &8768970403638295080
 Rigidbody:
   m_ObjectHideFlags: 0

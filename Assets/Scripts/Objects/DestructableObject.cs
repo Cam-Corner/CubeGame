@@ -13,6 +13,12 @@ public class DestructableObject : MonoBehaviour
     [SerializeField]
     private Transform destructionMeshes;
 
+    [SerializeField]
+    private float destructionValue = 300;
+
+    [SerializeField]
+    private FloatVar destructionScore;
+
     private Rigidbody body;
 
     private void Start() 
@@ -27,6 +33,9 @@ public class DestructableObject : MonoBehaviour
             float hitMagnitude = playerScriptable.Body.velocity.magnitude;
             if(hitMagnitude >= destructionMagnitude)
             {
+                Debug.Log("Destroyed Magnitude " + hitMagnitude);
+
+                destructionScore.Value += destructionValue;
                 Transform meshes = Instantiate(destructionMeshes, transform.position, transform.rotation);
                 StartCoroutine(ApplyObjectDestruction(meshes, collision.collider.transform, hitMagnitude));
             }
