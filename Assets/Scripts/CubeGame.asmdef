@@ -1,3 +1,15 @@
-﻿{
-	"name": "CubeGame"
+{
+    "name": "CubeGame",
+    "references": [
+        "GUID:10314cd94b731a74abd9221d57211e4d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
