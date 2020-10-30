@@ -43,7 +43,7 @@ public class LaserBeam : MonoBehaviour
                             QueryTriggerInteraction.Ignore))
         {
             distance = hit.distance;
-            //Debug.DrawLine(transform.position, transform.position + transform.forward.normalized * distance, Color.red, 10.0f);
+            Debug.DrawLine(transform.position, transform.position + transform.forward.normalized * distance, Color.red, 10.0f);
         }
         
         laserTransform.localScale = new Vector3(laserStartScale.x, 
@@ -60,10 +60,15 @@ public class LaserBeam : MonoBehaviour
             Debug.Log("Found Player");
         }
     }
-    
+    void FixedUpdate()
+    {
+        RecalculateLaser();
+    }
+
     private void OnTriggerExit(Collider other)
     {
         RecalculateLaser();
+         Debug.Log("Lost Player");
     }
 
 #if UNITY_EDITOR
