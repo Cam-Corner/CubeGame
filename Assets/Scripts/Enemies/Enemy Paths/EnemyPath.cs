@@ -81,7 +81,7 @@ public class EnemyPath : MonoBehaviour
         GameObject GO = new GameObject();
         
         GO.transform.position = m_Path.Count > 0 ? m_Path[m_Path.Count - 1].transform.position : transform.position;
-        GO.transform.name = "PathPoint (" + m_Path.Count +")";
+        GO.transform.name = "PathPoint (" + m_Path.Count + ")";
         GO.transform.parent = transform;
 
         PathPoint PP = GO.AddComponent<PathPoint>();
