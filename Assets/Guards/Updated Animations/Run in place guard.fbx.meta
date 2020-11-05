@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 24f6f4bc873a3ea4c8cdf23ac8e7f26d
+guid: 80d3fd61eb7b79e46bb6c9856e2036a9
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
@@ -9,6 +9,9 @@ ModelImporter:
   - first:
       74: -203655887218126122
     second: mixamo.com
+  - first:
+      74: -3780516532778130023
+    second: mixamo.com (1)
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -38,11 +41,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
-      takeName: Take 001
+      name: mixamo.com (1)
+      takeName: mixamo.com
       internalID: 0
-      firstFrame: 1
-      lastFrame: 150
+      firstFrame: 0
+      lastFrame: 17
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -65,20 +68,20 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: mixamo.com
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 140
+      lastFrame: 17
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

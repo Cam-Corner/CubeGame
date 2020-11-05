@@ -49,6 +49,7 @@ public class HumanEnemy : MonoBehaviour
     private NavMeshAgent m_NMA;
     private Vector3 m_LastPlayerSighting;
     private eEnemyState m_CurrentState = eEnemyState.EES_Patrol;
+    private Animator m_AC;
     //=========================================
 
     private void Start()
@@ -58,6 +59,8 @@ public class HumanEnemy : MonoBehaviour
         //m_PRC = GetComponentInChildren<PlayerRadiusChecker>();
 
         m_NMA = GetComponent<NavMeshAgent>();
+
+        m_AC = GetComponent<Animator>();
 
         if (m_MyPath != null)
         {
@@ -73,10 +76,14 @@ public class HumanEnemy : MonoBehaviour
         switch(m_CurrentState)
         {
             case eEnemyState.EES_Patrol:
+                m_AC.SetBool("Running", false);
+                m_NMA.speed = 3.0f;
                 Patroling();
                 break;
             case eEnemyState.EES_ChasingPlayer:
                 ChasingPlayer();
+                m_NMA.speed = 7.0f;
+                m_AC.SetBool("Running", true);
                 break;
             case eEnemyState.EES_CheckingLastLocation:
                 CheckingLastLocation();
