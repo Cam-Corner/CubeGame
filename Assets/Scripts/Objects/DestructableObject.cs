@@ -58,6 +58,7 @@ public class DestructableObject : MonoBehaviour
             Rigidbody newBody = t.gameObject.AddComponent<Rigidbody>();
             t.gameObject.AddComponent(typeof(BoxCollider));
             newBody.mass = body.mass;
+            t.gameObject.AddComponent<TurnBasedPhysicsEntity>();
         }
         
         for(int i = 0; i < transforms.Count; i++)

@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 8768970403638295081}
   - component: {fileID: 8768970403638295086}
   - component: {fileID: 8768970403638295080}
+  - component: {fileID: 587428545712439402}
   m_Layer: 0
   m_Name: Destructable Base
   m_TagString: Untagged
@@ -79,6 +80,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &587428545712439402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8768970403638295087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38f15896a0e29db42878b886532d8c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnBasedSystem: {fileID: 11400000, guid: fb5630f60ee395c4e832288ef62149eb, type: 2}
 --- !u!1001 &8768970402726027356
 PrefabInstance:
   m_ObjectHideFlags: 0

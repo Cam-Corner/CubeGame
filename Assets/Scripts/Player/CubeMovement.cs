@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
+using AmoaebaUtils;
 
 public class CubeMovement : MonoBehaviour
 {
@@ -47,12 +48,17 @@ public class CubeMovement : MonoBehaviour
     [SerializeField]
     private InputMapping  inputMap;
 
+    [SerializeField]
     private Transform m_PlayerStart;
 
     private Animator moveAnimator;
     private ParticleSystem sweatParticles;
 
     private IEnumerator moveStartRoutine = null;
+
+    private TurnBasedSystem turnBasedSystem => TurnBasedSystem.Instance;
+    private BoolVar isTurnBasedGame => turnBasedSystem.IsTurnBasedGameVar;
+    private BoolVar isTimeActive => turnBasedSystem.IsTimeActiveVar;
 
     private bool isMoving = false;
     private bool isUp = false;
@@ -62,9 +68,14 @@ public class CubeMovement : MonoBehaviour
         set
         {
             isUp = value;
+            
+            isTimeActive.Value = isUp || turnBasedSystem.IsWaitingForPhysicsEntities;
+
             moveAnimator.SetBool("IsUp", value);  
         }
     }
+
+    private bool ShouldShowArrow => !IsUp;
 
     public bool IsMoving
     {
@@ -90,6 +101,8 @@ public class CubeMovement : MonoBehaviour
     {
         IsMoving = false;
         m_RB = GetComponent<Rigidbody>();
+
+        turnBasedSystem.OnWaitForPhysicsEntitiesChangedEvent += OnEntitiesWaitChange;
     }
 
     //called when the game object is spawned
@@ -101,10 +114,28 @@ public class CubeMovement : MonoBehaviour
         sweatParticles = GetComponentInChildren<ParticleSystem>();
     }
 
+    private void OnDestroy() 
+    {
+        turnBasedSystem.OnWaitForPhysicsEntitiesChangedEvent -= OnEntitiesWaitChange;    
+    }
+
+    private void OnEntitiesWaitChange(bool isWaiting)
+    {
+        if(!turnBasedSystem.IsTurnBasedGame || !turnBasedSystem.WaitForPhysicsEntities)
+        {
+            return;
+        }
+
+        if(!isUp)
+        {
+            isTimeActive.Value = !isWaiting;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if(!IsUp)
+        if(ShouldShowArrow)
         {
             CalculateForceToBeApplied();
             UpdateForceArrow();
