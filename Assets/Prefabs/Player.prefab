@@ -4961,12 +4961,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MaxForce: 120
   m_ForceDeadZonePercent: 0.1
+  m_StopMagnitude: 0.01
   m_MaxForceMouseDistance: 10
   ForceArrow: {fileID: 0}
   gameCameraParent: {fileID: 0}
   inputMap: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
   m_PlayerStart: {fileID: 0}
-  turnBasedSystem: {fileID: 11400000, guid: fb5630f60ee395c4e832288ef62149eb, type: 2}
 --- !u!54 &7954560901176151756
 Rigidbody:
   m_ObjectHideFlags: 0

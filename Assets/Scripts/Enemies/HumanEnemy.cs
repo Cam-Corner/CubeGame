@@ -66,10 +66,32 @@ public class HumanEnemy : MonoBehaviour
             //m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
             m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
         }
+
+        TurnBasedSystem.Instance.IsTimeActiveVar.OnChange += TimeActiveChange;
+    }
+
+    private void OnDestroy() 
+    {
+        TurnBasedSystem.Instance.IsTimeActiveVar.OnChange -= TimeActiveChange;
+    }
+
+    private void TimeActiveChange(bool oldVal, bool newVal)
+    {
+        if(oldVal == newVal)
+        {
+            return;
+        }
+
+        m_NMA.isStopped = !newVal;
     }
 
     private void Update()
     {
+        if(!TurnBasedSystem.Instance.IsTimeActive)
+        {
+            return;
+        }
+        
         switch(m_CurrentState)
         {
             case eEnemyState.EES_Patrol:

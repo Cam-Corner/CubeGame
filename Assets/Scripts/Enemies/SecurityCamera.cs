@@ -34,6 +34,7 @@ public class SecurityCamera : MonoBehaviour
     private float m_CurrentWaitTime = 0;
     private LineOfSight m_LOS;
 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +45,24 @@ public class SecurityCamera : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        if(!TurnBasedSystem.Instance.IsTimeActive)
+        {
+             SightCheck(false);
+            return;
+        }else
+        {
+            UpdateRotation();
+            //SightCheck((int)m_FieldOfView, (int)m_FOVDistance, (int)m_NumberRays);
+            //m_LOS.SightCheckNoReturn(90, 90, 50);
+
+            //CameraRays();
+
+            SightCheck();   
+        }
+    }
+
+    private void UpdateRotation()
     {
         if (m_GoClockwise)
         {                     
@@ -91,16 +110,9 @@ public class SecurityCamera : MonoBehaviour
             }
 
         }
-
-        //SightCheck((int)m_FieldOfView, (int)m_FOVDistance, (int)m_NumberRays);
-        //m_LOS.SightCheckNoReturn(90, 90, 50);
-
-        //CameraRays();
-
-        SightCheck();
     }
 
-    public void SightCheck()
+    public void SightCheck(bool detectPlayer = true)
     {
         List<Vector3> Vertices = new List<Vector3>();
         Vertices.Add(new Vector3(0, 0, 0));
@@ -118,14 +130,14 @@ public class SecurityCamera : MonoBehaviour
             
             RaycastHit Hit;
             bool HitSomething = Physics.Raycast(m_SightMesh.transform.position, NewDirection, out Hit, m_RayDistance);//, 1 << LayerMask.NameToLayer("Floor"));
-
+            //Debug.DrawLine(m_SightMesh.transform.position, m_SightMesh.transform.position+ NewDirection*m_RayDistance, Color.red, 10.0f);
             if (HitSomething)
             {
                 Vector3 Vertex = (NewDirection * Hit.distance);
                 Vertex.y += 0.05f;
                 Vertices.Add(Vertex);
 
-                if(Hit.transform.tag == "Player")
+                if(Hit.transform.tag == "Player" && detectPlayer)
                 {
                     Hit.transform.GetComponent<CubeMovement>().PlayerFound(eFoundPlayerType.EFPT_CCTV_Camera);
                 }
@@ -287,5 +299,35 @@ public class SecurityCamera : MonoBehaviour
         m_SightMesh.transform.rotation = Quaternion.Euler(0, 0, 0);
         m_SightMeshFloor.transform.rotation = Quaternion.Euler(0, 0, 0);
         
+    }
+
+    private void OnDrawGizmos() 
+    {
+        float debugRaySize = 2.0f;
+        
+        Color prevColor = Gizmos.color;
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(m_CameraRotationPart.transform.position, 
+                        m_CameraRotationPart.transform.position + Quaternion.Euler(0, m_RotationPointA,0) * transform.forward * debugRaySize);
+        Gizmos.DrawLine(m_CameraRotationPart.transform.position, 
+                        m_CameraRotationPart.transform.position + Quaternion.Euler(0, m_RotationPointB,0) * transform.forward * debugRaySize);
+
+        if(!Application.isPlaying)
+        {
+            Gizmos.color = Color.magenta;
+            float RadiusDifference = 360 / m_NumberOfRays;
+            Vector3 RayStartPos = transform.position;
+            Vector3 RayDirection = Quaternion.AngleAxis(m_Radius / 2, m_CameraMesh.transform.right) * m_CameraMesh.transform.forward;
+            Vector3 NewDirection = RayDirection;
+
+            for (int i = 0; i < m_NumberOfRays; i++)
+            {
+                NewDirection = Quaternion.AngleAxis(RadiusDifference, m_CameraMesh.transform.forward) * NewDirection;
+                Gizmos.DrawLine(m_SightMesh.transform.position, NewDirection * m_RayDistance);
+            }
+        }
+
+        Gizmos.color = prevColor;
     }
 }

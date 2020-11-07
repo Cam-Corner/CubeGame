@@ -19,10 +19,12 @@ public class TurnBasedPhysicsEntity : MonoBehaviour
         body = GetComponent<Rigidbody>();
         turnBasedGame.OnChange += OnTurnBaseChange;
         TurnBasedSystem.Instance.IsTimeActiveVar.OnChange += OnTimeActiveChange;
+        physicsEntities.Add(transform);
     }
 
     private void OnDestroy() 
     {
+        physicsEntities.Remove(transform);
         turnBasedGame.OnChange -=  OnTurnBaseChange;
         TurnBasedSystem.Instance.IsTimeActiveVar.OnChange -= OnTimeActiveChange;
     }
@@ -105,7 +107,7 @@ public class TurnBasedPhysicsEntity : MonoBehaviour
         {
             physicsEntities.Add(transform);
         }
-        else
+        else if(!needsResolution)
         {
             physicsEntities.Remove(transform);
         }

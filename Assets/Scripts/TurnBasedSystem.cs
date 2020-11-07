@@ -6,7 +6,7 @@ using AmoaebaUtils;
 public class TurnBasedSystem : SingletonScriptableObject<TurnBasedSystem>
 {
     public BoolVar IsTimeActiveVar;
-    public bool IsTimeActive => IsTimeActiveVar.Value;
+    public bool IsTimeActive => !IsTurnBasedGame || IsTimeActiveVar.Value;
     public BoolVar IsTurnBasedGameVar;
     public bool IsTurnBasedGame => IsTurnBasedGameVar.Value;
     public TransformArrVar runningPhysicsEntities;

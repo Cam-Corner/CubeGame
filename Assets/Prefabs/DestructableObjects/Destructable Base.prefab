@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be52ffebfa0d7a24599df75ede1089e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destructionMagnitude: 20
+  destructionMagnitude: 10
   playerScriptable: {fileID: 11400000, guid: abc688f2662b70242bde2c69482e51ac, type: 2}
   destructionMeshes: {fileID: 8060289473781614057, guid: 2392b6f2d5caf354d99db80410ead13a, type: 3}
   destructionValue: 300
@@ -92,7 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f15896a0e29db42878b886532d8c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnBasedSystem: {fileID: 11400000, guid: fb5630f60ee395c4e832288ef62149eb, type: 2}
 --- !u!1001 &8768970402726027356
 PrefabInstance:
   m_ObjectHideFlags: 0

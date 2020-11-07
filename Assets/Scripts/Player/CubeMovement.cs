@@ -36,6 +36,9 @@ public class CubeMovement : MonoBehaviour
     [Tooltip("should the force be applied this frame")]
     private bool m_bApplyForce = false;
 
+    [SerializeField]
+    private float m_StopMagnitude = 0.5f;
+
     
     [SerializeField]
     private float m_MaxForceMouseDistance = 10.0f; 
@@ -134,7 +137,7 @@ public class CubeMovement : MonoBehaviour
 
         if(!isUp)
         {
-            isTimeActive.Value = !isWaiting;
+            isTimeActive.Value = isWaiting;
         }
     }
 
@@ -148,7 +151,8 @@ public class CubeMovement : MonoBehaviour
         }
         else if(IsMoving && IsUp)
         {
-            IsUp = IsMoving = !Mathf.Approximately(m_RB.velocity.magnitude,0);
+            Debug.Log(m_RB.velocity.magnitude);
+            IsUp = IsMoving = m_RB.velocity.magnitude > m_StopMagnitude;
         }
         
         if(transform.position.y <= -20.0f)
