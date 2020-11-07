@@ -7,6 +7,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using AmoaebaUtils;
 
+public enum eFoundPlayerType
+{
+    EFPT_HumanEnemy = 0,
+    EFPT_CCTV_Camera = 1
+}
+
 public class CubeMovement : MonoBehaviour
 {
 
@@ -264,7 +270,33 @@ public class CubeMovement : MonoBehaviour
         }
     }
 
-    public void PlayerFound()
+    public void PlayerFound(eFoundPlayerType FoundType)
+    {
+        //switch(FoundType)
+        //{
+        //    case eFoundPlayerType.EFPT_HumanEnemy:
+        //        if (m_RB.velocity != new Vector3(0, 0, 0)) ResetPlayer();
+        //        break;
+        //    case eFoundPlayerType.EFPT_CCTV_Camera:
+        //        ResetPlayer();
+        //        break;
+        //}
+
+        ResetPlayer();
+    }
+
+    public bool PlayerHidden()
+    {
+        if (m_RB.velocity == new Vector3(0, 0, 0))
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+
+    private void ResetPlayer()
     {
         transform.position = m_PlayerStart.position;
         m_RB.velocity = new Vector3(0, 0, 0);

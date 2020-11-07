@@ -26,13 +26,13 @@ public class LineOfSight : MonoBehaviour
             if (HitSomething)
             {
                 Vertices.Add(Direction * Hit.distance);
-                //Debug.DrawRay(transform.position, Direction * Hit.distance, Color.red, 0.1f);
+                Debug.DrawRay(transform.position, Direction * Hit.distance, Color.red, 0.1f);
                 ObjectsHit.Add(Hit.transform.gameObject);
             }
             else
             {
                 Vertices.Add(Direction * FOVDistance);
-                //Debug.DrawRay(transform.position, Direction * FOVDistance, Color.red, 0.1f);
+                Debug.DrawRay(transform.position, Direction * FOVDistance, Color.red, 0.1f);
             }
 
             if (i != NumberOfRays - 1)

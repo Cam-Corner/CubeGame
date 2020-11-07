@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc266629bca1504b8c5153826ac7b12, type: 3}
   m_Name: HumanEnemy
   m_EditorClassIdentifier: 
-  m_FieldOfView: 90
-  m_FOVDistance: 50
+  m_FieldOfView: 45
+  m_FOVDistance: 20
   m_AmountOfRays: 25
