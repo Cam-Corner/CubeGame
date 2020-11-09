@@ -15,8 +15,8 @@ public class HumanEnemy : MonoBehaviour
 {
     struct sPathDetails
     {
-        public uint m_MaxPathIndex;
-        public uint m_CurrentPathIndex;
+        public int m_MaxPathIndex;
+        public int m_CurrentPathIndex;
         public bool m_bPathLoops;
         public bool m_bReversePath;
     }
@@ -31,8 +31,6 @@ public class HumanEnemy : MonoBehaviour
     [SerializeField] protected bool m_TeleportToStartPoint = false;
     [Space(5)]
     [SerializeField] private GameObject m_Player;
-    [SerializeField] private float m_WalkSpeed = 3.0f;
-    [SerializeField] private float m_RunSpeed = 5.0f;
     [Header("Line of Sight (Only takes affect when overriding the default settings)")]
     [SerializeField] protected bool m_OverrideDefaultLineOfSightSettings = false;
     [SerializeField] protected uint m_FieldOfView = 45;
@@ -143,7 +141,7 @@ public class HumanEnemy : MonoBehaviour
         else
         {
             m_AC.SetBool("Walking", true);
-            m_NMA.speed = m_WalkSpeed;
+            m_NMA.speed = m_EnemySettings.m_WalkSpeed;
         }
 
         if (m_InRadiusOfPlayer)//m_PRC.PlayerInRadius())
@@ -176,7 +174,7 @@ public class HumanEnemy : MonoBehaviour
 
     void ChasingPlayer()
     {
-        m_NMA.speed = m_RunSpeed;
+        m_NMA.speed = m_EnemySettings.m_RunSpeed;
         m_AC.SetBool("Running", true);
 
         m_NMA.SetDestination(m_Player.transform.position);
@@ -233,7 +231,7 @@ public class HumanEnemy : MonoBehaviour
 
     void CheckingLastLocation()
     {
-        m_NMA.speed = m_RunSpeed;
+        m_NMA.speed = m_EnemySettings.m_RunSpeed;
         m_AC.SetBool("Running", true);
 
         m_NMA.SetDestination(m_LastPlayerSighting);
@@ -307,7 +305,8 @@ public class HumanEnemy : MonoBehaviour
     void SetNextPathPoint()
     {
         m_CurrentPP = m_MyPath.GetNextPoint(in m_MyPathDetails.m_CurrentPathIndex);
-        
+        Debug.Log(transform.name + ": Current Path Index is " + m_MyPathDetails.m_CurrentPathIndex);
+
         if (m_MyPathDetails.m_MaxPathIndex > 0)
         {
             m_MyPathDetails.m_CurrentPathIndex = m_MyPathDetails.m_bReversePath ?
@@ -346,7 +345,7 @@ public class HumanEnemy : MonoBehaviour
         }
         else
         {
-            m_MyPathDetails.m_CurrentPathIndex = m_StartingPathIndex;
+            m_MyPathDetails.m_CurrentPathIndex = (int)m_StartingPathIndex;
         }
 
         SetNextPathPoint();

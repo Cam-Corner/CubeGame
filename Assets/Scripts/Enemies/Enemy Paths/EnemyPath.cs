@@ -20,7 +20,7 @@ public class EnemyPath : MonoBehaviour
 
     private int m_CurrentGoToPoint = 0;
     private bool m_ReversePath = false;
-    public sPathPoint GetNextPoint(in uint IndexCount)
+    public sPathPoint GetNextPoint(in int IndexCount)
     {
         sPathPoint PP = new sPathPoint();
         if (IndexCount < m_Path.Count)
@@ -31,7 +31,7 @@ public class EnemyPath : MonoBehaviour
             return PP;
         }
 
-        Debug.Log("Enemy Path Script: Get Next Point index count out of range!");
+        Debug.Log("Enemy Path Script: Get Next Point index count out of range!: Value is " + IndexCount);
 
         PP.m_GotoPosition = new Vector3(0, 0, 0);
         PP.m_Rotation = transform.rotation.eulerAngles;
@@ -94,9 +94,9 @@ public class EnemyPath : MonoBehaviour
         return new Vector3(0, 0, 0);
     }
 
-    public void GetPathDetails(out uint MaxIndexCount, out bool bPathLoops)
+    public void GetPathDetails(out int MaxIndexCount, out bool bPathLoops)
     {
-        MaxIndexCount = (uint)m_Path.Count;
+        MaxIndexCount = m_Path.Count;
         bPathLoops = m_PathLoops;
     }
 
