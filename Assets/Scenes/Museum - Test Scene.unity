@@ -14903,7 +14903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Colour: {r: 0.051397286, g: 0.7264151, b: 0.05428256, a: 1}
-  m_WaitTime: 5
+  m_WaitTime: 0
 --- !u!4 &314861441
 Transform:
   m_ObjectHideFlags: 0
@@ -15343,7 +15343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemySettings: {fileID: 11400000, guid: 98c123b7d122a9148b23ef26893c0281, type: 2}
   m_MyPath: {fileID: 1785180881}
-  m_StartingPathIndex: 1
+  m_StartingPathIndex: 0
   m_TeleportToStartPoint: 1
   m_Player: {fileID: 1632935329}
   m_OverrideDefaultLineOfSightSettings: 0
@@ -31908,7 +31908,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemySettings: {fileID: 11400000, guid: 98c123b7d122a9148b23ef26893c0281, type: 2}
   m_MyPath: {fileID: 1785180881}
-  m_StartingPathIndex: 0
+  m_StartingPathIndex: 1
   m_TeleportToStartPoint: 1
   m_Player: {fileID: 1632935329}
   m_OverrideDefaultLineOfSightSettings: 0
@@ -47128,7 +47128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Colour: {r: 0.051397286, g: 0.7264151, b: 0.05428256, a: 1}
-  m_WaitTime: 5
+  m_WaitTime: 0
 --- !u!4 &1011107329
 Transform:
   m_ObjectHideFlags: 0
@@ -66343,6 +66343,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CCTV Camera (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8162569619751866643, guid: d1394d68a9e65654da5972d84d6df09b, type: 3}
+      propertyPath: m_RotationPointA
+      value: -60.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1394d68a9e65654da5972d84d6df09b, type: 3}
 --- !u!1 &1455537066
@@ -71780,7 +71784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Colour: {r: 0.051397286, g: 0.7264151, b: 0.05428256, a: 1}
-  m_WaitTime: 5
+  m_WaitTime: 0
 --- !u!4 &1571189276
 Transform:
   m_ObjectHideFlags: 0
@@ -84714,7 +84718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Colour: {r: 0.051397286, g: 0.7264151, b: 0.05428256, a: 1}
-  m_WaitTime: 5
+  m_WaitTime: 0
 --- !u!4 &1841395622
 Transform:
   m_ObjectHideFlags: 0

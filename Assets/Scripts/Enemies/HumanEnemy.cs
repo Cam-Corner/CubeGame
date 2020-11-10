@@ -108,9 +108,10 @@ public class HumanEnemy : MonoBehaviour
     {
         if(!TurnBasedSystem.Instance.IsTimeActive)
         {
+            m_AC.enabled = false;
             return;
         }
-
+        m_AC.enabled = true;
         m_LineOfSight.ClearMesh();
         ResetAnimationControllerToDefault();
 
