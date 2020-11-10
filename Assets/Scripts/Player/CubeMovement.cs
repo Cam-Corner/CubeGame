@@ -78,7 +78,9 @@ public class CubeMovement : MonoBehaviour
         {
             isUp = value;
             
-            isTimeActive.Value = isUp || turnBasedSystem.IsWaitingForPhysicsEntities;
+            isTimeActive.Value = isUp 
+                                 || !turnBasedSystem.IsTurnBasedGame 
+                                 || turnBasedSystem.IsWaitingForPhysicsEntities;
 
             moveAnimator.SetBool("IsUp", value);  
         }
