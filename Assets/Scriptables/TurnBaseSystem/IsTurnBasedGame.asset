@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c45833a4c35fbf740ada647bac6d1542, type: 3}
   m_Name: IsTurnBasedGame
   m_EditorClassIdentifier: 
-  setupValue: 0
-  value: 0
+  setupValue: 1
+  value: 1

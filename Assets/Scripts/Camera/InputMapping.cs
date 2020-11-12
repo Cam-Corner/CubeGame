@@ -15,7 +15,12 @@ public class InputMapping : ScriptableObject
     [SerializeField]
     private ControllerType controllerType;
 
-    public ControllerType m_ControllerType => controllerType;
+    public ControllerType m_ControllerType 
+    {
+        get { return controllerType; }
+        set { controllerType = value; }
+    }
+
     public string HorizontalCameraAxis => "Horizontal Camera " + JoystickString();
 
     public string VerticalCameraAxis => "Vertical Camera " + JoystickString();
@@ -32,6 +37,18 @@ public class InputMapping : ScriptableObject
         return "XBOX";
     } 
 
+    public static string TypeName(ControllerType type)
+    {
+        switch(type)
+        {
+            case ControllerType.Playstation:
+                return "Playstation";
+            case ControllerType.XBox:
+                return "XBox";
+        }
+        return "Mouse";
+    } 
+
     public bool GetRunningButton()
     {
         switch(controllerType)
@@ -42,6 +59,20 @@ public class InputMapping : ScriptableObject
                 return Input.GetKeyDown(KeyCode.JoystickButton0);
             case ControllerType.Playstation:
                 return Input.GetKeyDown(KeyCode.JoystickButton1);
+        }
+        return false;
+    }
+
+    public bool GetSettingsButton()
+    {
+        switch(controllerType)
+        {
+            case ControllerType.Mouse:
+                return Input.GetKeyDown(KeyCode.Escape);
+            case ControllerType.XBox:
+                return Input.GetKeyDown(KeyCode.JoystickButton7);
+            case ControllerType.Playstation:
+                return Input.GetKeyDown(KeyCode.JoystickButton9);
         }
         return false;
     }

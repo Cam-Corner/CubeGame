@@ -155,7 +155,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_CameraSensitivity: 1
+  m_CameraSensitivity: {fileID: 11400000, guid: 231b72d097945a046b0f3c211757f183, type: 2}
+  invertCameraX: {fileID: 11400000, guid: 2cf113fe7b083854d8b3f478a34340b3, type: 2}
+  invertCameraY: {fileID: 11400000, guid: b4c2a7ed2021b8b4fa87c54d76665264, type: 2}
   m_InvertRotX: 0
   m_InvertRotY: 0
   m_RotationMinClamp: -30

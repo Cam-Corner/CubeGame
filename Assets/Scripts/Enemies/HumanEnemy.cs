@@ -36,6 +36,9 @@ public class HumanEnemy : MonoBehaviour
     [SerializeField] protected uint m_FieldOfView = 45;
     [SerializeField] protected uint m_FOVDistance = 45;
     [SerializeField] protected uint m_AmountOfRays = 50;
+
+    private Vector3 storedVelocity = Vector3.zero;
+
     //=========================================
     enum eEnemyState
     {
@@ -100,8 +103,19 @@ public class HumanEnemy : MonoBehaviour
         {
             return;
         }
-
-        m_NMA.isStopped = !newVal;
+        //m_NMA.velocity = Vector3.zero;
+        //m_NMA.isStopped = !newVal;
+        if(newVal)
+        {
+            m_NMA.velocity = storedVelocity;
+            m_NMA.isStopped = false;
+        }
+        else
+        {
+            storedVelocity = m_NMA.velocity; 
+            m_NMA.velocity = Vector3.zero;
+            m_NMA.isStopped = true;
+        }
     }
 
     private void Update()

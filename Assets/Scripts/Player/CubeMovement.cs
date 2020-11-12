@@ -146,6 +146,11 @@ public class CubeMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(inputMap.GetSettingsButton())
+        {
+            MenuHelper.Instance.AlternateSettings();
+        }
+        
         if(ShouldShowArrow)
         {
             CalculateForceToBeApplied();
@@ -153,7 +158,6 @@ public class CubeMovement : MonoBehaviour
         }
         else if(IsMoving && IsUp)
         {
-            Debug.Log(m_RB.velocity.magnitude);
             IsUp = IsMoving = m_RB.velocity.magnitude > m_StopMagnitude;
         }
         
