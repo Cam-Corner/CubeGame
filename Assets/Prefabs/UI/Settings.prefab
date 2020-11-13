@@ -324,6 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controllerTypeDropdown: {fileID: 6088053864853706344}
   mapping: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
+  menuHelper: {fileID: 11400000, guid: 260aeb9e3fb289646b0f17529c9e4950, type: 2}
 --- !u!1 &4299881782803275997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1824,7 +1825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6067766448542609127, guid: 1e9b353d05e8a72458cd1a242b14301d, type: 3}
       propertyPath: m_Value
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6067766448542609127, guid: 1e9b353d05e8a72458cd1a242b14301d, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode

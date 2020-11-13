@@ -9,6 +9,7 @@ public class MenuHelper : SingletonScriptableObject<MenuHelper>
     private Transform SettingsPrefab;
 
     public Transform openSettings;
+    public bool InSettings => openSettings != null;
 
     public void OpenSettings()
     {

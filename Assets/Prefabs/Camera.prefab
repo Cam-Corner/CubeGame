@@ -93,6 +93,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3954787879176720819}
   - component: {fileID: 3954787879176720816}
+  - component: {fileID: 9062943232238994333}
+  - component: {fileID: 4666917212015503582}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -158,8 +160,6 @@ MonoBehaviour:
   m_CameraSensitivity: {fileID: 11400000, guid: 231b72d097945a046b0f3c211757f183, type: 2}
   invertCameraX: {fileID: 11400000, guid: 2cf113fe7b083854d8b3f478a34340b3, type: 2}
   invertCameraY: {fileID: 11400000, guid: b4c2a7ed2021b8b4fa87c54d76665264, type: 2}
-  m_InvertRotX: 0
-  m_InvertRotY: 0
   m_RotationMinClamp: -30
   m_RotationMaxClamp: 60
   m_Proportional: 0.5
@@ -205,3 +205,37 @@ MonoBehaviour:
   - key: 270
     rotationEuler: {x: -30, y: 0, z: 0}
     isAbsolute: 0
+--- !u!114 &9062943232238994333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3954787879176720818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!114 &4666917212015503582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3954787879176720818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0

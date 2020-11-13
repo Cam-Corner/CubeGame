@@ -12,15 +12,18 @@ public class SettingsScreen : MonoBehaviour
     [SerializeField]
     private InputMapping mapping;
 
+    [SerializeField]
+    private MenuHelper menuHelper;
+
     private void Start() 
     {
-        if(MenuHelper.Instance.openSettings != null)
+        if(menuHelper.openSettings != null)
         {
             Destroy(gameObject);
         }
         else
         {
-            MenuHelper.Instance.openSettings = transform;
+            menuHelper.openSettings = transform;
         }
 
         controllerTypeDropdown.ClearOptions();
@@ -58,9 +61,9 @@ public class SettingsScreen : MonoBehaviour
 
     private void OnDestroy() 
     {
-        if(MenuHelper.Instance.openSettings == transform)
+        if(menuHelper.openSettings == transform)
         {
-            MenuHelper.Instance.openSettings = null;
+            menuHelper.openSettings = null;
         }    
     }
 }

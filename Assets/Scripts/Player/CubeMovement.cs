@@ -60,6 +60,9 @@ public class CubeMovement : MonoBehaviour
     [SerializeField]
     private Transform m_PlayerStart;
 
+    [SerializeField]
+    private MenuHelper menuHelper;
+
     private Animator moveAnimator;
     private ParticleSystem sweatParticles;
 
@@ -148,7 +151,12 @@ public class CubeMovement : MonoBehaviour
     {
         if(inputMap.GetSettingsButton())
         {
-            MenuHelper.Instance.AlternateSettings();
+            menuHelper.AlternateSettings();
+        }
+
+        if(menuHelper.InSettings)
+        {
+            return;
         }
         
         if(ShouldShowArrow)
