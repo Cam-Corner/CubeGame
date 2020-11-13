@@ -46,7 +46,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 1
+  m_IsOn: 0
   toggleVar: {fileID: 11400000, guid: 2cf113fe7b083854d8b3f478a34340b3, type: 2}
 --- !u!1 &1697398861289646396
 GameObject:
@@ -169,7 +169,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 1
+  m_IsOn: 0
   toggleVar: {fileID: 11400000, guid: b4c2a7ed2021b8b4fa87c54d76665264, type: 2}
 --- !u!1 &4299881782721551545
 GameObject:
@@ -241,7 +241,6 @@ RectTransform:
   - {fileID: 4299881784296610373}
   - {fileID: 2883158001151791132}
   - {fileID: 4299881784011645055}
-  - {fileID: 436525984994404121}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -636,7 +635,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4299881782803275996}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.8427999
+  m_Size: 0.7227999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -672,6 +671,7 @@ RectTransform:
   m_Children:
   - {fileID: 4299881784102353915}
   - {fileID: 4299881783881655991}
+  - {fileID: 436525984994404121}
   m_Father: {fileID: 4299881782728095120}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -914,12 +914,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4299881782728095120}
-  m_RootOrder: 3
+  m_Father: {fileID: 4299881784011645055}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 89.899994, y: -65.80005}
+  m_AnchoredPosition: {x: 5, y: -5}
   m_SizeDelta: {x: 0, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1911535958269525302
@@ -1825,7 +1825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6067766448542609127, guid: 1e9b353d05e8a72458cd1a242b14301d, type: 3}
       propertyPath: m_Value
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6067766448542609127, guid: 1e9b353d05e8a72458cd1a242b14301d, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode

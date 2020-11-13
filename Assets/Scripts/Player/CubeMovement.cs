@@ -283,7 +283,7 @@ public class CubeMovement : MonoBehaviour
             else
             {
                 ForceArrow.gameObject.SetActive(true);
-                ForceArrow.UpdateArrow(transform.position, m_DisplayForce, m_DisplayForce.magnitude);
+                ForceArrow.UpdateArrow(transform.position, m_DisplayForce, (m_DisplayForce.magnitude-m_ForceDeadZonePercent)/(1.0f-m_ForceDeadZonePercent));
             }
         }
     }

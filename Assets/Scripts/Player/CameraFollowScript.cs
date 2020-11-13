@@ -27,9 +27,11 @@ public class CameraFollowScript : MonoBehaviour
     
     [SerializeField]
     private FloatVar m_CameraSensitivity;
+    [SerializeField]
     private float minCameraSensitivity = 0.1f;
+    [SerializeField]
     private float maxCameraSensitivity = 5.0f;
-    private float CameraSensitivity => Mathf.Lerp(m_CameraSensitivity.Value, minCameraSensitivity, maxCameraSensitivity);
+    private float CameraSensitivity => Mathf.Lerp(minCameraSensitivity, maxCameraSensitivity, m_CameraSensitivity.Value);
 
     [SerializeField]
     private BoolVar invertCameraX;
@@ -64,8 +66,8 @@ public class CameraFollowScript : MonoBehaviour
     private Vector3 m_ErrorPrior = new Vector3(0, 0, 0);
     private Vector3 m_IntegralPrior = new Vector3(0, 0, 0);
 
-    private Camera m_Camera;
-    public Camera GameCamera => m_Camera;
+    private Camera[] m_Cameras;
+    public Camera GameCamera => m_Cameras[0];
 
     public CameraRotationDefinition[] preDefinedRotations;
     
@@ -75,7 +77,7 @@ public class CameraFollowScript : MonoBehaviour
     {
         m_PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        m_Camera = GetComponentInChildren<Camera>();
+        m_Cameras = GetComponentsInChildren<Camera>();
         SetCameraRotation();
         SetCameraDistance();
     }
@@ -107,13 +109,16 @@ public class CameraFollowScript : MonoBehaviour
         //convert cube position to screen position
         Vector3 DefaultPos = transform.position;
 
-        //work out direction
-        float Distance = Vector3.Distance(m_Camera.transform.position, DefaultPos);
+        foreach (Camera m_Camera in m_Cameras)
+        {
+            float Distance = Vector3.Distance(m_Camera.transform.position, DefaultPos);
 
-        Vector3 UnitV = (m_Camera.transform.position - DefaultPos) / Distance;
-        Vector3 FinalPosition = (UnitV * m_CameraDistanceFromCube);
+            Vector3 UnitV = (m_Camera.transform.position - DefaultPos) / Distance;
+            Vector3 FinalPosition = (UnitV * m_CameraDistanceFromCube);
 
-        m_Camera.transform.localPosition = FinalPosition;
+            m_Camera.transform.localPosition = FinalPosition;
+        }
+
     }
 
     float PIDControllerFunction(ref float CurrentValue, float DesiredValue, ref float ErrorPrior, ref float IntegralPrior)
@@ -178,7 +183,7 @@ public class CameraFollowScript : MonoBehaviour
     {
         Quaternion QOldRotation = transform.rotation;
         Vector3 VOldRotation = QOldRotation.eulerAngles;
-
+  Debug.Log("Sensi" + CameraSensitivity);
         Vector2 MouseMovementThisFrame = mousPos 
                                             * CameraSensitivity
                                             * 1000 
