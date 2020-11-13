@@ -26,12 +26,18 @@ public class CameraFollowScript : MonoBehaviour
     private float m_lastRotationInst = 0;
     
     [SerializeField]
-    private float m_CameraSensitivity = 1.5f;
+    private FloatVar m_CameraSensitivity;
+    [SerializeField]
+    private float minCameraSensitivity = 0.1f;
+    [SerializeField]
+    private float maxCameraSensitivity = 5.0f;
+    private float CameraSensitivity => Mathf.Lerp(minCameraSensitivity, maxCameraSensitivity, m_CameraSensitivity.Value);
 
     [SerializeField]
-    private bool m_InvertRotX = false;
+    private BoolVar invertCameraX;
+
     [SerializeField]
-    private bool m_InvertRotY = false;
+    private BoolVar invertCameraY;
 
     [Header("Camera Rotation Clamp"), 
     Range(-89, 89), 
@@ -60,8 +66,8 @@ public class CameraFollowScript : MonoBehaviour
     private Vector3 m_ErrorPrior = new Vector3(0, 0, 0);
     private Vector3 m_IntegralPrior = new Vector3(0, 0, 0);
 
-    private Camera m_Camera;
-    public Camera GameCamera => m_Camera;
+    private Camera[] m_Cameras;
+    public Camera GameCamera => m_Cameras[0];
 
     public CameraRotationDefinition[] preDefinedRotations;
     
@@ -71,7 +77,7 @@ public class CameraFollowScript : MonoBehaviour
     {
         m_PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        m_Camera = GetComponentInChildren<Camera>();
+        m_Cameras = GetComponentsInChildren<Camera>();
         SetCameraRotation();
         SetCameraDistance();
     }
@@ -103,13 +109,16 @@ public class CameraFollowScript : MonoBehaviour
         //convert cube position to screen position
         Vector3 DefaultPos = transform.position;
 
-        //work out direction
-        float Distance = Vector3.Distance(m_Camera.transform.position, DefaultPos);
+        foreach (Camera m_Camera in m_Cameras)
+        {
+            float Distance = Vector3.Distance(m_Camera.transform.position, DefaultPos);
 
-        Vector3 UnitV = (m_Camera.transform.position - DefaultPos) / Distance;
-        Vector3 FinalPosition = (UnitV * m_CameraDistanceFromCube);
+            Vector3 UnitV = (m_Camera.transform.position - DefaultPos) / Distance;
+            Vector3 FinalPosition = (UnitV * m_CameraDistanceFromCube);
 
-        m_Camera.transform.localPosition = FinalPosition;
+            m_Camera.transform.localPosition = FinalPosition;
+        }
+
     }
 
     float PIDControllerFunction(ref float CurrentValue, float DesiredValue, ref float ErrorPrior, ref float IntegralPrior)
@@ -174,18 +183,18 @@ public class CameraFollowScript : MonoBehaviour
     {
         Quaternion QOldRotation = transform.rotation;
         Vector3 VOldRotation = QOldRotation.eulerAngles;
-
+  Debug.Log("Sensi" + CameraSensitivity);
         Vector2 MouseMovementThisFrame = mousPos 
-                                            * m_CameraSensitivity 
+                                            * CameraSensitivity
                                             * 1000 
                                             * Time.deltaTime;
-
-            if(m_InvertRotX)
+                                            
+            if(invertCameraX.Value)
                 VOldRotation.y += MouseMovementThisFrame.x;
             else
                 VOldRotation.y -= MouseMovementThisFrame.x;
 
-            if(!m_InvertRotY)
+            if(!invertCameraY.Value)
                 VOldRotation.x -= MouseMovementThisFrame.y;
             else
                 VOldRotation.x += MouseMovementThisFrame.y;
@@ -194,6 +203,8 @@ public class CameraFollowScript : MonoBehaviour
             QOldRotation = Quaternion.Euler(VOldRotation);
        
             transform.rotation = QOldRotation;
+
+            Debug.Log("MouseRot " + MouseMovementThisFrame);
     }
     
     private void SetCameraRotation()
@@ -254,8 +265,8 @@ public class CameraFollowScript : MonoBehaviour
         float rotSpeed = m_CameraRotationSpeedCurve.Evaluate(m_timeInRotation) * m_CameraRotationMaxSpeed;
 
         Vector2 rotDir = (Vector2.right * axisInput.x + Vector2.up * axisInput.y).normalized;
-        rotDir.x = m_InvertRotX? -rotDir.x : rotDir.x;
-        rotDir.y = m_InvertRotY? -rotDir.y : rotDir.y;
+        rotDir.x = invertCameraY.Value? -rotDir.x : rotDir.x;
+        rotDir.y = invertCameraX.Value? -rotDir.y : rotDir.y;
 
         Vector3 eulerRotation = transform.rotation.eulerAngles 
                                 + (Vector3)rotDir * rotSpeed * Time.deltaTime;

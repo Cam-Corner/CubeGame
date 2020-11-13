@@ -60,6 +60,9 @@ public class CubeMovement : MonoBehaviour
     [SerializeField]
     private Transform m_PlayerStart;
 
+    [SerializeField]
+    private MenuHelper menuHelper;
+
     private Animator moveAnimator;
     private ParticleSystem sweatParticles;
 
@@ -78,7 +81,9 @@ public class CubeMovement : MonoBehaviour
         {
             isUp = value;
             
-            isTimeActive.Value = isUp || turnBasedSystem.IsWaitingForPhysicsEntities;
+            isTimeActive.Value = isUp 
+                                 || !turnBasedSystem.IsTurnBasedGame 
+                                 || turnBasedSystem.IsWaitingForPhysicsEntities;
 
             moveAnimator.SetBool("IsUp", value);  
         }
@@ -144,6 +149,16 @@ public class CubeMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(inputMap.GetSettingsButton())
+        {
+            menuHelper.AlternateSettings();
+        }
+
+        if(menuHelper.InSettings)
+        {
+            return;
+        }
+        
         if(ShouldShowArrow)
         {
             CalculateForceToBeApplied();
@@ -151,7 +166,6 @@ public class CubeMovement : MonoBehaviour
         }
         else if(IsMoving && IsUp)
         {
-            Debug.Log(m_RB.velocity.magnitude);
             IsUp = IsMoving = m_RB.velocity.magnitude > m_StopMagnitude;
         }
         
@@ -269,7 +283,7 @@ public class CubeMovement : MonoBehaviour
             else
             {
                 ForceArrow.gameObject.SetActive(true);
-                ForceArrow.UpdateArrow(transform.position, m_DisplayForce, m_DisplayForce.magnitude);
+                ForceArrow.UpdateArrow(transform.position, m_DisplayForce, (m_DisplayForce.magnitude-m_ForceDeadZonePercent)/(1.0f-m_ForceDeadZonePercent));
             }
         }
     }

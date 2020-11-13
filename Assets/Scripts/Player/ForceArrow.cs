@@ -21,7 +21,7 @@ public class ForceArrow : MonoBehaviour
     {
         dir = dir.normalized;
         
-        FillArrow.localScale = Vector3.Scale(startScale, new Vector3(ratio, 1.0f, ratio));
+        FillArrow.localScale = Vector3.Scale(startScale, new Vector3(1.0f,ratio, ratio));
         
         transform.position = pos;
         

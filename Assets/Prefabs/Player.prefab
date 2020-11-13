@@ -4967,6 +4967,7 @@ MonoBehaviour:
   gameCameraParent: {fileID: 0}
   inputMap: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
   m_PlayerStart: {fileID: 0}
+  menuHelper: {fileID: 11400000, guid: 260aeb9e3fb289646b0f17529c9e4950, type: 2}
 --- !u!54 &7954560901176151756
 Rigidbody:
   m_ObjectHideFlags: 0
