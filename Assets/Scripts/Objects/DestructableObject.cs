@@ -21,9 +21,12 @@ public class DestructableObject : MonoBehaviour
 
     private Rigidbody body;
 
+    [SerializeField]
+    private Transform childTransform;
     private void Start() 
     {
         body = GetComponent<Rigidbody>();
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -37,6 +40,10 @@ public class DestructableObject : MonoBehaviour
 
                 destructionScore.Value += destructionValue;
                 Transform meshes = Instantiate(destructionMeshes, transform.position, transform.rotation);
+                foreach (Transform mesh in meshes)
+                {
+                    mesh.gameObject.SetActive(false);
+                }
                 StartCoroutine(ApplyObjectDestruction(meshes, collision.collider.transform, hitMagnitude));
             }
         }
@@ -64,6 +71,8 @@ public class DestructableObject : MonoBehaviour
         for(int i = 0; i < transforms.Count; i++)
         {
             transforms[i].parent = null;
+            transforms[i].localScale = childTransform.localScale;
+            transforms[i].gameObject.SetActive(true);
         }
         
         Destroy(this.gameObject);

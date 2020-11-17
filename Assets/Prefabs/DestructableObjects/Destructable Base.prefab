@@ -64,6 +64,7 @@ MonoBehaviour:
   destructionMeshes: {fileID: 8060289473781614057, guid: 2392b6f2d5caf354d99db80410ead13a, type: 3}
   destructionValue: 300
   destructionScore: {fileID: 11400000, guid: be1555332fc466343b0458f12b1c4c40, type: 2}
+  childTransform: {fileID: 5291072861264172644}
 --- !u!54 &8768970403638295080
 Rigidbody:
   m_ObjectHideFlags: 0
