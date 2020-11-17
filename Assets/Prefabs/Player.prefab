@@ -4959,7 +4959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f439cc148eeb22c42ae19bd551ce3bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MaxForce: 120
+  m_MaxForce: 1200
   m_ForceDeadZonePercent: 0.1
   m_StopMagnitude: 0.01
   m_MaxForceMouseDistance: 10
@@ -4976,7 +4976,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7954560901176151766}
   serializedVersion: 2
-  m_Mass: 0.1
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.1
   m_UseGravity: 1
