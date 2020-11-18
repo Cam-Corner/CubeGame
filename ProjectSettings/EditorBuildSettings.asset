@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Museum - Test Scene.unity
     guid: 2a1ada55f94fff44bb427ef8591a1f67
+  - enabled: 1
+    path: Assets/Scenes/MissionComplete.unity
+    guid: 6fdf1e8fa03948f4388686f9bfb07bc0
   m_configObjects: {}
