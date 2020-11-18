@@ -149,6 +149,9 @@ public class CubeMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (MissionManager.Instance.GetMissionState() != eMissionState.EMS_PlayingMission)
+            return;
+
         if(inputMap.GetSettingsButton())
         {
             menuHelper.AlternateSettings();

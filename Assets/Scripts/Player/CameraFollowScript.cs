@@ -86,6 +86,9 @@ public class CameraFollowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (MissionManager.Instance.GetMissionState() != eMissionState.EMS_PlayingMission)
+            return;
+
         CameraRotation();
         Vector3 CurrentPosition = transform.position;
 
