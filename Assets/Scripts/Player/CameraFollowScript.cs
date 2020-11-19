@@ -207,7 +207,6 @@ public class CameraFollowScript : MonoBehaviour
        
             transform.rotation = QOldRotation;
 
-            Debug.Log("MouseRot " + MouseMovementThisFrame);
     }
     
     private void SetCameraRotation()
