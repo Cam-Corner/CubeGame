@@ -33,6 +33,8 @@ public class CubeMovement : MonoBehaviour
 
     private Vector3 m_DisplayForce = new Vector3(0, 0, 0);
 
+    private bool IsElapsingTime = false;
+
     [Tooltip("should the force be applied this frame")]
     private bool m_bApplyForce = false;
 
@@ -83,7 +85,8 @@ public class CubeMovement : MonoBehaviour
             
             isTimeActive.Value = isUp 
                                  || !turnBasedSystem.IsTurnBasedGame 
-                                 || turnBasedSystem.IsWaitingForPhysicsEntities;
+                                 || turnBasedSystem.IsWaitingForPhysicsEntities
+                                 || IsElapsingTime;
 
             moveAnimator.SetBool("IsUp", value);  
         }
@@ -142,7 +145,7 @@ public class CubeMovement : MonoBehaviour
 
         if(!isUp)
         {
-            isTimeActive.Value = isWaiting;
+            isTimeActive.Value = isWaiting && !IsElapsingTime;
         }
     }
 
@@ -196,6 +199,10 @@ public class CubeMovement : MonoBehaviour
             moveStartRoutine = MoveStartRoutine(forceDirection);
             StartCoroutine(moveStartRoutine);
         }
+        else if(!IsUp && IsElapsingTime)
+        {
+            isTimeActive.Value = true;   
+        }
     }
 
     private IEnumerator MoveStartRoutine(Vector3 forceDirection)
@@ -233,13 +240,27 @@ public class CubeMovement : MonoBehaviour
                 break;
         }
         
-        if(inputMap.GetRunningButton() 
-           && !IsMoving
-           && m_DisplayForce.magnitude > m_ForceDeadZonePercent)
+        IsElapsingTime = false;
+        if(inputMap.GetRunningButton() && !IsMoving)
         {
-            m_ForceToApply = m_DisplayForce;
-            m_bApplyForce = true;
-            return;
+            if(m_DisplayForce.magnitude > m_ForceDeadZonePercent)
+            {
+                m_ForceToApply = m_DisplayForce;
+                m_bApplyForce = true;
+                IsElapsingTime = false;
+            }
+            else if(isTurnBasedGame.Value)
+            {
+                IsElapsingTime = true;
+            }
+        }
+        else if(inputMap.GetElapseTimeButton() && !IsMoving)
+        {
+            IsElapsingTime = true;
+        }
+        if(!IsElapsingTime && !IsMoving)
+        {
+            isTimeActive.Value = false;
         }
     }
 
