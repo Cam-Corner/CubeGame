@@ -258,7 +258,8 @@ public class CubeMovement : MonoBehaviour
         {
             IsElapsingTime = true;
         }
-        if(!IsElapsingTime && !IsMoving)
+
+        if(isTurnBasedGame.Value && !IsElapsingTime && !IsMoving)
         {
             isTimeActive.Value = false;
         }

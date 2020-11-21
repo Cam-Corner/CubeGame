@@ -650,10 +650,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 10
+    m_Top: 20
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 0
+  m_Spacing: 15
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -781,7 +781,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4299881782803275996}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.7307999
+  m_Size: 0.93880004
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1197,7 +1197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653057656485, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653057656485, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1269,11 +1269,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653754065089, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -97.5
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653754065089, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 447.59998
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653754065089, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1285,7 +1285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653754065089, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653754065089, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1293,7 +1293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653754065089, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4203515653754065089, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_Pivot.x
@@ -1306,6 +1306,10 @@ PrefabInstance:
     - target: {fileID: 4203515653754065090, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
       propertyPath: m_Name
       value: TurnBasedMode
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203515653754065090, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4203515653754065088, guid: 3d86e37d9a4d6ea468b2427d292eca56, type: 3}
@@ -1521,7 +1525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 866027605674210600, guid: 2826faca6b95b084ab1581bc01d83552, type: 3}
       propertyPath: m_IsOn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 866027605674210600, guid: 2826faca6b95b084ab1581bc01d83552, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
