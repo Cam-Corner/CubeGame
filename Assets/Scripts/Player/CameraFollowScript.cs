@@ -8,6 +8,10 @@ public class CameraFollowScript : MonoBehaviour
     [SerializeField]
     private InputMapping inputMapping;
 
+
+    [SerializeField]
+    private GlobalMissionSettings m_MissionSettings;
+
     ///////////////////
     //public variables
     [Header("Default Camera Settings"), SerializeField]
@@ -86,7 +90,7 @@ public class CameraFollowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MissionManager.Instance.GetMissionState() != eMissionState.EMS_PlayingMission)
+        if (m_MissionSettings.GetMissionState() != eMissionState.EMS_PlayingMission)
             return;
 
         CameraRotation();
@@ -207,7 +211,7 @@ public class CameraFollowScript : MonoBehaviour
        
             transform.rotation = QOldRotation;
 
-            Debug.Log("MouseRot " + MouseMovementThisFrame);
+            //Debug.Log("MouseRot " + MouseMovementThisFrame);
     }
     
     private void SetCameraRotation()

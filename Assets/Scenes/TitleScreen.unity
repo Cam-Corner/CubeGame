@@ -661,6 +661,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TitleScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 5855261327719683326, guid: 480cb8af87b493345a3d1c6d39a2b2c7, type: 3}
+      propertyPath: m_MissionSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
     - target: {fileID: 5855261327719683327, guid: 480cb8af87b493345a3d1c6d39a2b2c7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

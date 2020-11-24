@@ -39,6 +39,8 @@ public class CubeMovement : MonoBehaviour
     [SerializeField]
     private float m_StopMagnitude = 0.5f;
 
+    [SerializeField]
+    private GlobalMissionSettings m_MissionSettings;
     
     [SerializeField]
     private float m_MaxForceMouseDistance = 10.0f; 
@@ -149,7 +151,7 @@ public class CubeMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MissionManager.Instance.GetMissionState() != eMissionState.EMS_PlayingMission)
+        if (m_MissionSettings.GetMissionState() != eMissionState.EMS_PlayingMission)
             return;
 
         if(inputMap.GetSettingsButton())
@@ -303,6 +305,7 @@ public class CubeMovement : MonoBehaviour
         //        break;
         //}
 
+        Debug.Log("Player Found: " + FoundType);
         ResetPlayer();
     }
 

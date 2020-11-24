@@ -14,3 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CameraPanMoveSpeed: 10
   m_CameraPanRotationSpeed: 50
+  m_DestructableGameOverSceneName: Name
+  m_DestructionGameStartTime:
+    Minutes: 0
+    Seconds: 10
+    TotalTimerInSeconds: 0
+    TimerInMinutesAndSecondsString: 

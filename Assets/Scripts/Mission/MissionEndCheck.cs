@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MissionEndCheck : MonoBehaviour
 {
+    [SerializeField] private string m_GameOverScene = "Name";
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")

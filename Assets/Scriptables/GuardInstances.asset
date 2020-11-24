@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c45833a4c35fbf740ada647bac6d1542, type: 3}
-  m_Name: IsTurnBasedGame
+  m_Script: {fileID: 11500000, guid: 09a0164fca441554fb0ae3e4b45b937d, type: 3}
+  m_Name: GuardInstances
   m_EditorClassIdentifier: 
-  setupValue: 0
-  value: 0
+  setupValue: []
+  value:
+  - {fileID: 0}
+  - {fileID: 0}

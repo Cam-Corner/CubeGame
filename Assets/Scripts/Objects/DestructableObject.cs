@@ -23,9 +23,12 @@ public class DestructableObject : MonoBehaviour
 
     [SerializeField]
     private Transform childTransform;
+
+    private DistractionRadius m_DR;
     private void Start() 
     {
         body = GetComponent<Rigidbody>();
+        m_DR = GetComponent<DistractionRadius>();
 
     }
 
@@ -36,7 +39,8 @@ public class DestructableObject : MonoBehaviour
             float hitMagnitude = playerScriptable.Body.velocity.magnitude;
             if(hitMagnitude >= destructionMagnitude)
             {
-                Debug.Log("Destroyed Magnitude " + hitMagnitude);
+                m_DR.MakeNoise(hitMagnitude, true);
+                //Debug.Log("Destroyed Magnitude " + hitMagnitude);
 
                 destructionScore.Value += destructionValue;
                 Transform meshes = Instantiate(destructionMeshes, transform.position, transform.rotation);
@@ -44,14 +48,28 @@ public class DestructableObject : MonoBehaviour
                 {
                     mesh.gameObject.SetActive(false);
                 }
+
                 StartCoroutine(ApplyObjectDestruction(meshes, collision.collider.transform, hitMagnitude));
             }
+            else
+            {
+                float ObjecthitMagnitude = body.velocity.magnitude;
+                m_DR.MakeNoise(ObjecthitMagnitude, false);
+            }
         }
+        else
+        {
+            float hitMagnitude = body.velocity.magnitude;
+            m_DR.MakeNoise(hitMagnitude, false);
+        }
+
     }
 
     private IEnumerator ApplyObjectDestruction(Transform meshes, Transform other, float hitMagnitude)
     {
         yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
         List<Transform> transforms = new List<Transform>();
         foreach(Transform t in meshes.transform)
         {
@@ -77,4 +95,5 @@ public class DestructableObject : MonoBehaviour
         
         Destroy(this.gameObject);
     }
+
 }

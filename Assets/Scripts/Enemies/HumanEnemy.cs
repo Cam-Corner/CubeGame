@@ -38,6 +38,9 @@ public class HumanEnemy : MonoBehaviour
     [SerializeField] protected uint m_AmountOfRays = 50;
 
     private Vector3 storedVelocity = Vector3.zero;
+    private float m_CurrentDetectionTimer = 0;
+    private bool m_bDetectingPlayer = false;
+    private float m_CheckForPlayerRandNumTimer = 3;
 
     //=========================================
     enum eEnemyState
@@ -46,7 +49,10 @@ public class HumanEnemy : MonoBehaviour
         EES_ChasingPlayer = 1,
         EES_CheckingLastLocation = 2,
         EES_AngryRoar = 3,
-        EES_CaughtPlayer = 4
+        EES_CaughtPlayer = 4,
+        EES_GoingToInvestigatingNoise = 5,
+        EES_InvestigatingNoise = 6,
+        EES_RandomlyCheckingNearPlayer = 7
     }
 
     //Non inspector properties
@@ -143,6 +149,15 @@ public class HumanEnemy : MonoBehaviour
             case eEnemyState.EES_AngryRoar:
                 AngryRoar();
                 break;
+            case eEnemyState.EES_InvestigatingNoise:
+                InvestigationNoise();
+                break;
+            case eEnemyState.EES_GoingToInvestigatingNoise:
+                GoingToInvestigatingNoise();
+                break;
+            case eEnemyState.EES_RandomlyCheckingNearPlayer:
+                RandomlyCheckingNearPlayer();
+                break;
             default:
                 m_NMA.speed = 0.0f;
                 break;              
@@ -179,32 +194,41 @@ public class HumanEnemy : MonoBehaviour
             m_NMA.speed = m_EnemySettings.m_WalkSpeed;
         }
 
-        if (m_InRadiusOfPlayer)//m_PRC.PlayerInRadius())
-        {
-            List<GameObject> ObjectsHit = m_LineOfSight.SightCheck(!m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FieldOfView : m_FieldOfView,
-                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FOVDistance : m_FOVDistance,
-                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_AmountOfRays : m_AmountOfRays);
+        //distance check with sqaure rooting
+        Vector3 A = transform.position;
+        Vector3 B = m_Player.transform.position;
+        float UnSqauredDistanceX = (A.x - B.x) * (A.x - B.x);
+        float UnSqauredDistanceY = (A.y - B.y) * (A.y - B.y);
+        float UnSqauredDistanceZ = (A.z - B.z) * (A.z - B.z);
+        float UnSqauredFinalDistance = UnSqauredDistanceX + UnSqauredDistanceY + UnSqauredDistanceZ;
 
-            foreach (GameObject GO in ObjectsHit)
+        if(m_CheckForPlayerRandNumTimer >= 0)
+        {
+            m_CheckForPlayerRandNumTimer -= Time.deltaTime;
+        }
+
+        if (UnSqauredFinalDistance < 450 && m_CheckForPlayerRandNumTimer <= 0)
+        {
+            if (m_EnemySettings.GetSuspicionLevel() >= 50)
             {
-                if (GO == m_Player)
+                float RandomNum = Random.Range(0, 100);
+                Debug.Log(RandomNum);
+                m_CheckForPlayerRandNumTimer = 3.0f;
+
+                if (RandomNum > 45 && RandomNum < 55)
                 {
-                    //m_Player.GetComponent<CubeMovement>().PlayerFound();
-                    if (!m_Player.GetComponent<CubeMovement>().PlayerHidden())
-                    {
-                        m_CurrentState = eEnemyState.EES_ChasingPlayer;
-                        Debug.Log(transform.name + ": Current AI State: " + m_CurrentState);
-                    }                    
-                    break;
+                    m_NMA.SetDestination(m_Player.transform.position);
+                    m_NMA.speed = m_EnemySettings.m_WalkSpeed;
+                    m_CurrentState = eEnemyState.EES_RandomlyCheckingNearPlayer;
+                    Debug.Log(transform.name + ": Current AI State: " + m_CurrentState);
+                    m_LastPlayerSighting = m_Player.transform.position;
+                    ResetAnimationControllerToDefault();
+                    m_AC.SetBool("Walking", true);
                 }
             }
         }
-        else if (Vector3.Angle((transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward) <= Camera.main.fieldOfView)
-        {
-            m_LineOfSight.SightCheckNoReturn(!m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FieldOfView : m_FieldOfView,
-                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FOVDistance : m_FOVDistance,
-                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_AmountOfRays : m_AmountOfRays);
-        }
+
+        PlayerSightCheck();
     }
 
     void ChasingPlayer()
@@ -340,7 +364,7 @@ public class HumanEnemy : MonoBehaviour
     void SetNextPathPoint()
     {
         m_CurrentPP = m_MyPath.GetNextPoint(in m_MyPathDetails.m_CurrentPathIndex);
-        Debug.Log(transform.name + ": Current Path Index is " + m_MyPathDetails.m_CurrentPathIndex);
+        //Debug.Log(transform.name + ": Current Path Index is " + m_MyPathDetails.m_CurrentPathIndex);
 
         if (m_MyPathDetails.m_MaxPathIndex > 0)
         {
@@ -371,6 +395,11 @@ public class HumanEnemy : MonoBehaviour
         }
     }
 
+    void RandomlyCheckingNearPlayer()
+    {
+
+    }
+
     void SetStartingPathIndex()
     {
         if(m_StartingPathIndex >= m_MyPathDetails.m_MaxPathIndex)
@@ -389,44 +418,121 @@ public class HumanEnemy : MonoBehaviour
             transform.position = m_CurrentPP.m_GotoPosition;
     }
 
+    void GoingToInvestigatingNoise()
+    {
+        m_AC.SetBool("Walking", true);
+        //Improve later
+        Vector2 A = new Vector2(transform.position.x, transform.position.z);
+        Vector2 B = new Vector2(m_LastPlayerSighting.x, m_LastPlayerSighting.z);
+
+        if (Vector2.Distance(A, B) < 3)
+        {
+            m_NMA.SetDestination(transform.position);
+            m_NMA.speed = 0.0f;
+            m_AngryRoarTimer = 5.0f;
+            m_CurrentState = eEnemyState.EES_InvestigatingNoise;
+        }
+
+        PlayerSightCheck();
+    }
+
+    void InvestigationNoise()
+    {
+        m_AC.SetBool("InvestigatingNoise", true);
+
+        if (m_AngryRoarTimer <= 0)
+        {
+            m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
+            m_CurrentState = eEnemyState.EES_Patrol;
+            Debug.Log(transform.name + ": Current AI State: " + m_CurrentState);
+        }
+        else
+        {
+            m_AngryRoarTimer -= 1 * Time.deltaTime;
+        }
+
+        PlayerSightCheck();
+    }
+
+    void PlayerSightCheck()
+    {
+        m_bDetectingPlayer = false;
+
+        if (m_InRadiusOfPlayer || !m_InRadiusOfPlayer)//m_PRC.PlayerInRadius())
+        {
+            List<GameObject> ObjectsHit = m_LineOfSight.SightCheck(!m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FieldOfView : m_FieldOfView,
+                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FOVDistance : m_FOVDistance,
+                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_AmountOfRays : m_AmountOfRays);
+
+            foreach (GameObject GO in ObjectsHit)
+            {
+                if (GO == m_Player)
+                {
+                    //m_Player.GetComponent<CubeMovement>().PlayerFound();
+                    if (!m_Player.GetComponent<CubeMovement>().PlayerHidden())
+                    {
+                        if (m_CurrentDetectionTimer <= 0)
+                        {
+                            m_CurrentDetectionTimer = m_EnemySettings.GetCorrectDetectionTime();
+                        }
+
+                        m_bDetectingPlayer = true;
+                        //m_CurrentState = eEnemyState.EES_ChasingPlayer;
+                        //Debug.Log(transform.name + ": Current AI State: " + m_CurrentState);
+                    }
+                    break;
+                }
+            }
+        }
+        else if (Vector3.Angle((transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward) <= Camera.main.fieldOfView)
+        {
+            m_LineOfSight.SightCheckNoReturn(!m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FieldOfView : m_FieldOfView,
+                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FOVDistance : m_FOVDistance,
+                                     !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_AmountOfRays : m_AmountOfRays);
+        }
+        
+        if(m_bDetectingPlayer)
+        {
+            m_CurrentDetectionTimer -= Time.deltaTime;
+        }
+        else if(m_CurrentDetectionTimer <= m_EnemySettings.GetCorrectDetectionTime())
+        {
+            m_CurrentDetectionTimer += Time.deltaTime;
+        }
+
+        if(m_CurrentDetectionTimer > m_EnemySettings.GetCorrectDetectionTime())
+        {
+            m_CurrentDetectionTimer = -1;
+            m_bDetectingPlayer = false;
+        }
+        else if (m_CurrentDetectionTimer <= 0 && m_bDetectingPlayer)
+        {
+            m_CurrentState = eEnemyState.EES_ChasingPlayer;
+        }
+
+    }
+
     void ResetAnimationControllerToDefault()
     {
         m_AC.SetBool("Walking", false);
         m_AC.SetBool("Running", false);
         m_AC.SetBool("AngryRoar", false);
+        m_AC.SetBool("InvestigatingNoise", false);
     }
-
-    //private void FixedUpdate()
-    //{
-    //    if (m_InRadiusOfPlayer && m_CurrentState == eEnemyState.EES_Patrol)//m_PRC.PlayerInRadius())
-    //    {
-    //        List<GameObject> ObjectsHit = m_LineOfSight.SightCheck(!m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FieldOfView : m_FieldOfView,
-    //                                 !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FOVDistance : m_FOVDistance,
-    //                                 !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_AmountOfRays : m_AmountOfRays);
-
-    //        foreach(GameObject GO in ObjectsHit)
-    //        {
-    //            if(GO == m_Player)
-    //            {
-    //                m_Player.GetComponent<CubeMovement>().PlayerFound();
-    //                m_CurrentState = eEnemyState.EES_ChasingPlayer;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    else if(Vector3.Angle((transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward) <= Camera.main.fieldOfView)
-    //    {
-    //        m_LineOfSight.SightCheckNoReturn(!m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FieldOfView : m_FieldOfView,
-    //                                 !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_FOVDistance : m_FOVDistance,
-    //                                 !m_OverrideDefaultLineOfSightSettings ? m_EnemySettings.m_AmountOfRays / 2 : m_AmountOfRays / 2);
-    //    }
-
-    //    //Debug.Log(Camera.main.fieldOfView);
-    //}
 
     public void SetInRadius(bool InRadius)
     {
         m_InRadiusOfPlayer = InRadius;
     }
 
+    public void HeardANoise(Vector3 NoiseLocation)
+    {
+        m_NMA.SetDestination(NoiseLocation);
+        m_NMA.speed = m_EnemySettings.m_WalkSpeed;
+        m_CurrentState = eEnemyState.EES_GoingToInvestigatingNoise;
+        Debug.Log(transform.name + ": Current AI State: " + m_CurrentState);
+        m_LastPlayerSighting = NoiseLocation;
+        ResetAnimationControllerToDefault();
+        m_AC.SetBool("Walking", true);
+    }
 }

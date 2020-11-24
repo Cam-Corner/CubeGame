@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEngine;
 
+
+
 public class MissionManager : MonoBehaviour
 {
     /*Make Singleton*/
@@ -24,23 +26,35 @@ public class MissionManager : MonoBehaviour
     [SerializeField] private CameraFollowScript m_MainCamera;
     [SerializeField] private CubeMovement m_Player;
     [SerializeField] private GlobalMissionSettings m_MissionSettings;
+    [SerializeField] private TurnBasedSystem m_TurnBasedSystem;
 
     [Header("Mission Settings")]
     [SerializeField] private List<MissionObjective> m_MissionObjects = new List<MissionObjective>();
     [SerializeField] private eMissionState m_StartingMissionState = eMissionState.EMS_MissionBrief;
-
+  
     private int m_CameraPanCurrentObjectIndex = 0;
     private float m_CurrentCameraRotationValue = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (m_MissionObjects.Count <= 0 && m_StartingMissionState == eMissionState.EMS_MissionBrief)
+        if (m_MissionSettings.GetMissionType() == eMissionType.EMT_Loot)
+        {
+            if (m_MissionObjects.Count <= 0 && m_StartingMissionState == eMissionState.EMS_MissionBrief)
+                m_MissionSettings.SetMissionState(eMissionState.EMS_PlayingMission);
+            else
+                m_MissionSettings.SetMissionState(m_StartingMissionState);
+        }
+        else if (m_MissionSettings.GetMissionType() == eMissionType.EMT_Destructable)
+        {
             m_MissionSettings.SetMissionState(eMissionState.EMS_PlayingMission);
-        else
-            m_MissionSettings.SetMissionState(m_StartingMissionState);
+        }
+
+        //Debug.Log("Game Started! Gamemode = " + m_MissionSettings.GetMissionType());
 
         m_CameraPanCurrentObjectIndex = 0;
+
+        
     }
 
     // Update is called once per frame
@@ -59,7 +73,7 @@ public class MissionManager : MonoBehaviour
         }
 
         //Debug.Log(m_MissionSettings.GetMissionState() +" : " + m_MissionObjects.Count);
-
+        UpdateTimer();
     }
 
     private void PlayingMission()
@@ -77,11 +91,24 @@ public class MissionManager : MonoBehaviour
         }
     }
 
+    void UpdateTimer()
+    {
+        m_MissionSettings.UpdateMissionTimer();
+    }
+
     private void MissionBriefCameraPan()
     {
         if (m_CameraPanCurrentObjectIndex > m_MissionObjects.Count)
         {
             m_MissionSettings.SetMissionState(eMissionState.EMS_PlayingMission);
+            return;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            m_CameraPanCurrentObjectIndex = 0;
+            m_MissionSettings.SetMissionState(eMissionState.EMS_PlayingMission);
+            m_MainCamera.transform.position = m_Player.transform.position;
             return;
         }
 
@@ -135,7 +162,6 @@ public class MissionManager : MonoBehaviour
         m_MissionObjects.Remove(ItemCollected);
         Debug.Log(ThisObjective.name + " has been stolen!");
         Destroy(ThisObjective);
-
     }
 
     private void ResetLevelStart()
@@ -153,5 +179,7 @@ public class MissionManager : MonoBehaviour
         return false;
     }
 
-    public eMissionState GetMissionState() => m_MissionSettings.GetMissionState();
+    //public eMissionState GetMissionState() => m_MissionSettings.GetMissionState();
+
+    
 }

@@ -70,6 +70,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2729546707555738764, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: m_SmashedSoundDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -2729546707555738764, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: m_SoundDisPerMagnitudeOfForce
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3191936420469227845, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_Mesh
       value: 
