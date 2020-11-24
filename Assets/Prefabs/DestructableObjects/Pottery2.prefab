@@ -123,6 +123,14 @@ PrefabInstance:
       propertyPath: destructionMeshes
       value: 
       objectReference: {fileID: -8679921383154817045, guid: e2a594e8da95fd54d81150fc93b21b97, type: 3}
+    - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: destructionMagnitude
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: destructionValue
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295087, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_Name
       value: Pottery2

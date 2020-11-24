@@ -59,10 +59,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be52ffebfa0d7a24599df75ede1089e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destructionMagnitude: 10
+  destructionMagnitude: 12
   playerScriptable: {fileID: 11400000, guid: abc688f2662b70242bde2c69482e51ac, type: 2}
   destructionMeshes: {fileID: 8060289473781614057, guid: 2392b6f2d5caf354d99db80410ead13a, type: 3}
-  destructionValue: 300
+  destructionValue: 120
   destructionScore: {fileID: 11400000, guid: be1555332fc466343b0458f12b1c4c40, type: 2}
   childTransform: {fileID: 5291072861264172644}
 --- !u!54 &8768970403638295080
@@ -74,8 +74,8 @@ Rigidbody:
   m_GameObject: {fileID: 8768970403638295087}
   serializedVersion: 2
   m_Mass: 0.0000001
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 3
+  m_AngularDrag: 3
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
