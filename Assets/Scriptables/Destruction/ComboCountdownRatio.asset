@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9553ca2c5442db4ea4f0e646070e369, type: 3}
-  m_Name: DestructionCombo
+  m_Script: {fileID: 11500000, guid: 512621dc42e1f3b4490fc9878add1a40, type: 3}
+  m_Name: ComboCountdownRatio
   m_EditorClassIdentifier: 
   setupValue: 0
-  value: 0
+  value: 0.45

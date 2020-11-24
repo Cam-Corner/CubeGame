@@ -125,7 +125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295080, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295081, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_LocalPosition.x
@@ -175,6 +175,14 @@ PrefabInstance:
       propertyPath: destructionMeshes
       value: 
       objectReference: {fileID: -8679921383154817045, guid: 1f7a8f34d5110f1449cd3d1d07e28313, type: 3}
+    - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: destructionMagnitude
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: destructionValue
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295087, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_Name
       value: AnubisStatue

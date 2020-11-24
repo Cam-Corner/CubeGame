@@ -125,6 +125,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295080, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768970403638295080, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: m_Drag
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768970403638295080, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: m_AngularDrag
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295081, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
@@ -175,6 +183,14 @@ PrefabInstance:
       propertyPath: destructionMeshes
       value: 
       objectReference: {fileID: -8679921383154817045, guid: f583f0de95f162344afb16788c1a6d1f, type: 3}
+    - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: destructionMagnitude
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: destructionValue
+      value: 400
+      objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295087, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_Name
       value: KarasuWomanStatue

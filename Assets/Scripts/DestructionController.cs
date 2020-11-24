@@ -12,14 +12,14 @@ public class DestructionController : MonoBehaviour
     private FloatVar destructionScore;
 
     [SerializeField]
-    private IntVar comboCounter;
+    private FloatVar comboCounter;
 
     [SerializeField]
     private FloatVar comboCountdownVar;
 
     [SerializeField]
     private int maxCombo = int.MaxValue;
-
+    
     [SerializeField,
     Tooltip("Timer in Seconds")]
     private float comboTimer;
@@ -27,7 +27,13 @@ public class DestructionController : MonoBehaviour
     [SerializeField]
     private float comboStackMultiplier = 0.1f;
 
-    private float startComboScore = 0;
+    [SerializeField]
+    private BoolVar isTimeActive;
+
+    [SerializeField]
+    private BoolVar isTurnBasedGame;
+
+    private float startComboScore = 1;
     private bool isUpdateCombo = false;
 
     private IEnumerator comboRoutine = null;
@@ -66,7 +72,7 @@ public class DestructionController : MonoBehaviour
         else
         {
             Debug.Log("Started Combo");
-            comboCounter.Value = 0;
+            comboCounter.Value = 1;
             startComboScore = newVal;
             OnComboStartedEvent?.Invoke();
         }
@@ -85,13 +91,16 @@ public class DestructionController : MonoBehaviour
         float elapsed = 0;
         while(elapsed < comboTimer)
         {
-            comboCountdownVar.Value = Mathf.Round((comboTimer - elapsed) * 100f) / 100f; 
             yield return new WaitForEndOfFrame();
-            elapsed += Time.deltaTime;
+            if(!isTurnBasedGame.Value || isTimeActive.Value)
+            {
+                elapsed += Time.deltaTime;
+                comboCountdownVar.Value = 1.0f - Mathf.Clamp(elapsed, 0, comboTimer) / comboTimer;
+            }
         }
 
         float comboDelta = destructionScore.Value - startComboScore;
-        float extraScore = comboDelta * comboStackMultiplier * comboCounter.Value;
+        float extraScore = comboDelta * comboStackMultiplier * (comboCounter.Value-1);
         
         isUpdateCombo = true;
         destructionScore.Value += extraScore;
@@ -100,7 +109,7 @@ public class DestructionController : MonoBehaviour
         comboRoutine = null;
 
         OnComboFinishedEvent?.Invoke();
-        comboCounter.Value = 0;
+        comboCounter.Value = 1;
         comboCountdownVar.Value = 0;
     }
 }

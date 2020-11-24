@@ -63,6 +63,20 @@ public class InputMapping : ScriptableObject
         return false;
     }
 
+    public bool GetElapseTimeButton()
+    {
+        switch(controllerType)
+        {
+            case ControllerType.Mouse:
+                return Input.GetKey(KeyCode.Space);
+            case ControllerType.XBox:
+                return Input.GetKey(KeyCode.JoystickButton1);
+            case ControllerType.Playstation:
+                return Input.GetKey(KeyCode.JoystickButton2);
+        }
+        return false;
+    }
+
     public bool GetSettingsButton()
     {
         switch(controllerType)

@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destructionScore: {fileID: 11400000, guid: be1555332fc466343b0458f12b1c4c40, type: 2}
-  comboCounter: {fileID: 11400000, guid: 35ce1a2d468fc21449f04e4df151fa1f, type: 2}
+  comboCounter: {fileID: 11400000, guid: 936575ea44f89f2469a7868eab15ac69, type: 2}
   comboCountdownVar: {fileID: 11400000, guid: 8b9df7255891b4047a9a334c25b15b41, type: 2}
   maxCombo: 2147483647
   comboTimer: 5
   comboStackMultiplier: 0.1
+  isTimeActive: {fileID: 11400000, guid: eee168821a7dce74eb7362e182d7b399, type: 2}
+  isTurnBasedGame: {fileID: 11400000, guid: 85b7cd10765742340b9eed4fa0a62b65, type: 2}
