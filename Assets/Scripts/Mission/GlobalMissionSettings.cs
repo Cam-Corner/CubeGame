@@ -35,7 +35,7 @@ public class GlobalMissionSettings : ScriptableObject
     [SerializeField] private float m_CameraPanRotationSpeed = 20;
     [SerializeField] private string m_DestructableGameOverSceneName = "Name";
     [SerializeField] private sTimeDetails m_DestructionGameStartTime;
-    private List<Vector3> m_BrokenCollectablePositions;
+    private List<Vector3> m_BrokenCollectablePositions = new List<Vector3>();
     //[SerializeField] private FloatVar ;
     [SerializeField] private BoolVar m_IsLootMode;
     private uint m_AISuspicionLevel = 0;
@@ -58,6 +58,9 @@ public class GlobalMissionSettings : ScriptableObject
 
     private void OnEnable()
     {
+        if (UnityEngineUtils.IsInPlayModeOrAboutToPlay())
+            return;
+
         GameStart(m_MissionType);
 
         if (m_MissionType == eMissionType.EMT_Loot)
@@ -78,7 +81,8 @@ public class GlobalMissionSettings : ScriptableObject
             m_MissionTimer = 0;          
         }
 
-        m_BrokenCollectablePositions.Clear();
+        if(m_BrokenCollectablePositions.Count > 0)
+            m_BrokenCollectablePositions.Clear();
     }
 
     public List<Vector3> GetBrokenLocations() => m_BrokenCollectablePositions;

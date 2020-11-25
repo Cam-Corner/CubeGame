@@ -29,6 +29,8 @@ public class DestructableObject : MonoBehaviour
     private Transform childTransform;
 
     private DistractionRadius m_DR;
+
+    private const string DESTRUCTABLE_LAYER_NAME = "Destructables";
     private void Start() 
     {
         body = GetComponent<Rigidbody>();
@@ -47,7 +49,7 @@ public class DestructableObject : MonoBehaviour
                 //Debug.Log("Destroyed Magnitude " + hitMagnitude);
 
                 destructionScore.Value += destructionValue;
-                Transform meshes = Instantiate(destructionMeshes, transform.position, transform.rotation);
+                Transform meshes = Instantiate(destructionMeshes, transform.position, transform.rotation, transform.parent);
                 foreach (Transform mesh in meshes)
                 {
                     mesh.gameObject.SetActive(false);
@@ -84,7 +86,7 @@ public class DestructableObject : MonoBehaviour
             }
             transforms.Add(t);
 
-
+            t.gameObject.layer = LayerMask.NameToLayer(DESTRUCTABLE_LAYER_NAME);
             Rigidbody newBody = t.gameObject.AddComponent<Rigidbody>();
             t.gameObject.AddComponent(typeof(BoxCollider));
             newBody.mass = body.mass;
@@ -93,8 +95,8 @@ public class DestructableObject : MonoBehaviour
         
         for(int i = 0; i < transforms.Count; i++)
         {
-            transforms[i].parent = null;
-            transforms[i].localScale = childTransform.localScale;
+            transforms[i].parent = transform.parent;
+            transforms[i].localScale = Vector3.Scale(childTransform.localScale, this.transform.localScale);
             transforms[i].gameObject.SetActive(true);
         }
         
