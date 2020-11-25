@@ -53,6 +53,9 @@ public class DestructionController : MonoBehaviour
 
     private void OnDestruction(float oldVal, float newVal)
     {
+        if (!gameObject.activeInHierarchy)
+            return;
+
         if(isUpdateCombo)
         {
             isUpdateCombo = false;

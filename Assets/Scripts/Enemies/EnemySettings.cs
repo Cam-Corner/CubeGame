@@ -12,8 +12,6 @@ public class EnemySettings : ScriptableObject
     [SerializeField] public uint m_AmountOfRays = 50;
     [SerializeField] public float m_WalkSpeed = 2.8f;
     [SerializeField] public float m_RunSpeed = 7.0f;
-    [SerializeField] private float m_SusLevel1MaxValue = 50;
-    [SerializeField] private float m_SusLevel2MaxValue = 75;
 
     [SerializeField] private GlobalMissionSettings m_MissionSettings;
     [SerializeField] private float m_SlowDetectionTime = 5.0f;
@@ -27,9 +25,9 @@ public class EnemySettings : ScriptableObject
         {
             float SusLevel = m_MissionSettings.GetAISuspicionLevel();
 
-            if (SusLevel >= m_SusLevel2MaxValue)
+            if (SusLevel >= 3)
                 return m_FastDetectionTime;
-            else if (SusLevel >= m_SusLevel1MaxValue)
+            else if (SusLevel >= 2)
                 return m_AverageDetectionTime;
         }
         else
@@ -39,6 +37,8 @@ public class EnemySettings : ScriptableObject
 
         return m_SlowDetectionTime;
     }
+
+    public List<Vector3> GetBrokenPositions() => m_MissionSettings.GetBrokenLocations();
 
     public float GetSuspicionLevel()
     {

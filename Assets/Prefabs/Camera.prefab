@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputMapping: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
+  m_MissionSettings: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
   m_CameraDistanceFromCube: 15
   m_CameraSpeed: 3
   m_CameraRotationMaxSpeed: 200

@@ -899,6 +899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnemySettings: {fileID: 11400000, guid: 98c123b7d122a9148b23ef26893c0281, type: 2}
+  m_BrokenDesPositions: {fileID: 11400000, guid: 1751670896f1545479f776420375133f, type: 2}
   m_MyPath: {fileID: 0}
   m_StartingPathIndex: 3
   m_TeleportToStartPoint: 1

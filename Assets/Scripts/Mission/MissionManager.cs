@@ -50,6 +50,8 @@ public class MissionManager : MonoBehaviour
             m_MissionSettings.SetMissionState(eMissionState.EMS_PlayingMission);
         }
 
+        m_MissionSettings.StartingAmountOfMissionObjectives((uint)m_MissionObjects.Count);
+
         //Debug.Log("Game Started! Gamemode = " + m_MissionSettings.GetMissionType());
 
         m_CameraPanCurrentObjectIndex = 0;
@@ -77,15 +79,15 @@ public class MissionManager : MonoBehaviour
     }
 
     private void PlayingMission()
-    {
+    {       
         if (m_MissionObjects.Count > 0)
         {
-            /*Check If Player Is Near an Object*/
-            foreach (MissionObjective MO in m_MissionObjects)
+            //foreach(MissionObjective MO in m_MissionObjects)
+            for(int i = 0; i < m_MissionObjects.Count; i++)
             {
-                if (MO.ObjectStolen())
+                if (m_MissionObjects[i].ObjectStolen())
                 {
-                    CollectedItem(MO);
+                    CollectedItem(m_MissionObjects[i]);
                 }
             }
         }
@@ -161,6 +163,7 @@ public class MissionManager : MonoBehaviour
         GameObject ThisObjective = ItemCollected.gameObject;
         m_MissionObjects.Remove(ItemCollected);
         Debug.Log(ThisObjective.name + " has been stolen!");
+        m_MissionSettings.CollectedAMissionObjective();
         Destroy(ThisObjective);
     }
 

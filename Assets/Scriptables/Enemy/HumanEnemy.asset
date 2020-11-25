@@ -17,9 +17,7 @@ MonoBehaviour:
   m_AmountOfRays: 25
   m_WalkSpeed: 2.8
   m_RunSpeed: 7
-  m_SusLevel1MaxValue: 50
-  m_SusLevel2MaxValue: 75
   m_MissionSettings: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
-  m_SlowDetectionTime: 5
-  m_AverageDetectionTime: 2
-  m_FastDetectionTime: 1
+  m_SlowDetectionTime: 1
+  m_AverageDetectionTime: 0.5
+  m_FastDetectionTime: 0

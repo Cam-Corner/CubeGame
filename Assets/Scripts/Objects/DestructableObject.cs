@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AmoaebaUtils;
 
 public class DestructableObject : MonoBehaviour
 {
     [SerializeField]
     private float destructionMagnitude;
+
+    [SerializeField]
+    private GlobalMissionSettings m_MissionSettings;
 
     [SerializeField]
     private PlayerScriptable playerScriptable;
@@ -49,6 +53,7 @@ public class DestructableObject : MonoBehaviour
                     mesh.gameObject.SetActive(false);
                 }
 
+                m_MissionSettings.AddBrokenPosition(transform.position);
                 StartCoroutine(ApplyObjectDestruction(meshes, collision.collider.transform, hitMagnitude));
             }
             else
@@ -68,7 +73,7 @@ public class DestructableObject : MonoBehaviour
     private IEnumerator ApplyObjectDestruction(Transform meshes, Transform other, float hitMagnitude)
     {
         yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
+        //yield return new WaitForEndOfFrame();
 
         List<Transform> transforms = new List<Transform>();
         foreach(Transform t in meshes.transform)

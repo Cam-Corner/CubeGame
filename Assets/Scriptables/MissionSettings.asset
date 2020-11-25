@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3b2e59736b84a419c4ab56b742caac, type: 3}
   m_Name: MissionSettings
   m_EditorClassIdentifier: 
-  m_CameraPanMoveSpeed: 10
+  m_CameraPanMoveSpeed: 20
   m_CameraPanRotationSpeed: 50
-  m_DestructableGameOverSceneName: Name
+  m_DestructableGameOverSceneName: MissionComplete
   m_DestructionGameStartTime:
-    Minutes: 0
-    Seconds: 10
+    Minutes: 3
+    Seconds: 30
     TotalTimerInSeconds: 0
     TimerInMinutesAndSecondsString: 
+  m_DestructionScore: {fileID: 11400000, guid: be1555332fc466343b0458f12b1c4c40, type: 2}
+  m_IsLootMode: {fileID: 11400000, guid: 91b0060a270fc794ba1dfdc4c1a2b35b, type: 2}
+  m_MissionType: 0

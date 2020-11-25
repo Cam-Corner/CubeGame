@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Google.GData.Spreadsheets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using AmoaebaUtils;
+
 public enum eMissionState
 {
     EMS_MissionBrief = 0,
@@ -33,10 +35,15 @@ public class GlobalMissionSettings : ScriptableObject
     [SerializeField] private float m_CameraPanRotationSpeed = 20;
     [SerializeField] private string m_DestructableGameOverSceneName = "Name";
     [SerializeField] private sTimeDetails m_DestructionGameStartTime;
+    private List<Vector3> m_BrokenCollectablePositions;
+    //[SerializeField] private FloatVar ;
+    [SerializeField] private BoolVar m_IsLootMode;
     private uint m_AISuspicionLevel = 0;
     private eMissionState m_CurrentMissionState;
-    private eMissionType m_MissionType = eMissionType.EMT_Loot;
+    [SerializeField] private eMissionType m_MissionType = eMissionType.EMT_Loot;
     private float m_MissionTimer = 80;
+    private float m_StartingAmountOfObjectives = 0;
+    private float m_AmountOfMissionObjectivesLeft = 0;
     //=========================
 
     public float GetCameraPanMoveSpeed() => m_CameraPanMoveSpeed;
@@ -52,6 +59,11 @@ public class GlobalMissionSettings : ScriptableObject
     private void OnEnable()
     {
         GameStart(m_MissionType);
+
+        if (m_MissionType == eMissionType.EMT_Loot)
+            m_IsLootMode.Value = true;
+        else
+            m_IsLootMode.Value = false;
     }
 
     public void GameStart(eMissionType MissionType)
@@ -62,12 +74,27 @@ public class GlobalMissionSettings : ScriptableObject
         if (MissionType == eMissionType.EMT_Destructable)
             m_MissionTimer = ConvertTimeDetailsToFloat(m_DestructionGameStartTime);
         else
-            m_MissionTimer = 0;
+        {
+            m_MissionTimer = 0;          
+        }
+
+        m_BrokenCollectablePositions.Clear();
     }
 
-    public void IncreaseAISuspicionLevel(uint Amount)
+    public List<Vector3> GetBrokenLocations() => m_BrokenCollectablePositions;
+
+    public void AddBrokenPosition(Vector3 Value) => m_BrokenCollectablePositions.Add(Value);
+
+    public void StartingAmountOfMissionObjectives(uint Value)
     {
-        m_AISuspicionLevel += Amount;
+        m_StartingAmountOfObjectives = Value;
+        m_AmountOfMissionObjectivesLeft = Value;
+    }
+
+    public void CollectedAMissionObjective()
+    {
+        if(m_AmountOfMissionObjectivesLeft > 0)
+            m_AmountOfMissionObjectivesLeft -= 1;
     }
 
     public float GetAISuspicionLevel() => m_AISuspicionLevel;
@@ -111,23 +138,50 @@ public class GlobalMissionSettings : ScriptableObject
     /* This only needs to be called once per frame **/
     public void UpdateMissionTimer()
     {
-        if (m_MissionType == eMissionType.EMT_Destructable)
+        if (m_CurrentMissionState == eMissionState.EMS_PlayingMission)
         {
-            m_MissionTimer -= Time.deltaTime;
-
-            if(m_MissionTimer <= 0)
+            if (m_MissionType == eMissionType.EMT_Destructable)
             {
-                SceneManager.LoadScene(m_DestructableGameOverSceneName);
-                
+                m_MissionTimer -= Time.deltaTime;
+
+                float Score = 1;//m_DestructionScore.Value;
+                Score = Score / 50.0f;
+
+                if ((uint)Score >= 75)
+                    m_AISuspicionLevel = 3;
+                else if ((uint)Score >= 50)
+                    m_AISuspicionLevel = 2;
+                else
+                    m_AISuspicionLevel = 1;
+
+                Debug.Log("AI Suspicion Level = " + m_AISuspicionLevel);
+
+                if (m_MissionTimer <= 0)
+                {
+                    SceneManager.LoadScene(m_DestructableGameOverSceneName);
+                }
             }
-        }
-        else
-        {
-            m_MissionTimer += Time.deltaTime;
-        }
+            else
+            {
+                //work out % left
+                uint PercentOfCollectablesTaken = 100;
+                PercentOfCollectablesTaken -= (uint)((100 / m_StartingAmountOfObjectives) * m_AmountOfMissionObjectivesLeft);
+                
+                if (PercentOfCollectablesTaken >= 66)
+                    m_AISuspicionLevel = 3;
+                else if (PercentOfCollectablesTaken >= 33)
+                    m_AISuspicionLevel = 2;
+                else
+                    m_AISuspicionLevel = 1;
 
-        sTimeDetails MissionTimer = ConvertSecondsToTimeDetails(m_MissionTimer);
+                Debug.Log("AI Suspicion Level = " + m_AISuspicionLevel);
 
-        //Debug.Log("Timer: " + MissionTimer.TimerInMinutesAndSecondsString);
+                m_MissionTimer += Time.deltaTime;
+            }
+
+            sTimeDetails MissionTimer = ConvertSecondsToTimeDetails(m_MissionTimer);
+
+            //Debug.Log("Timer: " + MissionTimer.TimerInMinutesAndSecondsString);
+        }
     }
 }

@@ -130,8 +130,14 @@ public class LineOfSight : MonoBehaviour
         }
         SightMesh.uv = UVs;
 
+        Vector3 NewScale = new Vector3(1, 1, 1);
+        NewScale.x = NewScale.x / 30;
+        NewScale.y = NewScale.y / 30;
+        NewScale.z = NewScale.z / 30;
+        transform.localScale = NewScale;
         meshFilter.mesh = SightMesh;
         gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        
     }
 
     public void ClearMesh()

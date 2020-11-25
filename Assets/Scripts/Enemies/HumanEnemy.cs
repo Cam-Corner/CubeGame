@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using AmoaebaUtils;
 
 [System.Serializable]
 public struct sPathPoint
@@ -36,6 +37,7 @@ public class HumanEnemy : MonoBehaviour
     [SerializeField] protected uint m_FieldOfView = 45;
     [SerializeField] protected uint m_FOVDistance = 45;
     [SerializeField] protected uint m_AmountOfRays = 50;
+    
 
     private Vector3 storedVelocity = Vector3.zero;
     private float m_CurrentDetectionTimer = 0;
@@ -50,9 +52,8 @@ public class HumanEnemy : MonoBehaviour
         EES_CheckingLastLocation = 2,
         EES_AngryRoar = 3,
         EES_CaughtPlayer = 4,
-        EES_GoingToInvestigatingNoise = 5,
-        EES_InvestigatingNoise = 6,
-        EES_RandomlyCheckingNearPlayer = 7
+        EES_GoingToInvestigatingArea = 5,
+        EES_InvestigatingArea = 6,
     }
 
     //Non inspector properties
@@ -73,6 +74,7 @@ public class HumanEnemy : MonoBehaviour
     private eEnemyState m_CurrentState = eEnemyState.EES_Patrol;
     private Animator m_AC;
     private float m_AngryRoarTimer = 0;
+    
     //=========================================
 
     private void Start()
@@ -149,14 +151,11 @@ public class HumanEnemy : MonoBehaviour
             case eEnemyState.EES_AngryRoar:
                 AngryRoar();
                 break;
-            case eEnemyState.EES_InvestigatingNoise:
-                InvestigationNoise();
+            case eEnemyState.EES_InvestigatingArea:
+                InvestigationArea();
                 break;
-            case eEnemyState.EES_GoingToInvestigatingNoise:
-                GoingToInvestigatingNoise();
-                break;
-            case eEnemyState.EES_RandomlyCheckingNearPlayer:
-                RandomlyCheckingNearPlayer();
+            case eEnemyState.EES_GoingToInvestigatingArea:
+                GoingToInvestigatingArea();
                 break;
             default:
                 m_NMA.speed = 0.0f;
@@ -184,8 +183,30 @@ public class HumanEnemy : MonoBehaviour
                 //m_CurrentPP = m_MyPath.GetNextPoint();
 
                 //m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
-                SetNextPathPoint();
-                m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
+
+                if (m_EnemySettings.GetSuspicionLevel() < 3)
+                {
+                    SetNextPathPoint();
+                    m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
+                }
+                else
+                {
+                    int RandomNum = Random.Range(0, 100);
+                    //Debug.Log(RandomNum);
+                    m_CheckForPlayerRandNumTimer = 3.0f;
+
+                    if (RandomNum > 30 && RandomNum < 70 && m_EnemySettings.GetBrokenPositions().Count > 0)
+                    {
+                        int RandomTransform = Random.Range(0, m_EnemySettings.GetBrokenPositions().Count - 1);
+
+                        HeardANoise(m_EnemySettings.GetBrokenPositions()[RandomTransform]);
+                    }
+                    else
+                    {
+                        SetNextPathPoint();
+                        m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
+                    }
+                }
             }
         }
         else
@@ -194,36 +215,39 @@ public class HumanEnemy : MonoBehaviour
             m_NMA.speed = m_EnemySettings.m_WalkSpeed;
         }
 
-        //distance check with sqaure rooting
-        Vector3 A = transform.position;
-        Vector3 B = m_Player.transform.position;
-        float UnSqauredDistanceX = (A.x - B.x) * (A.x - B.x);
-        float UnSqauredDistanceY = (A.y - B.y) * (A.y - B.y);
-        float UnSqauredDistanceZ = (A.z - B.z) * (A.z - B.z);
-        float UnSqauredFinalDistance = UnSqauredDistanceX + UnSqauredDistanceY + UnSqauredDistanceZ;
-
-        if(m_CheckForPlayerRandNumTimer >= 0)
+        if (m_EnemySettings.GetSuspicionLevel() >= 2)
         {
-            m_CheckForPlayerRandNumTimer -= Time.deltaTime;
-        }
+            //distance check with sqaure rooting
+            Vector3 A = transform.position;
+            Vector3 B = m_Player.transform.position;
+            float UnSqauredDistanceX = (A.x - B.x) * (A.x - B.x);
+            float UnSqauredDistanceY = (A.y - B.y) * (A.y - B.y);
+            float UnSqauredDistanceZ = (A.z - B.z) * (A.z - B.z);
+            float UnSqauredFinalDistance = UnSqauredDistanceX + UnSqauredDistanceY + UnSqauredDistanceZ;
 
-        if (UnSqauredFinalDistance < 450 && m_CheckForPlayerRandNumTimer <= 0)
-        {
-            if (m_EnemySettings.GetSuspicionLevel() >= 50)
+            if (m_CheckForPlayerRandNumTimer >= 0)
             {
-                float RandomNum = Random.Range(0, 100);
+                m_CheckForPlayerRandNumTimer -= Time.deltaTime;
+            }
+
+            if (UnSqauredFinalDistance < 450 && m_CheckForPlayerRandNumTimer <= 0)
+            {
+
+                int RandomNum = Random.Range(0, 100);
                 Debug.Log(RandomNum);
                 m_CheckForPlayerRandNumTimer = 3.0f;
 
                 if (RandomNum > 45 && RandomNum < 55)
                 {
-                    m_NMA.SetDestination(m_Player.transform.position);
-                    m_NMA.speed = m_EnemySettings.m_WalkSpeed;
-                    m_CurrentState = eEnemyState.EES_RandomlyCheckingNearPlayer;
-                    Debug.Log(transform.name + ": Current AI State: " + m_CurrentState);
-                    m_LastPlayerSighting = m_Player.transform.position;
-                    ResetAnimationControllerToDefault();
-                    m_AC.SetBool("Walking", true);
+                    //m_NMA.SetDestination(m_Player.transform.position);
+                    //m_NMA.speed = m_EnemySettings.m_WalkSpeed;
+                    //m_CurrentState = eEnemyState.EES_RandomlyCheckingNearPlayer;
+                    //Debug.Log(transform.name + ": Current AI State: " + m_CurrentState);
+                    //m_LastPlayerSighting = m_Player.transform.position;
+                    //ResetAnimationControllerToDefault();
+                    //m_AC.SetBool("Walking", true);
+
+                    HeardANoise(m_Player.transform.position);
                 }
             }
         }
@@ -418,7 +442,7 @@ public class HumanEnemy : MonoBehaviour
             transform.position = m_CurrentPP.m_GotoPosition;
     }
 
-    void GoingToInvestigatingNoise()
+    void GoingToInvestigatingArea()
     {
         m_AC.SetBool("Walking", true);
         //Improve later
@@ -430,13 +454,13 @@ public class HumanEnemy : MonoBehaviour
             m_NMA.SetDestination(transform.position);
             m_NMA.speed = 0.0f;
             m_AngryRoarTimer = 5.0f;
-            m_CurrentState = eEnemyState.EES_InvestigatingNoise;
+            m_CurrentState = eEnemyState.EES_InvestigatingArea;
         }
 
         PlayerSightCheck();
     }
 
-    void InvestigationNoise()
+    void InvestigationArea()
     {
         m_AC.SetBool("InvestigatingNoise", true);
 
@@ -529,7 +553,7 @@ public class HumanEnemy : MonoBehaviour
     {
         m_NMA.SetDestination(NoiseLocation);
         m_NMA.speed = m_EnemySettings.m_WalkSpeed;
-        m_CurrentState = eEnemyState.EES_GoingToInvestigatingNoise;
+        m_CurrentState = eEnemyState.EES_GoingToInvestigatingArea;
         Debug.Log(transform.name + ": Current AI State: " + m_CurrentState);
         m_LastPlayerSighting = NoiseLocation;
         ResetAnimationControllerToDefault();

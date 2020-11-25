@@ -16,7 +16,7 @@ public class MissionEndCheck : MonoBehaviour
                 if (MissionManager.Instance.MissionComplete())
                 {
                     Debug.Log("Mission: MISSION COMPLETE!");
-                    SceneManager.LoadScene("MissionComplete");
+                    SceneManager.LoadScene(m_GameOverScene);
                 }
                 else
                 {

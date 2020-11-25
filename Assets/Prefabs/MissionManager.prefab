@@ -46,6 +46,7 @@ MonoBehaviour:
   m_MainCamera: {fileID: 0}
   m_Player: {fileID: 0}
   m_MissionSettings: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
+  m_TurnBasedSystem: {fileID: 11400000, guid: fb5630f60ee395c4e832288ef62149eb, type: 2}
   m_MissionObjects:
   - {fileID: 0}
   m_StartingMissionState: 1

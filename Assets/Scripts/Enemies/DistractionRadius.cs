@@ -1,6 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using AmoaebaUtils;
 
 public class DistractionRadius : MonoBehaviour
@@ -104,7 +109,16 @@ public class DistractionRadius : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, m_SmashedSoundDistance);
+
+#if UNITY_EDITOR
+        if (Selection.activeTransform != null)
+        {
+            if (Selection.activeObject == this.gameObject || Selection.activeTransform.IsChildOf(this.transform))
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, m_SmashedSoundDistance);
+            }
+        }
+#endif
     }
 }
