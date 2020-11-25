@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1982121441612629432}
   - component: {fileID: 8559481584417158819}
+  - component: {fileID: 348715657608085013}
+  - component: {fileID: 1734631626991986383}
   m_Layer: 0
   m_Name: Knoll_SaarinenTable042_FBX (4)
   m_TagString: Untagged
@@ -50,6 +52,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &348715657608085013
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209841433120464642}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.09460449, z: 1}
+  m_Center: {x: 0, y: 0.70748675, z: 0}
+--- !u!65 &1734631626991986383
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209841433120464642}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.7086821, z: 0.6}
+  m_Center: {x: 0, y: 0.35434106, z: 0}
 --- !u!1 &1382483323007511072
 GameObject:
   m_ObjectHideFlags: 0

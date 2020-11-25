@@ -415,6 +415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6245201710087842078}
   - component: {fileID: 1785829993300142189}
+  - component: {fileID: 6297308448162056171}
   m_Layer: 0
   m_Name: Stroh_40_Austrian_Rum_Bottle_fbx_base (1)
   m_TagString: Untagged
@@ -458,6 +459,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6297308448162056171
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6764610537218306980}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.06217129, z: 0.1888897}
+  m_Center: {x: 3.6146638e-11, y: 0.0026657924, z: 0.09073191}
 --- !u!1 &7758090762275504611
 GameObject:
   m_ObjectHideFlags: 0
