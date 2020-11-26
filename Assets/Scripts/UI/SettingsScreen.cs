@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class SettingsScreen : MonoBehaviour
 {
     [SerializeField]
@@ -14,6 +14,9 @@ public class SettingsScreen : MonoBehaviour
 
     [SerializeField]
     private MenuHelper menuHelper;
+
+    [SerializeField]
+    private string quitScene = "TitleScreen";
 
     private void Start() 
     {
@@ -52,6 +55,11 @@ public class SettingsScreen : MonoBehaviour
         Array types = Enum.GetValues(typeof(InputMapping.ControllerType));
         InputMapping.ControllerType type = (InputMapping.ControllerType)types.GetValue(controllerTypeDropdown.value);
         mapping.m_ControllerType = type;
+    }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene(quitScene, LoadSceneMode.Single);
     }
 
     public void CloseMenu() 

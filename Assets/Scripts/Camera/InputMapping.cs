@@ -90,4 +90,33 @@ public class InputMapping : ScriptableObject
         }
         return false;
     }
+
+    public float GetZoomInDir()
+    {
+        float dir = 0;
+        switch(controllerType)
+        {
+            case ControllerType.Mouse:
+            {
+                dir += Input.GetKey(KeyCode.KeypadPlus)? 1: 0;
+                dir += Input.GetKey(KeyCode.KeypadMinus)? -1: 0;
+                dir += Input.mouseScrollDelta.y;
+            }
+            break;
+            case ControllerType.XBox:
+            {
+                dir += Input.GetKey(KeyCode.JoystickButton5)? 1: 0;
+                dir += Input.GetKey(KeyCode.JoystickButton4)? -1: 0;
+            }
+            break;
+            case ControllerType.Playstation:
+            {
+                dir += Input.GetKey(KeyCode.JoystickButton7)? 1: 0;
+                dir += Input.GetKey(KeyCode.JoystickButton6)? -1: 0;
+            }
+            break;
+        }
+        return dir;
+    }
+    
 }

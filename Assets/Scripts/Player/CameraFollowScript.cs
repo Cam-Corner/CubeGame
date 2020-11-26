@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AmoaebaUtils;
@@ -62,6 +62,21 @@ public class CameraFollowScript : MonoBehaviour
     [SerializeField]
     private float m_Derivative = 0;
 
+    [SerializeField]
+    private float minZoom = 10.0f;
+    [SerializeField]
+    private float maxZoom = 10.0f;
+    float zoomOffset = 0;
+
+    [SerializeField]
+    private FloatVar zoomSensitivity;
+
+    [SerializeField]
+    private BoolVar invertZoom;
+
+        [SerializeField]
+    private MenuHelper menuHelper;
+
 
     ///////////////////
     //private variables
@@ -70,18 +85,17 @@ public class CameraFollowScript : MonoBehaviour
     private Vector3 m_ErrorPrior = new Vector3(0, 0, 0);
     private Vector3 m_IntegralPrior = new Vector3(0, 0, 0);
 
-    private Camera[] m_Cameras;
-    public Camera GameCamera => m_Cameras[0];
+    private Camera m_Camera;
+    public Camera GameCamera => m_Camera;
 
     public CameraRotationDefinition[] preDefinedRotations;
-    
 
     // Start is called before the first frame update
     void Start()
     {
         m_PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        m_Cameras = GetComponentsInChildren<Camera>();
+        m_Camera = GetComponentInChildren<Camera>();
         SetCameraRotation();
         SetCameraDistance();
     }
@@ -93,6 +107,7 @@ public class CameraFollowScript : MonoBehaviour
         if (m_MissionSettings.GetMissionState() != eMissionState.EMS_PlayingMission)
             return;
 
+        //SetCameraDistance();
         CameraRotation();
         Vector3 CurrentPosition = transform.position;
 
@@ -109,6 +124,28 @@ public class CameraFollowScript : MonoBehaviour
         CurrentPosition.z += (PIDControllerFunction(ref CurrentPosition.z, GoToPosition.z, ref m_ErrorPrior.z, ref m_IntegralPrior.z) * m_CameraSpeed) * Time.deltaTime;
 
         transform.position = CurrentPosition;
+
+        CameraZoom();
+    }
+
+    private void CameraZoom()
+    {
+        if(menuHelper.InSettings)
+        {
+            return;
+        }
+
+        float dir = inputMapping.GetZoomInDir();
+        dir *= invertZoom.Value? -1.0f : 1.0f;
+        if(dir != 0)
+        {
+            float speedDelta = Time.deltaTime * dir * zoomSensitivity.Value;
+            float intendedZoom = zoomOffset + speedDelta;
+            zoomOffset = Mathf.Clamp(speedDelta + zoomOffset, minZoom, maxZoom);
+            speedDelta = intendedZoom == zoomOffset? speedDelta : speedDelta + (zoomOffset - intendedZoom);
+            
+            m_Camera.transform.position += speedDelta * m_Camera.transform.forward;
+        }
     }
 
     void SetCameraDistance()
@@ -116,15 +153,14 @@ public class CameraFollowScript : MonoBehaviour
         //convert cube position to screen position
         Vector3 DefaultPos = transform.position;
 
-        foreach (Camera m_Camera in m_Cameras)
-        {
-            float Distance = Vector3.Distance(m_Camera.transform.position, DefaultPos);
 
-            Vector3 UnitV = (m_Camera.transform.position - DefaultPos) / Distance;
-            Vector3 FinalPosition = (UnitV * m_CameraDistanceFromCube);
+        float Distance = Vector3.Distance(m_Camera.transform.position, DefaultPos);
 
-            m_Camera.transform.localPosition = FinalPosition;
-        }
+        Vector3 UnitV = (m_Camera.transform.position - DefaultPos) / Distance;
+        Vector3 FinalPosition = (UnitV * m_CameraDistanceFromCube);
+
+        m_Camera.transform.localPosition = FinalPosition;
+    
 
     }
 
