@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+
 
 public class PositionCopyWizard : ScriptableWizard
 {
@@ -55,3 +57,4 @@ public class PositionCopyWizard : ScriptableWizard
         isValid = originals != null && originals.Length > 0 && copyPrefab != null;
     }
 }
+#endif
