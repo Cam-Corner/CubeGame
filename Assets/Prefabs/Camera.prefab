@@ -160,7 +160,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_CameraSensitivity: {fileID: 11400000, guid: 231b72d097945a046b0f3c211757f183, type: 2}
   minCameraSensitivity: 0.1
-  maxCameraSensitivity: 5
+  maxCameraSensitivity: 1
   invertCameraX: {fileID: 11400000, guid: 2cf113fe7b083854d8b3f478a34340b3, type: 2}
   invertCameraY: {fileID: 11400000, guid: b4c2a7ed2021b8b4fa87c54d76665264, type: 2}
   m_RotationMinClamp: -30

@@ -8,10 +8,14 @@ public class MissionObjective : MonoBehaviour
     [SerializeField] public float m_GrabDistance = 5.0f;
     [SerializeField] public float m_TimeToSteal = 5.0f;
 
+    [SerializeField] MissionObjectiveVar objectBeingStolen;
 
-    private float m_CurrentTimeLeft = 0;
+    private float m_CurrentTimeLeft = float.MaxValue;
     private SphereCollider m_SC;
     private bool m_bPlayerInRange = false;
+
+    public bool IsBeingStolen => (m_CurrentTimeLeft > 0 && m_bPlayerInRange && objectBeingStolen.Value == this);
+    public float RatioToSteal => Mathf.Clamp01(m_CurrentTimeLeft / m_TimeToSteal);
 
     private void Start()
     {
@@ -22,10 +26,14 @@ public class MissionObjective : MonoBehaviour
 
     private void Update()
     {
-        if (m_bPlayerInRange && m_CurrentTimeLeft > 0)
+        if (IsBeingStolen)
         {
             m_CurrentTimeLeft -= Time.deltaTime;
             //Debug.Log(m_CurrentTimeLeft);
+        }
+        else if(objectBeingStolen.Value == null && m_bPlayerInRange && !ObjectStolen())
+        {
+            objectBeingStolen.Value = this;
         }
     }
 
@@ -40,12 +48,27 @@ public class MissionObjective : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Player")
+        {
             m_bPlayerInRange = true;
+
+            if(objectBeingStolen.Value == null)
+            {
+                objectBeingStolen.Value = this;
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.transform.tag == "Player")
+        {
             m_bPlayerInRange = false;
+            m_CurrentTimeLeft = m_TimeToSteal;
+
+            if(objectBeingStolen.Value == this)
+            {
+                objectBeingStolen.Value = null;
+            }
+        }
     }
 }

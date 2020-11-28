@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GrabDistance: 5
   m_TimeToSteal: 5
+  objectBeingStolen: {fileID: 11400000, guid: 9bf41f85245eee44a89a9297fa4ed318, type: 2}
 --- !u!33 &2774604710192960331
 MeshFilter:
   m_ObjectHideFlags: 0
