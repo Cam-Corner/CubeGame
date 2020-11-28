@@ -19,6 +19,10 @@ public class StealingUI : MonoBehaviour
 
     [SerializeField]
     private string[] stealingPuns;
+
+    [SerializeField]
+    private Animator duckAnimator;
+
     private void Awake() 
     {   
         stealingUI.gameObject.SetActive(false);

@@ -10,6 +10,8 @@ public class PlayerScriptable : ScriptableObject
     private Transform player;
     private Rigidbody body;
 
+    private CubeMovement movement;
+
 
     public Transform Player 
     {
@@ -21,6 +23,7 @@ public class PlayerScriptable : ScriptableObject
             if(player != null)
             {
                 body = value.GetComponent<Rigidbody>();
+                movement = value.GetComponent<CubeMovement>();
             }
 
             OnPlayerChangeEvent?.Invoke(player); 
@@ -28,4 +31,5 @@ public class PlayerScriptable : ScriptableObject
     }
 
     public Rigidbody Body => body;
+    public CubeMovement Movement => movement;
 }

@@ -5263,14 +5263,15 @@ MonoBehaviour:
   - No ducks were harmed|during this theft|
   - Stealing with|zero ducks given
   - To take this i need|my firequackers
-  - Finding this gone|will give them a fowl mood
+  - Finding this gone|will give them a|fowl mood
   - These security locks|they quack under pressure.
-  - They won't be seeing this| in no duckumentaries no more
+  - This won't appear| in no duckumentary
   - To take this |i need my duck-tape
   - if i was a cow|I'd be a Kobe thief
   - Gotta Steal until you're|Editor-in-Thief
   - Steal-time computing
   - Lady Duck|be with me
+  duckAnimator: {fileID: 0}
 --- !u!1 &7433076970274802968
 GameObject:
   m_ObjectHideFlags: 0
@@ -5401,6 +5402,7 @@ MonoBehaviour:
   inputMap: {fileID: 11400000, guid: 0b311d400eb87b845b8a08fe2b37161d, type: 2}
   m_PlayerStart: {fileID: 0}
   menuHelper: {fileID: 11400000, guid: 260aeb9e3fb289646b0f17529c9e4950, type: 2}
+  objectBeingStolen: {fileID: 11400000, guid: 9bf41f85245eee44a89a9297fa4ed318, type: 2}
 --- !u!54 &7954560901176151756
 Rigidbody:
   m_ObjectHideFlags: 0

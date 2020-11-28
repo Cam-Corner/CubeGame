@@ -67,6 +67,9 @@ public class CubeMovement : MonoBehaviour
     [SerializeField]
     private MenuHelper menuHelper;
 
+    [SerializeField]
+    private MissionObjectiveVar objectBeingStolen;
+
     private Animator moveAnimator;
     private ParticleSystem sweatParticles;
 
@@ -78,6 +81,8 @@ public class CubeMovement : MonoBehaviour
 
     private bool isMoving = false;
     private bool isUp = false;
+
+    private float storedSpeed = 1.0f;
     public bool IsUp 
     {
         get{ return isUp; }
@@ -118,6 +123,7 @@ public class CubeMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isTimeActive.OnChange += OnTimeActiveChange;
         IsMoving = false;
         m_RB = GetComponent<Rigidbody>();
 
@@ -133,8 +139,23 @@ public class CubeMovement : MonoBehaviour
         sweatParticles = GetComponentInChildren<ParticleSystem>();
     }
 
+    private void OnTimeActiveChange(bool oldVal, bool newVal)
+    {
+        if(newVal == oldVal)
+        {
+            return;
+        }
+        Debug.Log("SPEED" + moveAnimator.speed);
+        if(!newVal)
+        {
+            storedSpeed = moveAnimator.speed;
+        }
+        moveAnimator.speed = newVal? storedSpeed : 0.0f;
+    }
+
     private void OnDestroy() 
     {
+        isTimeActive.OnChange -= OnTimeActiveChange;
         turnBasedSystem.OnWaitForPhysicsEntitiesChangedEvent -= OnEntitiesWaitChange;    
     }
 
@@ -156,6 +177,7 @@ public class CubeMovement : MonoBehaviour
     {
         if (m_MissionSettings.GetMissionState() != eMissionState.EMS_PlayingMission)
             return;
+            
 
         if(inputMap.GetSettingsButton())
         {
@@ -183,6 +205,15 @@ public class CubeMovement : MonoBehaviour
             m_RB.velocity = new Vector3(0, 0, 0);
             Debug.Log("Cube Died: Fell of the map!");
         }
+
+        if(isUp)
+        {
+            moveAnimator.SetBool("IsStealing", false);
+        }
+        else
+        {
+            moveAnimator.SetBool("IsStealing", objectBeingStolen.Value != null && objectBeingStolen.Value.IsBeingStolen);
+        }
     }
 
     //Fixed update is called the same time as the physics engine update
@@ -203,7 +234,7 @@ public class CubeMovement : MonoBehaviour
         }
         else if(!IsUp && IsElapsingTime)
         {
-            isTimeActive.Value = true;   
+            isTimeActive.Value = true; 
         }
     }
 

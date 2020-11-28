@@ -10,11 +10,14 @@ public class MissionObjective : MonoBehaviour
 
     [SerializeField] MissionObjectiveVar objectBeingStolen;
 
+    [SerializeField] private PlayerScriptable player;
+
     private float m_CurrentTimeLeft = float.MaxValue;
+
     private SphereCollider m_SC;
     private bool m_bPlayerInRange = false;
 
-    public bool IsBeingStolen => (m_CurrentTimeLeft > 0 && m_bPlayerInRange && objectBeingStolen.Value == this);
+    public bool IsBeingStolen => (m_CurrentTimeLeft > 0 && m_bPlayerInRange && objectBeingStolen.Value == this && !player.Movement.IsUp);
     public float RatioToSteal => Mathf.Clamp01(m_CurrentTimeLeft / m_TimeToSteal);
 
     private void Start()
@@ -23,9 +26,19 @@ public class MissionObjective : MonoBehaviour
 
     }
     public float GetGrabDistance() => m_GrabDistance;
-
+    
     private void Update()
     {
+        if(!TurnBasedSystem.Instance.IsTimeActive)
+        {
+            return;
+        }
+        if(player == null || player.Movement.IsUp)
+        {
+            m_CurrentTimeLeft = m_TimeToSteal;
+            return;
+        }
+
         if (IsBeingStolen)
         {
             m_CurrentTimeLeft -= Time.deltaTime;
