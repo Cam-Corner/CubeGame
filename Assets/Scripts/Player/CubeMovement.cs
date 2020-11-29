@@ -10,7 +10,8 @@ using AmoaebaUtils;
 public enum eFoundPlayerType
 {
     EFPT_HumanEnemy = 0,
-    EFPT_CCTV_Camera = 1
+    EFPT_CCTV_Camera = 1,
+    EFPT_Laser = 2
 }
 
 public class CubeMovement : MonoBehaviour
@@ -200,6 +201,7 @@ public class CubeMovement : MonoBehaviour
             IsUp = IsMoving = m_RB.velocity.magnitude > m_StopMagnitude;
             if(!isUp)
             {
+                GameSoundBoard.Instance.StopRun();
                 m_RB.velocity = new Vector3(0,0,0);
             }
         }
@@ -236,7 +238,7 @@ public class CubeMovement : MonoBehaviour
             IsUp = true;
             moveStartRoutine = MoveStartRoutine(forceDirection);
             StartCoroutine(moveStartRoutine);
-            Debug.Log("HERE");
+            GameSoundBoard.Instance.PlayRun();
         }
         else if(!IsUp && IsElapsingTime)
         {
@@ -365,6 +367,15 @@ public class CubeMovement : MonoBehaviour
         //}
 
         Debug.Log("Player Found: " + FoundType);
+        if(FoundType == eFoundPlayerType.EFPT_Laser)
+        {
+            GameSoundBoard.Instance.PlayLaser();
+        }
+        else
+        {
+            GameSoundBoard.Instance.PlayRestart();
+        }
+        
         ResetPlayer();
     }
 

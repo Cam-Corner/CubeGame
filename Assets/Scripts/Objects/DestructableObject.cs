@@ -28,6 +28,9 @@ public class DestructableObject : MonoBehaviour
     [SerializeField]
     private Transform childTransform;
 
+    [SerializeField]
+    private AudioClip destroySound;
+
     private DistractionRadius m_DR;
 
     private const string DESTRUCTABLE_LAYER_NAME = "Destructables";
@@ -46,6 +49,7 @@ public class DestructableObject : MonoBehaviour
             if(hitMagnitude >= destructionMagnitude)
             {
                 m_DR.MakeNoise(hitMagnitude, true);
+                GameSoundBoard.Instance.PlayDestructionSound();
                 //Debug.Log("Destroyed Magnitude " + hitMagnitude);
 
                 destructionScore.Value += destructionValue;

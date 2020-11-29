@@ -58,7 +58,7 @@ public class LaserBeam : MonoBehaviour
         if(other.transform == playerScriptable.Player)
         {
             Debug.Log("Found Player");
-            playerScriptable.Player.gameObject.GetComponent<CubeMovement>().PlayerFound(eFoundPlayerType.EFPT_CCTV_Camera);
+            playerScriptable.Player.gameObject.GetComponent<CubeMovement>().PlayerFound(eFoundPlayerType.EFPT_Laser);
 
         }
     }

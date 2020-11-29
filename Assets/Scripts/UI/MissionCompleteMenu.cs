@@ -12,6 +12,9 @@ public class MissionCompleteMenu : MonoBehaviour
     [SerializeField]
     private string replayScene;
 
+    private void Start() {
+        GameSoundBoard.Instance.PlayLevelComplete();
+    }
     public void Exit()
     {
         SceneManager.LoadScene(exitScene, LoadSceneMode.Single);

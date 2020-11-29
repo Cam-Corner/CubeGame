@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7d61d0270645ee4586656ffd5a37402, type: 3}
+  m_Name: GameSoundBoard
+  m_EditorClassIdentifier: 
+  soundSystem: {fileID: 11400000, guid: f71386f1ab7b59a459eb6c5bc7a86fc4, type: 2}
+  caughtRestart: {fileID: 8300000, guid: 2569acc870eb39b4e9225af5b36d1c4c, type: 3}
+  run: {fileID: 8300000, guid: 51c4b882b50b72f4aa2ee80ff86e1dea, type: 3}
+  levelComplete: {fileID: 8300000, guid: 3f06f160475687541a9b1175a60596e9, type: 3}
+  steal: {fileID: 8300000, guid: 50741c39a2953f54c929e6f5f5d5783c, type: 3}
+  destructionSound: {fileID: 8300000, guid: b651c29aac5aa014cad8a1930c7d6fa2, type: 3}
+  laser: {fileID: 8300000, guid: 7570a3eae0a5ec9458d7d2e29089d327, type: 3}
