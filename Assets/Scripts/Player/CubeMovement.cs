@@ -20,6 +20,7 @@ public class CubeMovement : MonoBehaviour
     //Public Variables
 
     [Tooltip("Max force that can be applied to the cube")]
+    public float m_MinForce = 20;
     public float m_MaxForce = 20;
 
     [Range(0,1), Tooltip("How much displacement needs to happen for the force to be considered")]
@@ -197,6 +198,10 @@ public class CubeMovement : MonoBehaviour
         else if(IsMoving && IsUp)
         {
             IsUp = IsMoving = m_RB.velocity.magnitude > m_StopMagnitude;
+            if(!isUp)
+            {
+                m_RB.velocity = new Vector3(0,0,0);
+            }
         }
         
         if(transform.position.y <= -20.0f)
@@ -231,6 +236,7 @@ public class CubeMovement : MonoBehaviour
             IsUp = true;
             moveStartRoutine = MoveStartRoutine(forceDirection);
             StartCoroutine(moveStartRoutine);
+            Debug.Log("HERE");
         }
         else if(!IsUp && IsElapsingTime)
         {
@@ -255,7 +261,7 @@ public class CubeMovement : MonoBehaviour
     void AddForceToObject(Vector3 forceDirection)
     {
         transform.forward = m_ForceToApply;
-        m_RB.AddForce(m_ForceToApply * m_MaxForce);
+        m_RB.AddForce(m_ForceToApply * (m_MaxForce-m_MinForce) + m_MinForce*m_ForceToApply.normalized);
 
         m_bApplyForce = false;
     }

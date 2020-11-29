@@ -5392,9 +5392,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f439cc148eeb22c42ae19bd551ce3bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MinForce: 500
   m_MaxForce: 1200
   m_ForceDeadZonePercent: 0.1
-  m_StopMagnitude: 0.01
+  m_StopMagnitude: 5
   m_MissionSettings: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
   m_MaxForceMouseDistance: 10
   ForceArrow: {fileID: 0}
