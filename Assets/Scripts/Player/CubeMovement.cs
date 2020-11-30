@@ -219,7 +219,14 @@ public class CubeMovement : MonoBehaviour
         }
         else
         {
-            moveAnimator.SetBool("IsStealing", objectBeingStolen.Value != null && objectBeingStolen.Value.IsBeingStolen);
+            bool isStealing = objectBeingStolen.Value != null && objectBeingStolen.Value.IsBeingStolen;
+            moveAnimator.SetBool("IsStealing", isStealing);
+            if(isStealing)
+            {
+                Vector3 newForward = (objectBeingStolen.Value.transform.position - transform.position);
+                newForward.y = 0;
+                transform.forward = newForward.normalized;
+            }
         }
     }
 
