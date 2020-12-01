@@ -5271,7 +5271,8 @@ MonoBehaviour:
   - Gotta Steal until you're|Editor-in-Thief
   - Steal-time computing
   - Lady Duck|be with me
-  duckAnimator: {fileID: 0}
+  - Hit the quackpot
+  - Their detective won't|quack this case
 --- !u!1 &7433076970274802968
 GameObject:
   m_ObjectHideFlags: 0
