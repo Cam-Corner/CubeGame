@@ -31,6 +31,11 @@ public class MissionManager : MonoBehaviour
     [Header("Mission Settings")]
     [SerializeField] private List<MissionObjective> m_MissionObjects = new List<MissionObjective>();
     [SerializeField] private eMissionState m_StartingMissionState = eMissionState.EMS_MissionBrief;
+
+    private int objectsToStealCount;
+    private int objectsStolenCount;
+    public int ObjectsToSteal => objectsToStealCount;
+    public int ObjectsStolen => objectsStolenCount;
   
     private int m_CameraPanCurrentObjectIndex = 0;
     private float m_CurrentCameraRotationValue = 0;
@@ -56,7 +61,8 @@ public class MissionManager : MonoBehaviour
 
         m_CameraPanCurrentObjectIndex = 0;
 
-        
+        objectsToStealCount = m_MissionObjects.Count;
+        objectsStolenCount = 0;
     }
 
     // Update is called once per frame
@@ -164,6 +170,7 @@ public class MissionManager : MonoBehaviour
         m_MissionObjects.Remove(ItemCollected);
         Debug.Log(ThisObjective.name + " has been stolen!");
         m_MissionSettings.CollectedAMissionObjective();
+        objectsStolenCount = Mathf.Clamp(objectsStolenCount +1, 0, objectsToStealCount);
         Destroy(ThisObjective);
     }
 
