@@ -633,6 +633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exitScene: TitleScreen
   replayScene: MuseumLevel
+  m_MissionSettings: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
 --- !u!1 &8098005412835712595
 GameObject:
   m_ObjectHideFlags: 0

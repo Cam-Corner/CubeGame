@@ -35,6 +35,7 @@ public class GlobalMissionSettings : ScriptableObject
     [SerializeField] private float m_CameraPanRotationSpeed = 20;
     [SerializeField] private string m_DestructableGameOverSceneName = "Name";
     [SerializeField] private sTimeDetails m_DestructionGameStartTime;
+    [SerializeField] private BoolVar m_TimeActive;
     private List<Vector3> m_BrokenCollectablePositions = new List<Vector3>();
     //[SerializeField] private FloatVar ;
     [SerializeField] private BoolVar m_IsLootMode;
@@ -146,7 +147,8 @@ public class GlobalMissionSettings : ScriptableObject
         {
             if (m_MissionType == eMissionType.EMT_Destructable)
             {
-                m_MissionTimer -= Time.deltaTime;
+                if(m_TimeActive.Value)
+                    m_MissionTimer -= Time.deltaTime;
 
                 float Score = 1;//m_DestructionScore.Value;
                 Score = Score / 50.0f;
@@ -180,7 +182,8 @@ public class GlobalMissionSettings : ScriptableObject
 
                 Debug.Log("AI Suspicion Level = " + m_AISuspicionLevel);
 
-                m_MissionTimer += Time.deltaTime;
+                if (m_TimeActive.Value)
+                    m_MissionTimer += Time.deltaTime;
             }
 
             sTimeDetails MissionTimer = ConvertSecondsToTimeDetails(m_MissionTimer);

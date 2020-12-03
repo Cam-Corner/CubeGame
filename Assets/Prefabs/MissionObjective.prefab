@@ -52,6 +52,7 @@ MonoBehaviour:
   m_TimeToSteal: 5
   objectBeingStolen: {fileID: 11400000, guid: 9bf41f85245eee44a89a9297fa4ed318, type: 2}
   player: {fileID: 11400000, guid: abc688f2662b70242bde2c69482e51ac, type: 2}
+  m_MissionSettings: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
 --- !u!33 &2774604710192960331
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -20,6 +20,6 @@ MonoBehaviour:
     Seconds: 30
     TotalTimerInSeconds: 0
     TimerInMinutesAndSecondsString: 
-  m_DestructionScore: {fileID: 11400000, guid: be1555332fc466343b0458f12b1c4c40, type: 2}
+  m_TimeActive: {fileID: 11400000, guid: eee168821a7dce74eb7362e182d7b399, type: 2}
   m_IsLootMode: {fileID: 11400000, guid: 91b0060a270fc794ba1dfdc4c1a2b35b, type: 2}
   m_MissionType: 0
