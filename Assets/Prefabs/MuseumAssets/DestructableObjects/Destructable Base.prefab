@@ -81,6 +81,9 @@ MonoBehaviour:
   playerScriptable: {fileID: 11400000, guid: abc688f2662b70242bde2c69482e51ac, type: 2}
   destructionMeshes: {fileID: 8060289473781614057, guid: 2392b6f2d5caf354d99db80410ead13a, type: 3}
   destructionValue: 120
+  fallDestroySpeed: 0.5
+  minSecondsInFall: 0.2
+  detectFloorDistance: 2
   destructionScore: {fileID: 11400000, guid: be1555332fc466343b0458f12b1c4c40, type: 2}
   childTransform: {fileID: 5291072861264172644}
   destroySound: {fileID: 0}
