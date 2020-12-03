@@ -59,7 +59,18 @@ public class SettingsScreen : MonoBehaviour
 
     public void QuitGame()
     {
-        SceneManager.LoadScene(quitScene, LoadSceneMode.Single);
+        if(SceneManager.GetActiveScene().name == quitScene)
+        {
+             #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
+        }
+        else
+        {
+            SceneManager.LoadScene(quitScene, LoadSceneMode.Single);
+        }        
     }
 
     public void CloseMenu() 
