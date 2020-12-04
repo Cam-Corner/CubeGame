@@ -184,6 +184,10 @@ PrefabInstance:
       value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: overrideMaterial
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: destructionMeshes
       value: 
       objectReference: {fileID: -8679921383154817045, guid: f583f0de95f162344afb16788c1a6d1f, type: 3}

@@ -42,6 +42,9 @@ public class DestructableObject : MonoBehaviour
     [SerializeField]
     private float DontDestroyStartTimer = 3.0f;
 
+    [SerializeField]
+    private Material overrideMaterial;
+
     private DistractionRadius m_DR;
 
     private bool IsFalling = false;
@@ -130,6 +133,16 @@ public class DestructableObject : MonoBehaviour
         foreach (Transform mesh in meshes)
         {
             mesh.gameObject.SetActive(false);
+            if(overrideMaterial != null)
+            {
+                MeshRenderer renderer = mesh.GetComponent<MeshRenderer>();
+                Material[] materials = renderer.materials;
+                for(int i = 0; i < materials.Length; i++)
+                {
+                    materials[i] = overrideMaterial;
+                }
+                renderer.materials = materials;
+            }
         }
 
         m_MissionSettings.AddBrokenPosition(transform.position);
