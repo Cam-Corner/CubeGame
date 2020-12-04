@@ -40,7 +40,6 @@ public class DestructableObject : MonoBehaviour
     [SerializeField]
     private AudioClip destroySound;
 
-
     private DistractionRadius m_DR;
 
     private bool IsFalling = false;

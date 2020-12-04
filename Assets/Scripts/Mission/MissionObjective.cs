@@ -12,6 +12,8 @@ public class MissionObjective : MonoBehaviour
 
     [SerializeField] private PlayerScriptable player;
 
+    [SerializeField] private BoolVar lootGame;
+
     private float m_CurrentTimeLeft = float.MaxValue;
 
     private SphereCollider m_SC;
@@ -60,7 +62,7 @@ public class MissionObjective : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.transform.tag == "Player" && lootGame.Value)
         {
             m_bPlayerInRange = true;
 
@@ -73,7 +75,7 @@ public class MissionObjective : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.transform.tag == "Player" && lootGame.Value)
         {
             m_bPlayerInRange = false;
             m_CurrentTimeLeft = m_TimeToSteal;
