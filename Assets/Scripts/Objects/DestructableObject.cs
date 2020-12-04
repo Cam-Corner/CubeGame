@@ -39,6 +39,8 @@ public class DestructableObject : MonoBehaviour
 
     [SerializeField]
     private AudioClip destroySound;
+    [SerializeField]
+    private float DontDestroyStartTimer = 3.0f;
 
     private DistractionRadius m_DR;
 
@@ -62,7 +64,13 @@ public class DestructableObject : MonoBehaviour
 
     private void Update() 
     {
-        if(!IsFalling)
+        if (DontDestroyStartTimer > 0)
+        {
+            DontDestroyStartTimer -= Time.deltaTime;
+            return;
+        }
+
+        if (!IsFalling)
         {
             IsFalling = body.velocity.y < 0;
             if(IsFalling)

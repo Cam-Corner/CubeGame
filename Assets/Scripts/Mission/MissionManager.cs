@@ -112,7 +112,7 @@ public class MissionManager : MonoBehaviour
             return;
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
             m_CameraPanCurrentObjectIndex = 0;
             m_MissionSettings.SetMissionState(eMissionState.EMS_PlayingMission);

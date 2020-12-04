@@ -77,11 +77,17 @@ public class CameraFollowScript : MonoBehaviour
         [SerializeField]
     private MenuHelper menuHelper;
 
+    [Space(5), Header("See Through Walls")]
+    [SerializeField]
+    bool m_bUseOriginalTexture = false;
+    [SerializeField]
+    private Material m_WallMat;
 
     ///////////////////
     //private variables
     private Transform m_PlayerTransform;
-
+    private MeshRenderer m_LastWallHitMR;
+    private Material m_LastWallHitMat;
     private Vector3 m_ErrorPrior = new Vector3(0, 0, 0);
     private Vector3 m_IntegralPrior = new Vector3(0, 0, 0);
 
@@ -113,6 +119,7 @@ public class CameraFollowScript : MonoBehaviour
 
         Vector3 GoToPosition = m_PlayerTransform.position; //WorkOutGotoPosition();
 
+        CheckForWall();
 
         //X value
         CurrentPosition.x += (PIDControllerFunction(ref CurrentPosition.x, GoToPosition.x, ref m_ErrorPrior.x, ref m_IntegralPrior.x) * m_CameraSpeed) * Time.deltaTime;
@@ -226,7 +233,7 @@ public class CameraFollowScript : MonoBehaviour
     {
         Quaternion QOldRotation = transform.rotation;
         Vector3 VOldRotation = QOldRotation.eulerAngles;
-  Debug.Log("Sensi" + CameraSensitivity);
+        Debug.Log("Sensi" + CameraSensitivity);
         Vector2 MouseMovementThisFrame = mousPos 
                                             * CameraSensitivity
                                             * 1000 
@@ -316,6 +323,58 @@ public class CameraFollowScript : MonoBehaviour
 
         eulerRotation.x = ClampRotation (eulerRotation.x);
         transform.rotation = Quaternion.Euler(eulerRotation);
-    } 
+    }
+    
+    void CheckForWall()
+    {
+        RaycastHit Hit;
+        Vector3 Dir = (m_PlayerTransform.position - m_Camera.transform.position).normalized;
+        bool bHitSomething = Physics.Raycast(m_Camera.transform.position, Dir, out Hit, 1000);
+
+        if (bHitSomething)
+        {
+            if (Hit.transform.tag != "Player")
+            {
+                MeshRenderer MR = Hit.transform.gameObject.GetComponent<MeshRenderer>();
+                if (MR != null)
+                {
+                    Debug.Log("Camera Hit: " + Hit.transform.name);
+                    Debug.DrawRay(m_Camera.transform.position, Dir * Hit.distance, Color.yellow, 1);
+                    Material[] Mats = MR.materials;
+
+                    if (m_LastWallHitMR != null && m_LastWallHitMat != null)
+                    {
+                        Mats[0] = m_LastWallHitMat;
+                        m_LastWallHitMR.materials = Mats;
+                    }
+
+                    m_LastWallHitMR = MR;
+                    m_LastWallHitMat = MR.materials[0];
+
+                    Mats[0] = m_WallMat;
+                    MR.materials = Mats;
+                }
+            }
+            else
+            {
+                if (m_LastWallHitMR != null && m_LastWallHitMat != null)
+                {
+                    Material[] Mats = m_LastWallHitMR.materials;
+                    Mats[0] = m_LastWallHitMat;
+                    m_LastWallHitMR.materials = Mats;
+                }
+            }
+
+        }
+        else
+        {
+            if (m_LastWallHitMR != null && m_LastWallHitMat != null)
+            {
+                Material[] Mats = m_LastWallHitMR.materials;
+                Mats[0] = m_LastWallHitMat;
+                m_LastWallHitMR.materials = Mats;
+            }
+        }
+    }
 }
 

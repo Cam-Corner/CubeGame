@@ -12,6 +12,9 @@ public class MissionCompleteMenu : MonoBehaviour
     [SerializeField]
     private string replayScene;
 
+    [SerializeField]
+    private GlobalMissionSettings m_MissionSettings;
+
     private void Start() {
         GameSoundBoard.Instance.PlayLevelComplete();
     }
@@ -23,5 +26,6 @@ public class MissionCompleteMenu : MonoBehaviour
     public void Replay()
     {
         SceneManager.LoadScene(replayScene, LoadSceneMode.Single);
+        m_MissionSettings.GameStart(m_MissionSettings.GetMissionType());
     }
 }

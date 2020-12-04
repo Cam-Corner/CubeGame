@@ -53,6 +53,7 @@ MonoBehaviour:
   objectBeingStolen: {fileID: 11400000, guid: 9bf41f85245eee44a89a9297fa4ed318, type: 2}
   player: {fileID: 11400000, guid: abc688f2662b70242bde2c69482e51ac, type: 2}
   lootGame: {fileID: 11400000, guid: 91b0060a270fc794ba1dfdc4c1a2b35b, type: 2}
+  m_MissionSettings: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
 --- !u!33 &2774604710192960331
 MeshFilter:
   m_ObjectHideFlags: 0

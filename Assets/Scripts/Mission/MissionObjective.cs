@@ -11,8 +11,9 @@ public class MissionObjective : MonoBehaviour
     [SerializeField] MissionObjectiveVar objectBeingStolen;
 
     [SerializeField] private PlayerScriptable player;
-
     [SerializeField] private BoolVar lootGame;
+
+    [SerializeField] private GlobalMissionSettings m_MissionSettings;
 
     private float m_CurrentTimeLeft = float.MaxValue;
 
@@ -31,7 +32,7 @@ public class MissionObjective : MonoBehaviour
     
     private void Update()
     {
-        if(!TurnBasedSystem.Instance.IsTimeActive)
+        if(!TurnBasedSystem.Instance.IsTimeActive || m_MissionSettings.GetMissionType() != eMissionType.EMT_Loot)
         {
             return;
         }
