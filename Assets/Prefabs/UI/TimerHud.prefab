@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MissionSettings: {fileID: 11400000, guid: c4c2f41952a3b9445afcfefe9fbe2624, type: 2}
+  missionManager: {fileID: 11400000, guid: 00f68d76122739e4a85439247f9933b3, type: 2}
 --- !u!1 &9167814204482040417
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,6 +32,7 @@ public class MissionManager : MonoBehaviour
     [SerializeField] private List<MissionObjective> m_MissionObjects = new List<MissionObjective>();
     [SerializeField] private eMissionState m_StartingMissionState = eMissionState.EMS_MissionBrief;
 
+    public bool IsInMissionBrief => m_MissionSettings.GetMissionState() == eMissionState.EMS_MissionBrief;
     private int objectsToStealCount;
     private int objectsStolenCount;
     public int ObjectsToSteal => objectsToStealCount;
