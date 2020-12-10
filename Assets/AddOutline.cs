@@ -10,6 +10,9 @@ public class AddOutline : MonoBehaviour
     private BoolVar IsLootGame;
 
     [SerializeField]
+    private BoolVar showObjectiveOutlines;
+
+    [SerializeField]
     private MissionManagerVar missionManager;
     private bool hasAdded = false;
     void Start()
@@ -18,11 +21,31 @@ public class AddOutline : MonoBehaviour
         {
             Destroy(this);
         }
+
+        showObjectiveOutlines.OnChange += OnShowChange;
+    }
+
+    private void OnShowChange(bool oldVal, bool newVal)
+    {
+        if(hasAdded && !newVal)
+        {
+            Outline[] outlines = GetComponentsInChildren<Outline>();
+            foreach(Outline script in outlines)
+            {
+                Destroy(script);
+            }
+            hasAdded = false;
+        }
+    }
+
+    private void OnDestroy() 
+    {
+        showObjectiveOutlines.OnChange -= OnShowChange;
     }
 
     private void Update() 
     {
-        if(missionManager.Value == null || missionManager.Value.IsInMissionBrief || hasAdded)
+        if(hasAdded || !showObjectiveOutlines.Value || missionManager.Value == null || missionManager.Value.IsInMissionBrief)
         {
             return;
         }

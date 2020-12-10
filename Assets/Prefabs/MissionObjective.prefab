@@ -159,4 +159,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsLootGame: {fileID: 11400000, guid: 91b0060a270fc794ba1dfdc4c1a2b35b, type: 2}
+  showObjectiveOutlines: {fileID: 11400000, guid: ad6ed2d564835824b8740f0c55610011, type: 2}
   missionManager: {fileID: 11400000, guid: 00f68d76122739e4a85439247f9933b3, type: 2}
