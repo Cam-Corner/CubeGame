@@ -97,7 +97,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295080, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_Mass
-      value: 0.1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295080, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_AngularDrag
@@ -152,6 +152,10 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
+      propertyPath: fallDestroySpeed
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: overrideMaterial
       value: 
       objectReference: {fileID: 0}
@@ -161,7 +165,7 @@ PrefabInstance:
       objectReference: {fileID: -8679921383154817045, guid: 527ae4dc0829538459747dfea8f38d4c, type: 3}
     - target: {fileID: 8768970403638295086, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: destructionMagnitude
-      value: 12
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8768970403638295087, guid: 41c2e3c71665ed849a3ef7cf4ff92f95, type: 3}
       propertyPath: m_Name
