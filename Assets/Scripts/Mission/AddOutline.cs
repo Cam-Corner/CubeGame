@@ -13,7 +13,7 @@ public class AddOutline : MonoBehaviour
     private BoolVar showObjectiveOutlines;
 
     [SerializeField]
-    private MissionManagerVar missionManager;
+    protected MissionManagerVar missionManager;
     private bool hasAdded = false;
     void Start()
     {
@@ -50,7 +50,7 @@ public class AddOutline : MonoBehaviour
             return;
         }
 
-        if(!hasAdded)
+        if(!hasAdded && ShouldShow())
         {
           MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
           foreach(MeshRenderer mesh in meshes)
@@ -65,6 +65,11 @@ public class AddOutline : MonoBehaviour
           }
           hasAdded = true;
         }
+    }
+
+    protected virtual bool ShouldShow()
+    {
+        return true;
     }
 
     private void AddOutlineScript(GameObject gameObject)
