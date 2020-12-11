@@ -73,6 +73,14 @@ public class SettingsScreen : MonoBehaviour
         }        
     }
 
+    public void Instructions()
+    {
+        if(!menuHelper.InTutorial)
+        {
+            menuHelper.OpenTutorial();
+        }
+    }
+
     public void CloseMenu() 
     {
         Destroy(this.gameObject);

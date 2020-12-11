@@ -11,6 +11,11 @@ public class MenuHelper : SingletonScriptableObject<MenuHelper>
     public Transform openSettings;
     public bool InSettings => openSettings != null;
 
+    [SerializeField]
+    private Transform TutorialPrefab;
+    private Transform tutorialPrefab;
+    public bool InTutorial => tutorialPrefab != null;
+
     public void OpenSettings()
     {
         Instantiate(SettingsPrefab);
@@ -26,6 +31,23 @@ public class MenuHelper : SingletonScriptableObject<MenuHelper>
         else
         {
             OpenSettings();
+        }
+    }
+
+    public void OpenTutorial()
+    {
+        Instantiate(TutorialPrefab);
+    }
+
+    public void AlternateTutorial()
+    {
+        if(tutorialPrefab != null)
+        {
+            Destroy(tutorialPrefab.gameObject);
+        }
+        else
+        {
+            OpenTutorial();
         }
     }
 }
