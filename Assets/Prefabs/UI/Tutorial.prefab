@@ -590,8 +590,8 @@ MonoBehaviour:
   nextButton: {fileID: 7611238221656082897}
   tutorialImage: {fileID: 3924210401653807380}
   tutorialSprites:
-  - {fileID: 21300000, guid: c1e9e2002c3123c469d01df75c09fc16, type: 3}
-  - {fileID: 21300000, guid: e51f9e0292c431443a5965c91bad3884, type: 3}
+  - {fileID: 21300000, guid: b5198dc0cf57bb5478647dad300cb6a8, type: 3}
+  - {fileID: 21300000, guid: 511df1a79b1b7e243a62d7c3eb4efa66, type: 3}
   - {fileID: 21300000, guid: abed83e37c7505d4b8d2032182578efc, type: 3}
   - {fileID: 21300000, guid: f48ed39e0eb495f479cd15b4da028da5, type: 3}
 --- !u!223 &8465054179977129218
