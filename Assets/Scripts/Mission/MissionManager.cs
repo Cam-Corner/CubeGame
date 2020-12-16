@@ -173,9 +173,12 @@ public class MissionManager : MonoBehaviour
         m_MissionObjects.Remove(ItemCollected);
         Debug.Log(ThisObjective.name + " has been stolen!");
         m_MissionSettings.CollectedAMissionObjective();
-        m_MissionSettings.SetSpawnLocation(m_Player.transform.position);
         objectsStolenCount = Mathf.Clamp(objectsStolenCount +1, 0, objectsToStealCount);
         Destroy(ThisObjective);
+
+
+        if (m_MissionObjects.Count <= 0)
+            m_MissionSettings.SetSpawnLocation(m_Player.transform.position);
     }
 
     private void ResetLevelStart()
