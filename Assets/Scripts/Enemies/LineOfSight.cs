@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class LineOfSight : MonoBehaviour
 {
-
+    
     public List<GameObject> SightCheck(in uint FieldOfView, in uint FOVDistance, in uint NumberOfRays)
     {
         float DistanceBetweenRays = (float)FieldOfView / ((float)NumberOfRays - 1);
@@ -21,7 +21,8 @@ public class LineOfSight : MonoBehaviour
         for (int i = 0; i < NumberOfRays; i++)
         {
             RaycastHit Hit;
-            bool HitSomething = Physics.Raycast(transform.position, Direction, out Hit, FOVDistance);
+            LayerMask Mask =~ LayerMask.GetMask("Destructables");
+            bool HitSomething = Physics.Raycast(transform.position, Direction, out Hit, FOVDistance, Mask);
 
             if (HitSomething)
             {
@@ -57,7 +58,8 @@ public class LineOfSight : MonoBehaviour
         for (int i = 0; i < NumberOfRays; i++)
         {
             RaycastHit Hit;
-            bool HitSomething = Physics.Raycast(transform.position, Direction, out Hit, FOVDistance);
+            LayerMask Mask = ~LayerMask.GetMask("Destructables");
+            bool HitSomething = Physics.Raycast(transform.position, Direction, out Hit, FOVDistance, Mask);
 
             if (HitSomething)
             {

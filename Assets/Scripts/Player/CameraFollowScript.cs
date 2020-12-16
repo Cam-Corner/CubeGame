@@ -329,7 +329,8 @@ public class CameraFollowScript : MonoBehaviour
     {
         RaycastHit Hit;
         Vector3 Dir = (m_PlayerTransform.position - m_Camera.transform.position).normalized;
-        bool bHitSomething = Physics.Raycast(m_Camera.transform.position, Dir, out Hit, 1000);
+        LayerMask Mask = ~LayerMask.GetMask("MissionObjective");
+        bool bHitSomething = Physics.Raycast(m_Camera.transform.position, Dir, out Hit, 1000, Mask);
 
         if (bHitSomething)
         {

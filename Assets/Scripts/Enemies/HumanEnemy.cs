@@ -74,7 +74,7 @@ public class HumanEnemy : MonoBehaviour
     private eEnemyState m_CurrentState = eEnemyState.EES_Patrol;
     private Animator m_AC;
     private float m_AngryRoarTimer = 0;
-    
+    private Vector3 LastPatrolPoint;
     //=========================================
 
     private void Start()
@@ -165,54 +165,64 @@ public class HumanEnemy : MonoBehaviour
 
     private void Patroling()
     {
-        float Distance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
-                                         new Vector2(m_CurrentPP.m_GotoPosition.x, m_CurrentPP.m_GotoPosition.z));
-        if (Distance < 0.5f)
+        if (PlayerSightCheck())
         {
-            m_NMA.speed = 0.0f;
-            if (m_CurrentPP.m_WaitTime > 0)
+            m_AC.SetBool("Walking", true);
+            m_NMA.speed = m_EnemySettings.m_WalkSpeed;
+            m_NMA.SetDestination(m_Player.transform.position);
+        }
+        else
+        {
+            float Distance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
+                                             new Vector2(m_CurrentPP.m_GotoPosition.x, m_CurrentPP.m_GotoPosition.z));
+
+            if (Distance < 0.5f)
             {
-                ResetAnimationControllerToDefault();
-                m_CurrentPP.m_WaitTime -= Time.deltaTime;
-
-                Vector3 LerpRotation = Vector3.Lerp(transform.rotation.eulerAngles, m_CurrentPP.m_Rotation, 5.0f * Time.deltaTime);
-                transform.rotation = Quaternion.Euler(LerpRotation);
-            }
-            else
-            {
-                //m_CurrentPP = m_MyPath.GetNextPoint();
-
-                //m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
-
-                if (m_EnemySettings.GetSuspicionLevel() < 3)
+                m_NMA.speed = 0.0f;
+                if (m_CurrentPP.m_WaitTime > 0)
                 {
-                    SetNextPathPoint();
-                    m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
+                    ResetAnimationControllerToDefault();
+                    m_CurrentPP.m_WaitTime -= Time.deltaTime;
+
+                    Vector3 LerpRotation = Vector3.Lerp(transform.rotation.eulerAngles, m_CurrentPP.m_Rotation, 5.0f * Time.deltaTime);
+                    transform.rotation = Quaternion.Euler(LerpRotation);
                 }
                 else
                 {
-                    int RandomNum = Random.Range(0, 100);
-                    //Debug.Log(RandomNum);
-                    m_CheckForPlayerRandNumTimer = 3.0f;
+                    //m_CurrentPP = m_MyPath.GetNextPoint();
 
-                    if (RandomNum > 30 && RandomNum < 70 && m_EnemySettings.GetBrokenPositions().Count > 0)
-                    {
-                        int RandomTransform = Random.Range(0, m_EnemySettings.GetBrokenPositions().Count - 1);
+                    //m_CurrentGotoPatrolPoint = m_MyPath.GetNextPoint();
 
-                        HeardANoise(m_EnemySettings.GetBrokenPositions()[RandomTransform]);
-                    }
-                    else
+                    if (m_EnemySettings.GetSuspicionLevel() < 3)
                     {
                         SetNextPathPoint();
                         m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
                     }
+                    else
+                    {
+                        int RandomNum = Random.Range(0, 100);
+                        //Debug.Log(RandomNum);
+                        m_CheckForPlayerRandNumTimer = 3.0f;
+
+                        if (RandomNum > 30 && RandomNum < 70 && m_EnemySettings.GetBrokenPositions().Count > 0)
+                        {
+                            int RandomTransform = Random.Range(0, m_EnemySettings.GetBrokenPositions().Count - 1);
+
+                            HeardANoise(m_EnemySettings.GetBrokenPositions()[RandomTransform]);
+                        }
+                        else
+                        {
+                            SetNextPathPoint();
+                            m_NMA.SetDestination(m_CurrentPP.m_GotoPosition);
+                        }
+                    }
                 }
             }
-        }
-        else
-        {
-            m_AC.SetBool("Walking", true);
-            m_NMA.speed = m_EnemySettings.m_WalkSpeed;
+            else
+            {
+                m_AC.SetBool("Walking", true);
+                m_NMA.speed = m_EnemySettings.m_WalkSpeed;
+            }
         }
 
         if (m_EnemySettings.GetSuspicionLevel() >= 2)
@@ -252,7 +262,7 @@ public class HumanEnemy : MonoBehaviour
             }
         }
 
-        PlayerSightCheck();
+        
     }
 
     void ChasingPlayer()
@@ -478,9 +488,12 @@ public class HumanEnemy : MonoBehaviour
         PlayerSightCheck();
     }
 
-    void PlayerSightCheck()
+    /** returns true if player is hit */
+    bool PlayerSightCheck()
     {
+        //Physics.IgnoreLayerCollision(12, 14, true);
         m_bDetectingPlayer = false;
+        bool bHitPlayer = false;
 
         if (m_InRadiusOfPlayer || !m_InRadiusOfPlayer)//m_PRC.PlayerInRadius())
         {
@@ -498,6 +511,10 @@ public class HumanEnemy : MonoBehaviour
                         if (m_CurrentDetectionTimer <= 0)
                         {
                             m_CurrentDetectionTimer = m_EnemySettings.GetCorrectDetectionTime();
+                        }
+                        else
+                        {
+                            bHitPlayer = true;
                         }
 
                         m_bDetectingPlayer = true;
@@ -534,6 +551,10 @@ public class HumanEnemy : MonoBehaviour
             m_CurrentState = eEnemyState.EES_ChasingPlayer;
         }
 
+        if (bHitPlayer)
+            return true;
+
+        return false;
     }
 
     void ResetAnimationControllerToDefault()

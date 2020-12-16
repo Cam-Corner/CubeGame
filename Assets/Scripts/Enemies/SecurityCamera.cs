@@ -129,7 +129,8 @@ public class SecurityCamera : MonoBehaviour
             NewDirection = Quaternion.AngleAxis(RadiusDifference, m_CameraMesh.transform.forward) * NewDirection;
             
             RaycastHit Hit;
-            bool HitSomething = Physics.Raycast(m_SightMesh.transform.position, NewDirection, out Hit, m_RayDistance);//, 1 << LayerMask.NameToLayer("Floor"));
+            LayerMask Mask = ~LayerMask.GetMask("Destructables");
+            bool HitSomething = Physics.Raycast(m_SightMesh.transform.position, NewDirection, out Hit, m_RayDistance, Mask);//, 1 << LayerMask.NameToLayer("Floor"));
             //Debug.DrawLine(m_SightMesh.transform.position, m_SightMesh.transform.position+ NewDirection*m_RayDistance, Color.red, 10.0f);
             if (HitSomething)
             {
