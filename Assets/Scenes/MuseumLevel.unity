@@ -16393,10 +16393,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6130370748378731107, guid: d6f10ee8876c26847ae69be7d13589fd, type: 3}
-      propertyPath: cameraTransform
-      value: 
-      objectReference: {fileID: 995720926}
     - target: {fileID: 7895067241498874223, guid: d6f10ee8876c26847ae69be7d13589fd, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -28337,11 +28333,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58907260b4a8c01439c85634a38d130d, type: 3}
   m_PrefabInstance: {fileID: 559723976}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &995720926 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3954787877969673958, guid: 2c52f3dfa98615d4ca8edba641588597, type: 3}
-  m_PrefabInstance: {fileID: 690203363}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &995803529 stripped
 Transform:
