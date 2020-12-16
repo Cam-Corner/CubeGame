@@ -51,6 +51,7 @@ MonoBehaviour:
   m_MissionObjects:
   - {fileID: 0}
   m_StartingMissionState: 1
+  destructionScore: {fileID: 11400000, guid: be1555332fc466343b0458f12b1c4c40, type: 2}
 --- !u!114 &4312532278549286280
 MonoBehaviour:
   m_ObjectHideFlags: 0

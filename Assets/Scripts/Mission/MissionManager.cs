@@ -32,6 +32,9 @@ public class MissionManager : MonoBehaviour
     [SerializeField] private List<MissionObjective> m_MissionObjects = new List<MissionObjective>();
     [SerializeField] private eMissionState m_StartingMissionState = eMissionState.EMS_MissionBrief;
 
+    [SerializeField]
+    private FloatVar destructionScore;
+
     public bool IsInMissionBrief => m_MissionSettings.GetMissionState() == eMissionState.EMS_MissionBrief;
     private int objectsToStealCount;
     private int objectsStolenCount;
@@ -53,6 +56,7 @@ public class MissionManager : MonoBehaviour
         }
         else if (m_MissionSettings.GetMissionType() == eMissionType.EMT_Destructable)
         {
+            destructionScore.Reset();
             m_MissionSettings.SetMissionState(eMissionState.EMS_PlayingMission);
         }
 
