@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 512621dc42e1f3b4490fc9878add1a40, type: 3}
   m_Name: ZoomSensitivity
   m_EditorClassIdentifier: 
-  setupValue: 1
-  value: 1
+  setupValue: 50
+  value: 50

@@ -2,7 +2,8 @@
     "name": "CubeGame",
     "references": [
         "GUID:10314cd94b731a74abd9221d57211e4d",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:5ad926ab5ff9d914ea1f6812dfd6f07a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

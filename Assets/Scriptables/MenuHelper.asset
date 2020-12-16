@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: MenuHelper
   m_EditorClassIdentifier: 
   SettingsPrefab: {fileID: 4299881782728095120, guid: 669dda6beb1817b43b565b9c7814a998, type: 3}
+  openSettings: {fileID: 0}
+  TutorialPrefab: {fileID: 5266115002454636061, guid: bef745f1ace3fc247b0c060c015b0b83, type: 3}
