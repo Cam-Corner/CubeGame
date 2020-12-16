@@ -36,6 +36,7 @@ public class GlobalMissionSettings : ScriptableObject
     [SerializeField] private string m_DestructableGameOverSceneName = "Name";
     [SerializeField] private sTimeDetails m_DestructionGameStartTime;
     [SerializeField] private BoolVar m_TimeActive;
+    private Vector3 SpawnLocation;
     private List<Vector3> m_BrokenCollectablePositions = new List<Vector3>();
     //[SerializeField] private FloatVar ;
     [SerializeField] private BoolVar m_IsLootMode;
@@ -101,6 +102,9 @@ public class GlobalMissionSettings : ScriptableObject
         if(m_AmountOfMissionObjectivesLeft > 0)
             m_AmountOfMissionObjectivesLeft -= 1;
     }
+
+    public Vector3 GetSpawnLocation() => SpawnLocation;
+    public void SetSpawnLocation(Vector3 NewSpawnLocation) => SpawnLocation = NewSpawnLocation;
 
     public float GetAISuspicionLevel() => m_AISuspicionLevel;
 

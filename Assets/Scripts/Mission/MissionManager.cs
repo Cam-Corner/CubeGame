@@ -56,6 +56,8 @@ public class MissionManager : MonoBehaviour
             m_MissionSettings.SetMissionState(eMissionState.EMS_PlayingMission);
         }
 
+        m_MissionSettings.SetSpawnLocation(m_Player.transform.position);
+
         m_MissionSettings.StartingAmountOfMissionObjectives((uint)m_MissionObjects.Count);
 
         //Debug.Log("Game Started! Gamemode = " + m_MissionSettings.GetMissionType());
@@ -171,6 +173,7 @@ public class MissionManager : MonoBehaviour
         m_MissionObjects.Remove(ItemCollected);
         Debug.Log(ThisObjective.name + " has been stolen!");
         m_MissionSettings.CollectedAMissionObjective();
+        m_MissionSettings.SetSpawnLocation(m_Player.transform.position);
         objectsStolenCount = Mathf.Clamp(objectsStolenCount +1, 0, objectsToStealCount);
         Destroy(ThisObjective);
     }

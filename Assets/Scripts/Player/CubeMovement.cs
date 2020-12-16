@@ -399,7 +399,8 @@ public class CubeMovement : MonoBehaviour
 
     private void ResetPlayer()
     {
-        transform.position = m_PlayerStart.position;
+        transform.position = m_MissionSettings.GetSpawnLocation(); //m_PlayerStart.position;
+        //transform.rotation = m_MissionSettings.GetSpawnLocation().rotation; //m_PlayerStart.position;
         m_RB.velocity = new Vector3(0, 0, 0);
     }
 }
