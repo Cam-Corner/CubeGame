@@ -32,6 +32,9 @@ public class DestructableObject : MonoBehaviour
     [SerializeField]
     private FloatVar destructionScore;
 
+    [SerializeField]
+    private bool canDestroy = true;
+
     private Rigidbody body;
 
     [SerializeField]
@@ -89,6 +92,10 @@ public class DestructableObject : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(!canDestroy)
+        {
+            return;
+        }
         if(collision.collider.transform == playerScriptable.Player)
         {
             float hitMagnitude = playerScriptable.Body.velocity.magnitude;
@@ -124,6 +131,11 @@ public class DestructableObject : MonoBehaviour
 
     private void BreakObject(float hitMagnitude)
     {
+        if(!canDestroy)
+        {
+            return;
+        }
+        
         m_DR.MakeNoise(hitMagnitude, true);
         GameSoundBoard.Instance.PlayDestructionSound();
         //Debug.Log("Destroyed Magnitude " + hitMagnitude);

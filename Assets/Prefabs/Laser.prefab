@@ -131,7 +131,7 @@ MonoBehaviour:
   maxLaserDistance: 300
   laserCalculateMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1025
   extraLength: 0
   playerScriptable: {fileID: 11400000, guid: abc688f2662b70242bde2c69482e51ac, type: 2}
 --- !u!54 &7160059079070165106
@@ -177,8 +177,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4917642108546746127}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 150}
-  m_LocalScale: {x: 0.15, y: 150, z: 0.15}
+  m_LocalPosition: {x: 0, y: 0, z: 5.791311}
+  m_LocalScale: {x: 0.15, y: 5.791311, z: 0.15}
   m_Children: []
   m_Father: {fileID: 4917642108250527442}
   m_RootOrder: 1
